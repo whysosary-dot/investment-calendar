@@ -231,17 +231,31 @@ var DEF=[
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",important:true}
 ];
 
+// Version: bump this number whenever DEF is updated
+var DATA_VER=2;
+
 // State
 var events,companies,yr=2026,mo=2,selCo="전체",selCat="전체",view="calendar",nid=300;
 
 function load(){
+  var storedVer=0;
+  try{storedVer=parseInt(localStorage.getItem("ivcal2_v"))||0}catch(x){}
+  if(storedVer<DATA_VER){
+    // DEF updated: merge - keep user-added events (id>=300), replace defaults
+    var userEvs=[];
+    try{var old=JSON.parse(localStorage.getItem("ivcal2_e"));if(old)for(var i=0;i<old.length;i++)if(old[i].id>=300)userEvs.push(old[i])}catch(x){}
+    events=DEF.slice().concat(userEvs);
+    var s={};for(var i=0;i<events.length;i++)s[events[i].company]=1;companies=Object.keys(s);
+    save();
+    return;
+  }
   try{var e=localStorage.getItem("ivcal2_e");if(e)events=JSON.parse(e)}catch(x){}
   try{var c=localStorage.getItem("ivcal2_c");if(c)companies=JSON.parse(c)}catch(x){}
   if(!events)events=DEF.slice();
   if(!companies){var s={};for(var i=0;i<events.length;i++)s[events[i].company]=1;companies=Object.keys(s)}
 }
 function save(){
-  try{localStorage.setItem("ivcal2_e",JSON.stringify(events));localStorage.setItem("ivcal2_c",JSON.stringify(companies))}catch(x){}
+  try{localStorage.setItem("ivcal2_e",JSON.stringify(events));localStorage.setItem("ivcal2_c",JSON.stringify(companies));localStorage.setItem("ivcal2_v",String(DATA_VER))}catch(x){}
 }
 function esc(s){if(!s)return"";return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
 function fmtD(d){var x=new Date(d+"T00:00:00");return(x.getMonth()+1)+"/"+x.getDate()+" ("+DK[x.getDay()]+")"}
