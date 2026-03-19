@@ -62,14 +62,14 @@ button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:tra
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
 
 /* Collapse Tab (visible when sidebar collapsed) */
-.collapse-tab{display:none;align-items:center;justify-content:center;gap:6px;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:800;font-size:12px;-webkit-tap-highlight-color:transparent;writing-mode:vertical-rl;text-orientation:mixed;height:100%;padding:0;letter-spacing:2px;border:none;width:100%;user-select:none}
-.collapse-tab .ct-arrow{font-size:16px;writing-mode:horizontal-tb;animation:pulse-arrow 1.5s ease-in-out infinite}
-@keyframes pulse-arrow{0%,100%{opacity:.6;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
+.collapse-tab{display:none;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:#0f0f23;color:#818cf8;font-weight:700;font-size:11px;-webkit-tap-highlight-color:transparent;writing-mode:vertical-rl;text-orientation:mixed;height:100%;padding:0;letter-spacing:1px;border:none;width:100%;user-select:none;border-right:1px solid rgba(102,126,234,.15)}
+.collapse-tab:hover{background:rgba(102,126,234,.08);color:#a5b4fc}
+.collapse-tab .ct-arrow{font-size:14px;writing-mode:horizontal-tb;opacity:.7;transition:transform .2s}
+.collapse-tab:hover .ct-arrow{opacity:1;transform:translateX(2px)}
 
 @media(max-width:1024px){
-  .collapse-tab{writing-mode:horizontal-tb;text-orientation:initial;height:auto;padding:10px 14px;letter-spacing:0;flex-direction:row;gap:8px}
-  .collapse-tab .ct-arrow{animation-name:pulse-arrow-v}
-  @keyframes pulse-arrow-v{0%,100%{opacity:.6;transform:translateY(0)}50%{opacity:1;transform:translateY(2px)}}
+  .collapse-tab{writing-mode:horizontal-tb;text-orientation:initial;height:auto;padding:8px 14px;letter-spacing:0;flex-direction:row;gap:6px;border-right:none;border-bottom:1px solid rgba(102,126,234,.15)}
+  .collapse-tab:hover .ct-arrow{transform:translateY(2px)}
 }
 
 /* Search */
