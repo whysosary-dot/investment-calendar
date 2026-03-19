@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>투자 캘린더</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic','Pretendard',sans-serif;background:#0a0a1a;color:#e5e7eb;min-height:100vh;overflow-x:hidden}
+
+/* Layout */
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:300px;background:#0f0f23;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.header{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.content{flex:1;overflow-y:auto;padding:14px 20px}
+
+/* Mobile */
+@media(max-width:768px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:auto;max-height:none;border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .sidebar.collapsed .sb-body{display:none}
+  .sidebar .sb-toggle{display:flex}
+  .content{padding:10px 12px}
+  .header{padding:10px 12px}
+  .cal-grid .day-cell{min-height:70px}
+  .day-event{font-size:8px!important;padding:1px 3px!important}
+  .fab{bottom:16px;right:16px;width:46px;height:46px;font-size:20px}
+}
+
+/* Sidebar */
+.sb-header{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-header h2{font-size:15px;font-weight:800;color:#fff}
+.sb-toggle{display:none;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;background:rgba(255,255,255,.02)}
+.sb-toggle span{font-size:13px;font-weight:700;color:#fff}
+.sb-toggle .arrow{font-size:12px;color:#6b7280;transition:transform .2s}
+.sb-body{}
+.filter-grp{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.filter-label{font-size:9px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#9ca3af;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.chip:hover,.chip:active{background:rgba(255,255,255,.08)}
+.chip.on{background:rgba(102,126,234,.2);border-color:rgba(102,126,234,.4);color:#a5b4fc}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
+
+/* Search */
+.search{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;font-size:12px;width:100%;outline:none;margin-top:8px}
+.search::placeholder{color:#4b5563}
+.search:focus{border-color:rgba(102,126,234,.4)}
+
+/* Event List */
+.ev-list{flex:1;overflow-y:auto;padding:6px}
+.ev-li{padding:8px 10px;border-radius:6px;margin-bottom:3px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;-webkit-tap-highlight-color:transparent}
+.ev-li:hover,.ev-li:active{background:rgba(255,255,255,.04)}
+.ev-li .d{font-size:9px;color:#6b7280;font-weight:600}
+.ev-li .t{font-size:11px;font-weight:700;color:#e5e7eb;margin:1px 0}
+.ev-li .c{font-size:9px;color:#9ca3af}
+.ev-li .badge{display:inline-block;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700;margin-left:3px}
+
+/* Calendar */
+.cal-nav{display:flex;align-items:center;gap:10px}
+.cal-nav button{background:rgba(255,255,255,.06);border:none;color:#fff;font-size:15px;border-radius:5px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.cal-nav button:active{background:rgba(255,255,255,.12)}
+.cal-nav .ml{font-size:16px;font-weight:800;color:#fff;min-width:140px;text-align:center}
+.btn-today{font-size:10px!important;font-weight:700;padding:0 10px;width:auto!important;background:rgba(102,126,234,.15)!important;border:1px solid rgba(102,126,234,.3)!important;color:#818cf8!important}
+.vtabs{display:flex;gap:3px;margin-left:auto}
+.vtab{padding:4px 12px;border-radius:5px;border:none;font-size:10px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.04);color:#9ca3af;-webkit-tap-highlight-color:transparent}
+.vtab.on{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.day-hd{text-align:center;padding:8px 0;font-size:10px;font-weight:700;color:#6b7280}
+.day-hd.sun{color:#f87171}.day-hd.sat{color:#60a5fa}
+.day-cell{min-height:100px;background:rgba(255,255,255,.015);border-radius:5px;padding:3px 4px;border:1px solid rgba(255,255,255,.03);cursor:default}
+.day-cell.today{border:2px solid #667eea;background:rgba(102,126,234,.05)}
+.day-cell.empty{opacity:.2}
+.dn{font-size:11px;font-weight:600;color:#9ca3af;margin-bottom:2px;display:flex;align-items:center;gap:3px}
+.dn.sun{color:#f87171}.dn.sat{color:#60a5fa}
+.dn .tb{font-size:7px;background:#667eea;color:#fff;padding:0 4px;border-radius:4px;font-weight:800}
+.de{font-size:9px;padding:1px 4px;border-radius:3px;margin-bottom:1px;cursor:pointer;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-left:2px solid transparent;transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.de:active{transform:translateX(2px)}
+.de.imp::before{content:'⚡'}
+.dm{font-size:8px;color:#6b7280;text-align:center;cursor:pointer}
+
+/* Timeline */
+.tl-month{font-size:13px;font-weight:800;color:#818cf8;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06)}
+.tl-row{display:flex;gap:10px;margin-bottom:3px;align-items:flex-start}
+.tl-date{min-width:40px;text-align:right;font-size:10px;color:#6b7280;font-weight:600;padding-top:10px}
+.tl-dotc{display:flex;flex-direction:column;align-items:center;padding-top:12px}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tl-line{width:1px;flex:1;background:rgba(255,255,255,.06);min-height:16px}
+
+/* Event Card */
+.evc{border-radius:7px;padding:9px 12px;margin-bottom:5px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.evc:active{transform:translateX(3px)}
+.evc .evc-top{display:flex;align-items:center;gap:5px}
+.evc .evc-ic{font-size:13px}
+.evc .evc-ti{font-size:12px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evc .evc-imp{font-size:8px;background:#fecaca;color:#dc2626;padding:1px 5px;border-radius:5px;font-weight:700}
+.evc .evc-meta{display:flex;gap:6px;margin-top:3px;font-size:10px;color:#9ca3af}
+.evc .evc-dd{margin-left:auto;font-weight:700}
+
+/* Upcoming */
+.up-row{display:flex;gap:10px;margin-bottom:5px;align-items:stretch}
+.up-dd{min-width:54px;background:rgba(255,255,255,.03);border-radius:7px;padding:7px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.up-dd .ddn{font-size:14px;font-weight:900}
+.up-dd .ddd{font-size:8px;color:#6b7280}
+
+/* Modal Overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+
+/* View Modal */
+.modal{background:#1a1a2e;border-radius:14px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+.modal-top{padding:20px 24px 12px;position:relative}
+.modal-x{position:absolute;top:10px;right:14px;background:none;border:none;font-size:16px;cursor:pointer;color:#6b7280;padding:4px}
+.modal-ic{font-size:28px;margin-bottom:6px}
+.modal-ti{font-size:18px;font-weight:900;color:#fff}
+.modal-co{font-size:11px;color:#9ca3af;margin-top:2px}
+.modal-tags{display:flex;gap:5px;flex-wrap:wrap;padding:0 24px 12px}
+.modal-tag{padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700}
+.modal-memo{margin:0 24px 20px;background:rgba(255,255,255,.04);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.7;color:#d1d5db}
+.modal-memo strong{color:#fff}
+.modal-acts{padding:10px 24px 18px;display:flex;gap:6px}
+.modal-btn{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none}
+.modal-btn.edit{background:rgba(102,126,234,.2);color:#818cf8}
+.modal-btn.del{background:rgba(239,68,68,.15);color:#f87171}
+
+/* Form Modal */
+.form{background:#1a1a2e;border-radius:14px;padding:20px 24px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
+.form h3{font-size:16px;font-weight:800;color:#fff;margin-bottom:14px}
+.fr{margin-bottom:10px}
+.fr label{display:block;font-size:10px;color:#9ca3af;font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.fr input,.fr select,.fr textarea{width:100%;padding:8px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px;font-family:inherit;outline:none}
+.fr input:focus,.fr select:focus,.fr textarea:focus{border-color:rgba(102,126,234,.5)}
+.fr textarea{resize:vertical;min-height:50px}
+.fr select option{background:#1a1a2e}
+.fr-check{display:flex;align-items:center;gap:6px;font-size:12px;color:#e5e7eb;cursor:pointer}
+.fr-check input[type=checkbox]{width:15px;height:15px;accent-color:#667eea}
+.ic-pick{display:flex;gap:3px;flex-wrap:wrap}
+.ic-opt{font-size:18px;cursor:pointer;padding:3px 5px;border-radius:5px;border:1px solid transparent}
+.ic-opt.on{background:rgba(102,126,234,.3);border-color:#667eea}
+.form-btns{display:flex;gap:6px;margin-top:14px;justify-content:flex-end}
+.fbtn{padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none}
+.fbtn.cancel{background:rgba(255,255,255,.06);color:#9ca3af}
+.fbtn.save{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+
+/* FAB */
+.fab{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#667eea,#764ba2);border:none;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(102,126,234,.4);display:flex;align-items:center;justify-content:center;z-index:100;-webkit-tap-highlight-color:transparent}
+
+/* Stats */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px;color:#9ca3af}
+.stat-row .sn{font-size:11px;font-weight:800;color:#fff}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<button class="fab" id="fabBtn">+</button>
+
+<script>
+// ── Config ──
+var CATS={
+  "실적":{bg:"#1e1b4b",bd:"#6366f1",tx:"#a5b4fc",dt:"#6366f1"},
+  "수주":{bg:"#052e16",bd:"#10b981",tx:"#6ee7b7",dt:"#10b981"},
+  "정책":{bg:"#451a03",bd:"#f59e0b",tx:"#fcd34d",dt:"#f59e0b"},
+  "산업":{bg:"#0c4a6e",bd:"#0ea5e9",tx:"#7dd3fc",dt:"#0ea5e9"},
+  "기업":{bg:"#4a044e",bd:"#d946ef",tx:"#f0abfc",dt:"#d946ef"},
+  "매크로":{bg:"#1c1917",bd:"#a8a29e",tx:"#d6d3d1",dt:"#a8a29e"},
+  "기타":{bg:"#1f2937",bd:"#6b7280",tx:"#d1d5db",dt:"#6b7280"}
+};
+var CAT_LIST=Object.keys(CATS);
+var ICONS=["📊","🚢","📜","📈","🏢","💰","🌐","🗳️","⚡","🔔","📌","🎯","💡","🔥","⭐"];
+var DK=["일","월","화","수","목","금","토"];
+var MK=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+
+var DEFAULT_EVENTS=[
+  {id:1,date:"2026-03-23",title:"클락슨 신조선가지수 발표",company:"업계공통",category:"산업",icon:"📈",memo:"월간 신조선가지수. 170+ 유지 여부 확인",important:false},
+  {id:2,date:"2026-03-25",title:"HD한국조선해양 주총",company:"HD한국조선해양",category:"기업",icon:"🏢",memo:"2025 실적 승인 + 2026 경영계획 발표",important:false},
+  {id:3,date:"2026-03-27",title:"HD한국조선해양 배당락일",company:"HD한국조선해양",category:"기업",icon:"💰",memo:"DPS 추정 3,000~4,000원",important:false},
+  {id:4,date:"2026-04-01",title:"IMO EEXI/CII 강화 시행",company:"업계공통",category:"정책",icon:"📜",memo:"에너지효율 규제 강화. 노후선 교체 발주 촉진",important:true},
+  {id:5,date:"2026-04-15",title:"모잠비크 LNG FLNG 입찰 마감",company:"삼성중공업",category:"수주",icon:"🚢",memo:"삼성중공업 FLNG 기술 경쟁력 확인",important:false},
+  {id:6,date:"2026-04-24",title:"HD현대중공업 1Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"2026E OP 2.89조 전망 대비 진행 속도 확인",important:false},
+  {id:7,date:"2026-04-25",title:"HD한국조선해양 1Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"고선가 물량 반영 본격화. OPM 15%+ 확인",important:true},
+  {id:8,date:"2026-04-27",title:"삼성중공업 1Q26 실적",company:"삼성중공업",category:"실적",icon:"📊",memo:"LNG·FLNG 수주잔고 소화율 체크",important:false},
+  {id:9,date:"2026-04-28",title:"한화오션 1Q26 실적",company:"한화오션",category:"실적",icon:"📊",memo:"필라 조선소 인수 후 첫 분기 실적",important:false},
+  {id:10,date:"2026-05-10",title:"미 해군 함정 MRO 계약 발표",company:"HD현대중공업",category:"수주",icon:"🚢",memo:"Bridge Strategy 첫 실질 계약",important:true},
+  {id:11,date:"2026-05-20",title:"SHIPS Act 상원 표결 예상",company:"업계공통",category:"정책",icon:"📜",memo:"동맹국 조선소 활용 법안. 통과 시 구조적 수혜",important:true},
+  {id:12,date:"2026-06-01",title:"그리스 선주 벌크선 대량 발주",company:"HD한국조선해양",category:"수주",icon:"🚢",memo:"친환경 규제 대응 교체 수요. 30척+ 규모",important:false},
+  {id:13,date:"2026-06-08",title:"Posidonia 2026 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"그리스 아테네. 하반기 발주 방향성 가늠",important:true},
+  {id:14,date:"2026-06-15",title:"일본 조선업 부흥 1단계 시행",company:"업계공통",category:"정책",icon:"📜",memo:"이마바리+JMU 통합 마무리",important:false},
+  {id:15,date:"2026-07-01",title:"EU CBAM 확대",company:"업계공통",category:"정책",icon:"📜",memo:"해운업 탄소비용 증가 → 친환경 선박 수요 가속",important:false},
+  {id:16,date:"2026-07-23",title:"HD현대중공업 2Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"고선가 건조 비중 최대 → OPM 서프라이즈",important:false},
+  {id:17,date:"2026-07-24",title:"HD한국조선해양 2Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"상반기 P-MIX 개선 정점",important:true},
+  {id:18,date:"2026-09-07",title:"SMM Hamburg 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"세계 최대 해사전시회",important:false},
+  {id:19,date:"2026-09-15",title:"미국 Jones Act 선박 건조 입찰",company:"한화오션",category:"수주",icon:"🚢",memo:"필라델피아 조선소 경유 수주 가능성",important:false},
+  {id:20,date:"2026-10-23",title:"HD한국조선해양 3Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"연간 가이던스 업데이트",important:false},
+  {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 정책 방향성 결정",important:true},
+
+  // ── 게임사 신작 일정 ──
+  // 펄어비스
+  {id:50,date:"2026-03-20",title:"붉은사막 출시",company:"펄어비스",category:"기업",icon:"🎮",memo:"PS5/XSX/Steam/Mac/Epic 동시 출시. AAA 오픈월드 액션 어드벤처. 2026 상반기 최대 기대작",important:true},
+  {id:51,date:"2026-07-01",title:"붉은사막 1차 DLC 예상",company:"펄어비스",category:"기업",icon:"🎮",memo:"출시 후 3~4개월 내 DLC/시즌 업데이트 예상. 장기 매출 지속 여부 확인",important:false},
+
+  // 넷마블
+  {id:52,date:"2026-03-03",title:"스톤에이지 키우기 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"방치형 RPG. 스톤에이지 IP 활용 모바일 신작",important:false},
+  {id:53,date:"2026-03-17",title:"일곱개의대죄:오리진 출시(콘솔/PC)",company:"넷마블",category:"기업",icon:"🎮",memo:"PS5+Steam 출시. 3/24 모바일 출시. 글로벌 흥행 관건",important:true},
+  {id:54,date:"2026-03-24",title:"일곱개의대죄:오리진 모바일 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"콘솔 출시 1주 후 모바일. 크로스플랫폼 매출 시너지 확인",important:false},
+  {id:55,date:"2026-07-01",title:"이블베인 출시 예상 (하반기)",company:"넷마블",category:"기업",icon:"🎮",memo:"4인 협동 추리액션. 하반기 출시 예정. 구체적 일정 미정",important:false},
+
+  // 크래프톤
+  {id:56,date:"2026-04-01",title:"인조이(inZOI) 콘솔 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"PS5/Xbox 콘솔 버전. 2025 PC 출시 후 확장. 심즈 대항마",important:true},
+  {id:57,date:"2026-04-01",title:"팰월드 모바일 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"포켓페어 글로벌 히트작 모바일 버전. 지스타 2025 호평",important:true},
+
+  // 카카오게임즈
+  {id:58,date:"2026-04-01",title:"아키에이지 크로니클 출시 예상 (1~2Q)",company:"카카오게임즈",category:"기업",icon:"🎮",memo:"엑스엘게임즈 개발. MMORPG 신작. 1Q 또는 2Q 출시 유력",important:true},
+
+  // 엔씨소프트
+  {id:59,date:"2026-07-01",title:"신더시티 출시 예상 (하반기)",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"콘솔 게임 시장 진출작. 하반기 출시 예정",important:true},
+  {id:60,date:"2026-04-01",title:"리밋제로 브레이커스 CBT 예상",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"빅게임스튜디오 개발. 애니메이션풍 액션 RPG",important:false},
+
+  // 위메이드
+  {id:61,date:"2026-04-01",title:"미르5 출시 예상 (상반기)",company:"위메이드",category:"기업",icon:"🎮",memo:"UE5 기반 미르 IP 신작 MMORPG. 상반기 출시 목표",important:true},
+
+  // 컴투스
+  {id:62,date:"2026-01-01",title:"컬러스위퍼/파우팝매치 소프트런칭",company:"컴투스",category:"기업",icon:"🎮",memo:"퍼즐 장르 2종 1Q 소프트런칭. 컴투스홀딩스 연내 신작 8종 계획",important:false},
+  {id:63,date:"2026-07-01",title:"스타세일러 출시 예상 (연내)",company:"컴투스",category:"기업",icon:"🎮",memo:"수집형 RPG 신작. 연내 출시 예정",important:false},
+
+  // 시프트업
+  {id:64,date:"2026-06-12",title:"스텔라블레이드 x 니케 DLC 출시",company:"시프트업",category:"기업",icon:"🎮",memo:"니케 컬래버 DLC. 홍련 보스 등장. 유료 DLC 매출 확인",important:true},
+
+  // 넥슨
+  {id:65,date:"2026-04-01",title:"아주르 프로밀리아 CBT/출시 예상",company:"넥슨",category:"기업",icon:"🎮",memo:"벽람항로 개발사 신작. 넥슨 국내 퍼블리싱. CBT 테스터 모집 진행중",important:true},
+  {id:66,date:"2026-04-01",title:"퍼스트디센던트 시즌3 예상 (상반기)",company:"넥슨",category:"기업",icon:"🎮",memo:"글로벌 흥행작 대규모 로드맵 운영. 상반기 시즌 업데이트",important:false},
+
+  // 삼성중공업 → 게임주 실적 시즌
+  {id:67,date:"2026-05-01",title:"게임사 1Q26 실적 시즌",company:"업계공통",category:"실적",icon:"📊",memo:"넥슨/크래프톤/넷마블/엔씨/카겜/펄어비스/시프트업 등 1분기 실적 발표 집중",important:true}
+];
+
+// ── State ──
+var state={
+  events:null,
+  companies:null,
+  year:2026,month:2,
+  selCompany:"전체",selCat:"전체",search:"",
+  view:"calendar",
+  modal:null,formOpen:false,editEv:null,
+  sbCollapsed:false,
+  nextId:200
+};
+
+function loadState(){
+  try{
+    var e=localStorage.getItem("ivcal_ev");
+    if(e)state.events=JSON.parse(e);
+    var c=localStorage.getItem("ivcal_co");
+    if(c)state.companies=JSON.parse(c);
+  }catch(x){}
+  if(!state.events)state.events=DEFAULT_EVENTS.slice();
+  if(!state.companies){
+    var s={};state.events.forEach(function(e){s[e.company]=1});
+    state.companies=Object.keys(s);
+  }
+}
+function save(){
+  try{
+    localStorage.setItem("ivcal_ev",JSON.stringify(state.events));
+    localStorage.setItem("ivcal_co",JSON.stringify(state.companies));
+  }catch(x){}
+}
+
+// ── Helpers ──
+function fmtD(d){var x=new Date(d+"T00:00:00");return(x.getMonth()+1)+"/"+x.getDate()+" ("+DK[x.getDay()]+")"}
+function daysUntil(d){
+  var t=new Date();t.setHours(0,0,0,0);
+  var diff=Math.ceil((new Date(d+"T00:00:00")-t)/864e5);
+  if(diff===0)return"오늘";if(diff===1)return"내일";
+  if(diff<0)return Math.abs(diff)+"일 전";
+  return"D-"+diff;
+}
+function daysInMonth(y,m){return new Date(y,m+1,0).getDate()}
+function firstDay(y,m){return new Date(y,m,1).getDay()}
+function catC(cat){return CATS[cat]||CATS["기타"]}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+function filtered(){
+  return state.events.filter(function(e){
+    if(state.selCompany!=="전체"&&e.company!==state.selCompany)return false;
+    if(state.selCat!=="전체"&&e.category!==state.selCat)return false;
+    if(state.search&&e.title.indexOf(state.search)<0&&e.memo.indexOf(state.search)<0&&e.company.indexOf(state.search)<0)return false;
+    return true;
+  });
+}
+
+// ── Render ──
+function render(){
+  var f=filtered();
+  var mp=state.year+"-"+String(state.month+1).padStart(2,"0");
+  var mEvs=f.filter(function(e){return e.date.indexOf(mp)===0});
+  var byDay={};mEvs.forEach(function(e){var d=parseInt(e.date.split("-")[2]);if(!byDay[d])byDay[d]=[];byDay[d].push(e)});
+  var upcoming=f.filter(function(e){return e.date>="2026-03-19"}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,30);
+  var allCo=["전체"].concat(state.companies);
+
+  // Stats
+  var stats={};CAT_LIST.forEach(function(c){stats[c]=f.filter(function(e){return e.category===c}).length});
+
+  var h="";
+
+  // Sidebar
+  h+='<div class="sidebar'+(state.sbCollapsed?" collapsed":"")+'">';
+  h+='<div class="sb-toggle" onclick="toggleSb()"><span>🚢 투자 캘린더</span><span class="arrow">'+(state.sbCollapsed?"▼":"▲")+'</span></div>';
+  h+='<div class="sb-header"><h2>🚢 투자 캘린더</h2>';
+  h+='<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." value="'+esc(state.search)+'">';
+  h+='</div><div class="sb-body">';
+
+  // Company filter
+  h+='<div class="filter-grp"><div class="filter-label">기업</div><div class="chips">';
+  allCo.forEach(function(c){
+    h+='<span class="chip'+(state.selCompany===c?" on":"")+'" onclick="setCompany(\''+esc(c)+'\')">'+esc(c)+'</span>';
+  });
+  h+='</div></div>';
+
+  // Category filter
+  h+='<div class="filter-grp"><div class="filter-label">카테고리</div><div class="chips">';
+  h+='<span class="chip'+(state.selCat==="전체"?" on":"")+'" onclick="setCat(\'전체\')">전체</span>';
+  CAT_LIST.forEach(function(c){
+    var col=CATS[c];
+    h+='<span class="chip'+(state.selCat===c?" on":"")+'" onclick="setCat(\''+c+'\')"><span class="dot" style="background:'+col.dt+'"></span>'+c+'</span>';
+  });
+  h+='</div></div>';
+
+  // Stats
+  h+='<div class="filter-grp">';
+  CAT_LIST.forEach(function(c){
+    if(stats[c]>0){
+      var col=CATS[c];
+      h+='<div class="stat-row"><span><span class="dot" style="background:'+col.dt+'"></span> '+c+'</span><span class="sn">'+stats[c]+'</span></div>';
+    }
+  });
+  h+='</div>';
+
+  // Event list
+  var listEvs=state.view==="calendar"?mEvs.slice().sort(function(a,b){return a.date<b.date?-1:1}):upcoming;
+  h+='<div class="ev-list">';
+  h+='<div style="padding:3px 8px;font-size:9px;color:#4b5563;font-weight:700;display:flex;justify-content:space-between">';
+  h+='<span>'+(state.view==="calendar"?MK[state.month]+" "+mEvs.length+"건":"전체 "+f.length+"건")+'</span>';
+  h+='<span style="color:#f87171;cursor:pointer" onclick="resetData()">초기화</span></div>';
+  listEvs.forEach(function(e){
+    var c=catC(e.category);
+    h+='<div class="ev-li'+(e.important?" important":"")+'" style="border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">';
+    h+='<div class="d">'+fmtD(e.date)+' · '+daysUntil(e.date)+'</div>';
+    h+='<div class="t">'+(e.important?"⚡ ":"")+e.icon+' '+esc(e.title)+'</div>';
+    h+='<div class="c">'+esc(e.company)+'<span class="badge" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span></div>';
+    h+='</div>';
+  });
+  h+='</div></div></div>';
+
+  // Main
+  h+='<div class="main"><div class="header">';
+  if(state.view==="calendar"){
+    h+='<div class="cal-nav">';
+    h+='<button onclick="prevMonth()">‹</button>';
+    h+='<span class="ml">'+state.year+'년 '+MK[state.month]+'</span>';
+    h+='<button onclick="nextMonth()">›</button>';
+    h+='<button class="btn-today" onclick="goToday()">오늘</button>';
+    h+='</div>';
+  }else{
+    h+='<div style="font-size:14px;font-weight:800;color:#fff">'+(state.view==="timeline"?"📋 전체 타임라인":"⏰ 다가오는 이벤트")+'</div>';
+  }
+  h+='<div class="vtabs">';
+  [["calendar","📅 달력"],["timeline","📋 타임라인"],["upcoming","⏰ 다가오는"]].forEach(function(v){
+    h+='<button class="vtab'+(state.view===v[0]?" on":"")+'" onclick="setView(\''+v[0]+'\')">'+v[1]+'</button>';
+  });
+  h+='</div></div>';
+
+  h+='<div class="content">';
+
+  // Calendar View
+  if(state.view==="calendar"){
+    var dim=daysInMonth(state.year,state.month);
+    var fd=firstDay(state.year,state.month);
+    h+='<div class="cal-grid">';
+    DK.forEach(function(d,i){h+='<div class="day-hd'+(i===0?" sun":"")+(i===6?" sat":"")+'">'+d+'</div>'});
+    for(var i=0;i<fd;i++)h+='<div class="day-cell empty"></div>';
+    for(var d=1;d<=dim;d++){
+      var evs=byDay[d]||[];
+      var isToday=state.year===2026&&state.month===2&&d===19;
+      var dow=(fd+d-1)%7;
+      h+='<div class="day-cell'+(isToday?" today":"")+'">';
+      h+='<div class="dn'+(dow===0?" sun":"")+(dow===6?" sat":"")+'">'+d+(isToday?'<span class="tb">TODAY</span>':"")+'</div>';
+      evs.slice(0,3).forEach(function(e){
+        var c=catC(e.category);
+        h+='<div class="de'+(e.important?" imp":"")+'" style="background:'+c.bg+';color:'+c.tx+';border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">'+e.icon+' '+(e.title.length>12?esc(e.title.slice(0,12))+"…":esc(e.title))+'</div>';
+      });
+      if(evs.length>3)h+='<div class="dm">+'+(evs.length-3)+'개</div>';
+      h+='</div>';
+    }
+    h+='</div>';
+  }
+
+  // Timeline View
+  if(state.view==="timeline"){
+    var sorted=f.slice().sort(function(a,b){return a.date<b.date?-1:1});
+    var prevM="";
+    sorted.forEach(function(e){
+      var m=e.date.slice(0,7);
+      if(m!==prevM){
+        var mi=parseInt(e.date.split("-")[1])-1;
+        h+='<div class="tl-month">'+e.date.split("-")[0]+'년 '+MK[mi]+'</div>';
+        prevM=m;
+      }
+      var c=catC(e.category);
+      h+='<div class="tl-row">';
+      h+='<div class="tl-date">'+parseInt(e.date.split("-")[2])+'일</div>';
+      h+='<div class="tl-dotc"><div class="tl-dot" style="background:'+c.dt+'"></div><div class="tl-line"></div></div>';
+      h+='<div style="flex:1">';
+      h+=renderCard(e);
+      h+='</div></div>';
+    });
+  }
+
+  // Upcoming View
+  if(state.view==="upcoming"){
+    upcoming.forEach(function(e){
+      var dd=daysUntil(e.date);
+      var urgent=dd.indexOf("D-")===0&&parseInt(dd.replace("D-",""))<=7;
+      h+='<div class="up-row">';
+      h+='<div class="up-dd"><div class="ddn" style="color:'+(urgent?"#f87171":"#818cf8")+'">'+dd+'</div><div class="ddd">'+fmtD(e.date).split(" ")[0]+'</div></div>';
+      h+='<div style="flex:1">'+renderCard(e)+'</div></div>';
+    });
+  }
+
+  h+='</div></div>';
+  document.getElementById("app").innerHTML=h;
+
+  // Bind search
+  var si=document.getElementById("searchInput");
+  if(si){si.oninput=function(){state.search=this.value;render()}}
+}
+
+function renderCard(e){
+  var c=catC(e.category);
+  var h='<div class="evc" style="background:'+c.bg+';border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">';
+  h+='<div class="evc-top"><span class="evc-ic">'+e.icon+'</span>';
+  h+='<span class="evc-ti" style="color:'+c.tx+'">'+esc(e.title)+'</span>';
+  if(e.important)h+='<span class="evc-imp">중요</span>';
+  h+='</div><div class="evc-meta"><span>'+esc(e.company)+'</span><span>·</span><span>'+fmtD(e.date)+'</span>';
+  h+='<span class="evc-dd" style="color:'+c.tx+'">'+daysUntil(e.date)+'</span></div></div>';
+  return h;
+}
+
+// ── Modal ──
+function showModal(id){
+  var e=state.events.find(function(x){return x.id===id});
+  if(!e)return;
+  var c=catC(e.category);
+  var dd=daysUntil(e.date);
+  var fut=e.date>=new Date().toISOString().slice(0,10);
+  var h='<div class="overlay" onclick="closeModal()">';
+  h+='<div class="modal" style="border-top:4px solid '+c.bd+'" onclick="event.stopPropagation()">';
+  h+='<div class="modal-top"><button class="modal-x" onclick="closeModal()">✕</button>';
+  h+='<div class="modal-ic">'+e.icon+'</div>';
+  h+='<div class="modal-ti">'+esc(e.title)+'</div>';
+  h+='<div class="modal-co">'+esc(e.company)+'</div></div>';
+  h+='<div class="modal-tags">';
+  h+='<span class="modal-tag" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span>';
+  h+='<span class="modal-tag" style="background:rgba(255,255,255,.06);color:#d1d5db">'+fmtD(e.date)+'</span>';
+  h+='<span class="modal-tag" style="background:'+(fut?"rgba(16,185,129,.15)":"rgba(239,68,68,.15)")+';color:'+(fut?"#6ee7b7":"#fca5a5")+'">'+dd+'</span>';
+  if(e.important)h+='<span class="modal-tag" style="background:rgba(239,68,68,.15);color:#fca5a5">⚡ 중요</span>';
+  h+='</div>';
+  if(e.memo)h+='<div class="modal-memo"><strong>메모 / 투자 포인트</strong><br>'+esc(e.memo)+'</div>';
+  h+='<div class="modal-acts">';
+  h+='<button class="modal-btn edit" onclick="editEvent('+e.id+')">✏️ 수정</button>';
+  h+='<button class="modal-btn del" onclick="deleteEvent('+e.id+')">🗑️ 삭제</button>';
+  h+='</div></div></div>';
+  document.body.insertAdjacentHTML("beforeend",h);
+}
+function closeModal(){
+  var o=document.querySelector(".overlay");
+  if(o)o.remove();
+}
+
+// ── Form ──
+function openForm(ev){
+  closeModal();
+  var isEdit=!!ev;
+  var d=ev||{date:new Date().toISOString().slice(0,10),title:"",company:state.companies[0]||"",category:"기타",icon:"📌",memo:"",important:false};
+  var h='<div class="overlay" onclick="closeForm()">';
+  h+='<div class="form" onclick="event.stopPropagation()">';
+  h+='<h3>'+(isEdit?"이벤트 수정":"새 이벤트 추가")+'</h3>';
+  h+='<div class="fr"><label>날짜</label><input type="date" id="fDate" value="'+d.date+'"></div>';
+  h+='<div class="fr"><label>제목</label><input id="fTitle" value="'+esc(d.title)+'" placeholder="이벤트 제목"></div>';
+  h+='<div class="fr"><label>기업 <span style="font-size:9px;color:#818cf8;cursor:pointer;margin-left:6px" onclick="toggleNewCo()">+ 새 기업</span></label>';
+  h+='<select id="fCompany">';
+  state.companies.forEach(function(c){h+='<option value="'+esc(c)+'"'+(c===d.company?" selected":"")+'>'+esc(c)+'</option>'});
+  h+='</select>';
+  h+='<div id="newCoDiv" style="display:none;margin-top:6px;display:flex;gap:4px;display:none"><input id="fNewCo" placeholder="새 기업명" style="flex:1;padding:6px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:11px;outline:none"><button class="fbtn save" style="padding:4px 10px;font-size:10px" onclick="addNewCo()">추가</button></div>';
+  h+='</div>';
+  h+='<div class="fr"><label>카테고리</label><select id="fCat">';
+  CAT_LIST.forEach(function(c){h+='<option value="'+c+'"'+(c===d.category?" selected":"")+'>'+c+'</option>'});
+  h+='</select></div>';
+  h+='<div class="fr"><label>아이콘</label><div class="ic-pick">';
+  ICONS.forEach(function(ic){h+='<span class="ic-opt'+(ic===d.icon?" on":"")+'" onclick="pickIcon(this,\''+ic+'\')">'+ic+'</span>'});
+  h+='</div><input type="hidden" id="fIcon" value="'+d.icon+'"></div>';
+  h+='<div class="fr"><label>메모</label><textarea id="fMemo" placeholder="투자 포인트 메모">'+esc(d.memo)+'</textarea></div>';
+  h+='<div class="fr"><label class="fr-check"><input type="checkbox" id="fImp"'+(d.important?" checked":"")+'>⚡ 중요 이벤트</label></div>';
+  h+='<div class="form-btns">';
+  h+='<button class="fbtn cancel" onclick="closeForm()">취소</button>';
+  h+='<button class="fbtn save" onclick="saveForm('+(isEdit?d.id:"null")+')">'+(isEdit?"저장":"추가")+'</button>';
+  h+='</div></div></div>';
+  document.body.insertAdjacentHTML("beforeend",h);
+}
+function closeForm(){
+  var els=document.querySelectorAll(".overlay");
+  els.forEach(function(e){e.remove()});
+}
+function toggleNewCo(){
+  var d=document.getElementById("newCoDiv");
+  d.style.display=d.style.display==="none"?"flex":"none";
+}
+function addNewCo(){
+  var v=document.getElementById("fNewCo").value.trim();
+  if(!v)return;
+  if(state.companies.indexOf(v)<0){state.companies.push(v);save()}
+  var sel=document.getElementById("fCompany");
+  var opt=document.createElement("option");opt.value=v;opt.text=v;opt.selected=true;
+  sel.add(opt);
+  document.getElementById("newCoDiv").style.display="none";
+}
+function pickIcon(el,ic){
+  document.querySelectorAll(".ic-opt").forEach(function(e){e.classList.remove("on")});
+  el.classList.add("on");
+  document.getElementById("fIcon").value=ic;
+}
+function saveForm(editId){
+  var obj={
+    date:document.getElementById("fDate").value,
+    title:document.getElementById("fTitle").value,
+    company:document.getElementById("fCompany").value,
+    category:document.getElementById("fCat").value,
+    icon:document.getElementById("fIcon").value,
+    memo:document.getElementById("fMemo").value,
+    important:document.getElementById("fImp").checked
+  };
+  if(!obj.title||!obj.date)return alert("제목과 날짜를 입력하세요");
+  if(editId!==null){
+    obj.id=editId;
+    state.events=state.events.map(function(e){return e.id===editId?obj:e});
+  }else{
+    obj.id=state.nextId++;
+    state.events.push(obj);
+  }
+  if(state.companies.indexOf(obj.company)<0)state.companies.push(obj.company);
+  save();closeForm();render();
+}
+
+// ── Actions ──
+function editEvent(id){
+  var e=state.events.find(function(x){return x.id===id});
+  if(e)openForm(e);
+}
+function deleteEvent(id){
+  if(!confirm("이 이벤트를 삭제하시겠습니까?"))return;
+  state.events=state.events.filter(function(e){return e.id!==id});
+  save();closeModal();render();
+}
+function resetData(){
+  if(!confirm("모든 데이터를 초기 상태로 되돌리시겠습니까?"))return;
+  state.events=DEFAULT_EVENTS.slice();
+  var s={};state.events.forEach(function(e){s[e.company]=1});
+  state.companies=Object.keys(s);
+  save();render();
+}
+function setCompany(c){state.selCompany=c;render()}
+function setCat(c){state.selCat=c;render()}
+function setView(v){state.view=v;render()}
+function prevMonth(){
+  state.month--;
+  if(state.month<0){state.month=11;state.year--}
+  render();
+}
+function nextMonth(){
+  state.month++;
+  if(state.month>11){state.month=0;state.year++}
+  render();
+}
+function goToday(){state.year=2026;state.month=2;render()}
+function toggleSb(){state.sbCollapsed=!state.sbCollapsed;render()}
+
+// ── Init ──
+loadState();
+render();
+document.getElementById("fabBtn").onclick=function(){openForm(null)};
+</script>
+</body>
+</html>
