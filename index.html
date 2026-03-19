@@ -8,159 +8,178 @@
 <title>투자 캘린더</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#0a0a1a;color:#e5e7eb;
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Pretendard',sans-serif;background:#0a0a1a;color:#e5e7eb;min-height:100vh;overflow-x:hidden;
   padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-button,input,select,textarea{font-family:inherit}
+button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:transparent}
 
-.wrap{display:flex;flex-direction:column;height:100%}
+/* Layout */
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{width:300px;background:#0f0f23;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.header{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.content{flex:1;overflow-y:auto;padding:14px 20px}
 
-/* Header */
-.hd{padding:12px 16px;background:#0f0f23;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap}
-.hd-title{font-size:16px;font-weight:800;color:#fff;margin-right:auto}
-.hd-btn{padding:5px 12px;border-radius:6px;border:none;font-size:10px;font-weight:700;color:#9ca3af;background:rgba(255,255,255,.04);cursor:pointer;-webkit-tap-highlight-color:transparent}
-.hd-btn.on{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+/* Mobile & Tablet */
+@media(max-width:1024px){
+  .app{flex-direction:column}
+  .sidebar{width:100%;height:auto;max-height:45vh;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .sidebar.collapsed .sb-body{display:none}
+  .sidebar.collapsed{max-height:none}
+  .sidebar .sb-toggle{display:flex}
+  .content{padding:10px 12px}
+  .header{padding:10px 12px}
+  .cal-grid .day-cell{min-height:70px}
+  .de{font-size:8px!important;padding:1px 3px!important}
+  .fab{bottom:max(16px,env(safe-area-inset-bottom));right:16px;width:46px;height:46px;font-size:20px}
+}
 
-/* Filter Bar */
-.fbar{padding:8px 16px;background:#0f0f23;border-bottom:1px solid rgba(255,255,255,.04);display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.fchip{padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#9ca3af;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
-.fchip.on{background:rgba(102,126,234,.2);border-color:rgba(102,126,234,.4);color:#a5b4fc}
-.fdot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
+/* Sidebar */
+.sb-header{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-header h2{font-size:15px;font-weight:800;color:#fff}
+.sb-toggle{display:none;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;background:rgba(255,255,255,.02)}
+.sb-toggle span{font-size:13px;font-weight:700;color:#fff}
+.sb-toggle .arrow{font-size:12px;color:#6b7280;transition:transform .2s}
+.sb-body{}
+.filter-grp{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.filter-label{font-size:9px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{padding:3px 9px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#9ca3af;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.chip:hover,.chip:active{background:rgba(255,255,255,.08)}
+.chip.on{background:rgba(102,126,234,.2);border-color:rgba(102,126,234,.4);color:#a5b4fc}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:3px}
 
-/* Nav */
-.nav{padding:10px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.nav-btn{background:rgba(255,255,255,.06);border:none;color:#fff;font-size:16px;border-radius:6px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
-.nav-label{font-size:16px;font-weight:800;color:#fff;min-width:130px;text-align:center}
-.nav-today{font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;background:rgba(102,126,234,.15);border:1px solid rgba(102,126,234,.3);color:#818cf8;cursor:pointer}
+/* Search */
+.search{padding:6px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);color:#fff;font-size:12px;width:100%;outline:none;margin-top:8px}
+.search::placeholder{color:#4b5563}
+.search:focus{border-color:rgba(102,126,234,.4)}
 
-/* Content */
-.body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 12px 80px 12px}
+/* Event List */
+.ev-list{flex:1;overflow-y:auto;padding:6px}
+.ev-li{padding:8px 10px;border-radius:6px;margin-bottom:3px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;-webkit-tap-highlight-color:transparent}
+.ev-li:hover,.ev-li:active{background:rgba(255,255,255,.04)}
+.ev-li .d{font-size:9px;color:#6b7280;font-weight:600}
+.ev-li .t{font-size:11px;font-weight:700;color:#e5e7eb;margin:1px 0}
+.ev-li .c{font-size:9px;color:#9ca3af}
+.ev-li .badge{display:inline-block;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:700;margin-left:3px}
 
 /* Calendar */
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-dh{text-align:center;padding:6px 0;font-size:10px;font-weight:700;color:#6b7280}
-.cal-dh.sun{color:#f87171}.cal-dh.sat{color:#60a5fa}
-.cell{min-height:60px;background:rgba(255,255,255,.015);border-radius:5px;padding:2px 3px;border:1px solid rgba(255,255,255,.03)}
-.cell.today{border:2px solid #667eea;background:rgba(102,126,234,.05)}
-.cell.empty{opacity:.15}
-.cell-num{font-size:10px;font-weight:600;color:#9ca3af;margin-bottom:1px;display:flex;align-items:center;gap:2px}
-.cell-num.sun{color:#f87171}.cell-num.sat{color:#60a5fa}
-.cell-num .tbd{font-size:6px;background:#667eea;color:#fff;padding:0 3px;border-radius:3px;font-weight:800}
-.cell-ev{font-size:7.5px;padding:1px 3px;border-radius:2px;margin-bottom:1px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-left:2px solid transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.cell-more{font-size:7px;color:#6b7280;text-align:center}
+.cal-nav{display:flex;align-items:center;gap:10px}
+.cal-nav button{background:rgba(255,255,255,.06);border:none;color:#fff;font-size:15px;border-radius:5px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent}
+.cal-nav button:active{background:rgba(255,255,255,.12)}
+.cal-nav .ml{font-size:16px;font-weight:800;color:#fff;min-width:140px;text-align:center}
+.btn-today{font-size:10px!important;font-weight:700;padding:0 10px;width:auto!important;background:rgba(102,126,234,.15)!important;border:1px solid rgba(102,126,234,.3)!important;color:#818cf8!important}
+.vtabs{display:flex;gap:3px;margin-left:auto}
+.vtab{padding:4px 12px;border-radius:5px;border:none;font-size:10px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.04);color:#9ca3af;-webkit-tap-highlight-color:transparent}
+.vtab.on{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
 
-/* Cards (timeline/upcoming) */
-.ecard{border-radius:8px;padding:10px 12px;margin-bottom:5px;cursor:pointer;border-left:3px solid transparent;-webkit-tap-highlight-color:transparent}
-.ecard-top{display:flex;align-items:center;gap:5px}
-.ecard-ic{font-size:13px}
-.ecard-ti{font-size:12px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ecard-imp{font-size:8px;background:#fecaca;color:#dc2626;padding:1px 5px;border-radius:5px;font-weight:700}
-.ecard-meta{display:flex;gap:6px;margin-top:3px;font-size:10px;color:#9ca3af;flex-wrap:wrap}
-.ecard-dd{margin-left:auto;font-weight:700}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.day-hd{text-align:center;padding:8px 0;font-size:10px;font-weight:700;color:#6b7280}
+.day-hd.sun{color:#f87171}.day-hd.sat{color:#60a5fa}
+.day-cell{min-height:100px;background:rgba(255,255,255,.015);border-radius:5px;padding:3px 4px;border:1px solid rgba(255,255,255,.03);cursor:default}
+.day-cell.today{border:2px solid #667eea;background:rgba(102,126,234,.05)}
+.day-cell.empty{opacity:.2}
+.dn{font-size:11px;font-weight:600;color:#9ca3af;margin-bottom:2px;display:flex;align-items:center;gap:3px}
+.dn.sun{color:#f87171}.dn.sat{color:#60a5fa}
+.dn .tb{font-size:7px;background:#667eea;color:#fff;padding:0 4px;border-radius:4px;font-weight:800}
+.de{font-size:9px;padding:1px 4px;border-radius:3px;margin-bottom:1px;cursor:pointer;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-left:2px solid transparent;transition:transform .1s;-webkit-tap-highlight-color:transparent}
+.de:active{transform:translateX(2px)}
+.de.imp::before{content:'⚡'}
+.dm{font-size:8px;color:#6b7280;text-align:center;cursor:pointer}
 
 /* Timeline */
-.tl-mo{font-size:13px;font-weight:800;color:#818cf8;margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06)}
-.tl-row{display:flex;gap:8px;margin-bottom:2px}
-.tl-dt{min-width:36px;text-align:right;font-size:10px;color:#6b7280;font-weight:600;padding-top:10px}
-.tl-dotw{display:flex;flex-direction:column;align-items:center;padding-top:12px}
-.tl-d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.tl-l{width:1px;flex:1;background:rgba(255,255,255,.06);min-height:12px}
+.tl-month{font-size:13px;font-weight:800;color:#818cf8;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06)}
+.tl-row{display:flex;gap:10px;margin-bottom:3px;align-items:flex-start}
+.tl-date{min-width:40px;text-align:right;font-size:10px;color:#6b7280;font-weight:600;padding-top:10px}
+.tl-dotc{display:flex;flex-direction:column;align-items:center;padding-top:12px}
+.tl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tl-line{width:1px;flex:1;background:rgba(255,255,255,.06);min-height:16px}
+
+/* Event Card */
+.evc{border-radius:7px;padding:9px 12px;margin-bottom:5px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.evc:active{transform:translateX(3px)}
+.evc .evc-top{display:flex;align-items:center;gap:5px}
+.evc .evc-ic{font-size:13px}
+.evc .evc-ti{font-size:12px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.evc .evc-imp{font-size:8px;background:#fecaca;color:#dc2626;padding:1px 5px;border-radius:5px;font-weight:700}
+.evc .evc-meta{display:flex;gap:6px;margin-top:3px;font-size:10px;color:#9ca3af}
+.evc .evc-dd{margin-left:auto;font-weight:700}
 
 /* Upcoming */
-.up-row{display:flex;gap:8px;margin-bottom:5px}
-.up-dd{min-width:50px;background:rgba(255,255,255,.03);border-radius:7px;padding:6px;text-align:center;display:flex;flex-direction:column;justify-content:center}
-.up-num{font-size:13px;font-weight:900}
-.up-sub{font-size:8px;color:#6b7280}
+.up-row{display:flex;gap:10px;margin-bottom:5px;align-items:stretch}
+.up-dd{min-width:54px;background:rgba(255,255,255,.03);border-radius:7px;padding:7px;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.up-dd .ddn{font-size:14px;font-weight:900}
+.up-dd .ddd{font-size:8px;color:#6b7280}
 
-/* Overlay */
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:1000;padding:16px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
-.ov-hide{display:none}
+/* Modal Overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
 
-/* Modal */
-.mdl{background:#1a1a2e;border-radius:16px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.mdl-top{padding:18px 20px 10px;position:relative}
-.mdl-x{position:absolute;top:8px;right:12px;background:none;border:none;font-size:18px;color:#6b7280;padding:6px;cursor:pointer}
-.mdl-ic{font-size:26px;margin-bottom:4px}
-.mdl-ti{font-size:17px;font-weight:900;color:#fff}
-.mdl-co{font-size:11px;color:#9ca3af;margin-top:2px}
-.mdl-tags{display:flex;gap:4px;flex-wrap:wrap;padding:0 20px 10px}
-.mdl-tag{padding:2px 9px;border-radius:8px;font-size:10px;font-weight:700}
-.mdl-memo{margin:0 20px 16px;background:rgba(255,255,255,.04);border-radius:8px;padding:12px;font-size:12px;line-height:1.7;color:#d1d5db}
-.mdl-memo b{color:#fff}
-.mdl-acts{padding:8px 20px 16px;display:flex;gap:6px}
-.mdl-ab{padding:6px 14px;border-radius:7px;font-size:11px;font-weight:700;border:none;cursor:pointer}
-.mdl-ab.edt{background:rgba(102,126,234,.2);color:#818cf8}
-.mdl-ab.del{background:rgba(239,68,68,.15);color:#f87171}
+/* View Modal */
+.modal{background:#1a1a2e;border-radius:14px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden}
+.modal-top{padding:20px 24px 12px;position:relative}
+.modal-x{position:absolute;top:10px;right:14px;background:none;border:none;font-size:16px;cursor:pointer;color:#6b7280;padding:4px}
+.modal-ic{font-size:28px;margin-bottom:6px}
+.modal-ti{font-size:18px;font-weight:900;color:#fff}
+.modal-co{font-size:11px;color:#9ca3af;margin-top:2px}
+.modal-tags{display:flex;gap:5px;flex-wrap:wrap;padding:0 24px 12px}
+.modal-tag{padding:2px 10px;border-radius:8px;font-size:10px;font-weight:700}
+.modal-memo{margin:0 24px 20px;background:rgba(255,255,255,.04);border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.7;color:#d1d5db}
+.modal-memo strong{color:#fff}
+.modal-acts{padding:10px 24px 18px;display:flex;gap:6px}
+.modal-btn{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none}
+.modal-btn.edit{background:rgba(102,126,234,.2);color:#818cf8}
+.modal-btn.del{background:rgba(239,68,68,.15);color:#f87171}
 
-/* Form */
-.frm{background:#1a1a2e;border-radius:16px;padding:18px 20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.frm h3{font-size:15px;font-weight:800;color:#fff;margin-bottom:12px}
-.frow{margin-bottom:10px}
-.frow label{display:block;font-size:10px;color:#9ca3af;font-weight:700;margin-bottom:3px;letter-spacing:.5px}
-.frow input,.frow select,.frow textarea{width:100%;padding:8px 10px;border-radius:7px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:13px;font-family:inherit;outline:none;-webkit-appearance:none}
-.frow input:focus,.frow select:focus,.frow textarea:focus{border-color:rgba(102,126,234,.5)}
-.frow textarea{resize:vertical;min-height:50px}
-.frow select option{background:#1a1a2e}
-.fchk{display:flex;align-items:center;gap:6px;font-size:12px;color:#e5e7eb;cursor:pointer}
-.fchk input{width:16px;height:16px;accent-color:#667eea}
-.icpick{display:flex;gap:4px;flex-wrap:wrap}
-.icopt{font-size:17px;padding:3px 5px;border-radius:5px;border:1px solid transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.icopt.on{background:rgba(102,126,234,.3);border-color:#667eea}
-.fbtns{display:flex;gap:6px;margin-top:12px;justify-content:flex-end}
-.fb{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer}
-.fb.fc{background:rgba(255,255,255,.06);color:#9ca3af}
-.fb.fs{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
+/* Form Modal */
+.form{background:#1a1a2e;border-radius:14px;padding:20px 24px;max-width:480px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
+.form h3{font-size:16px;font-weight:800;color:#fff;margin-bottom:14px}
+.fr{margin-bottom:10px}
+.fr label{display:block;font-size:10px;color:#9ca3af;font-weight:700;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.fr input,.fr select,.fr textarea{width:100%;padding:8px 10px;border-radius:6px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:12px;font-family:inherit;outline:none}
+.fr input:focus,.fr select:focus,.fr textarea:focus{border-color:rgba(102,126,234,.5)}
+.fr textarea{resize:vertical;min-height:50px}
+.fr select option{background:#1a1a2e}
+.fr-check{display:flex;align-items:center;gap:6px;font-size:12px;color:#e5e7eb;cursor:pointer}
+.fr-check input[type=checkbox]{width:15px;height:15px;accent-color:#667eea}
+.ic-pick{display:flex;gap:3px;flex-wrap:wrap}
+.ic-opt{font-size:18px;cursor:pointer;padding:3px 5px;border-radius:5px;border:1px solid transparent}
+.ic-opt.on{background:rgba(102,126,234,.3);border-color:#667eea}
+.form-btns{display:flex;gap:6px;margin-top:14px;justify-content:flex-end}
+.fbtn{padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:none}
+.fbtn.cancel{background:rgba(255,255,255,.06);color:#9ca3af}
+.fbtn.save{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff}
 
 /* FAB */
-.fab{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));right:16px;width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#667eea,#764ba2);border:none;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(102,126,234,.4);display:flex;align-items:center;justify-content:center;z-index:100;-webkit-tap-highlight-color:transparent}
+.fab{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:13px;background:linear-gradient(135deg,#667eea,#764ba2);border:none;color:#fff;font-size:22px;cursor:pointer;box-shadow:0 4px 20px rgba(102,126,234,.4);display:flex;align-items:center;justify-content:center;z-index:100;-webkit-tap-highlight-color:transparent}
 
-/* Landscape iPad */
-@media(min-width:768px){
-  .cell{min-height:90px}
-  .cell-ev{font-size:9px;padding:2px 4px}
-  .body{padding:12px 20px 80px}
-}
+/* Stats */
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;font-size:10px;color:#9ca3af}
+.stat-row .sn{font-size:11px;font-weight:800;color:#fff}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
 </style>
 </head>
 <body>
-
-<div class="wrap">
-  <div class="hd">
-    <span class="hd-title">🚢 투자 캘린더</span>
-    <button class="hd-btn on" id="vCal">📅 달력</button>
-    <button class="hd-btn" id="vTl">📋 타임라인</button>
-    <button class="hd-btn" id="vUp">⏰ D-day</button>
-  </div>
-  <div class="fbar" id="filterBar"></div>
-  <div class="nav" id="navBar"></div>
-  <div class="body" id="mainBody"></div>
-</div>
-
-<button class="fab" id="addBtn">+</button>
-
-<div class="ov ov-hide" id="overlay">
-  <div class="mdl" id="modalContent"></div>
-</div>
+<div id="app" class="app"></div>
+<button class="fab" id="fabBtn">+</button>
 
 <script>
-(function(){
+// ── Config ──
 var CATS={
-  "\uC2E4\uC801":{bg:"#1e1b4b",bd:"#6366f1",tx:"#a5b4fc",dt:"#6366f1"},
-  "\uC218\uC8FC":{bg:"#052e16",bd:"#10b981",tx:"#6ee7b7",dt:"#10b981"},
-  "\uC815\uCC45":{bg:"#451a03",bd:"#f59e0b",tx:"#fcd34d",dt:"#f59e0b"},
-  "\uC0B0\uC5C5":{bg:"#0c4a6e",bd:"#0ea5e9",tx:"#7dd3fc",dt:"#0ea5e9"},
-  "\uAE30\uC5C5":{bg:"#4a044e",bd:"#d946ef",tx:"#f0abfc",dt:"#d946ef"},
-  "\uB9E4\uD06C\uB85C":{bg:"#1c1917",bd:"#a8a29e",tx:"#d6d3d1",dt:"#a8a29e"},
-  "\uAE30\uD0C0":{bg:"#1f2937",bd:"#6b7280",tx:"#d1d5db",dt:"#6b7280"}
+  "실적":{bg:"#1e1b4b",bd:"#6366f1",tx:"#a5b4fc",dt:"#6366f1"},
+  "수주":{bg:"#052e16",bd:"#10b981",tx:"#6ee7b7",dt:"#10b981"},
+  "정책":{bg:"#451a03",bd:"#f59e0b",tx:"#fcd34d",dt:"#f59e0b"},
+  "산업":{bg:"#0c4a6e",bd:"#0ea5e9",tx:"#7dd3fc",dt:"#0ea5e9"},
+  "기업":{bg:"#4a044e",bd:"#d946ef",tx:"#f0abfc",dt:"#d946ef"},
+  "매크로":{bg:"#1c1917",bd:"#a8a29e",tx:"#d6d3d1",dt:"#a8a29e"},
+  "기타":{bg:"#1f2937",bd:"#6b7280",tx:"#d1d5db",dt:"#6b7280"}
 };
-// Readable aliases
-var C_REAL="실적",C_SUJU="수주",C_POLICY="정책",C_IND="산업",C_CORP="기업",C_MACRO="매크로",C_ETC="기타";
-var CAT_LIST=[C_REAL,C_SUJU,C_POLICY,C_IND,C_CORP,C_MACRO,C_ETC];
-var ICONS=["📊","🚢","📜","📈","🏢","💰","🌐","🗳️","⚡","🔔","📌","🎯","💡","🔥","⭐","🎮"];
+var CAT_LIST=Object.keys(CATS);
+var ICONS=["📊","🚢","📜","📈","🏢","💰","🌐","🗳️","⚡","🔔","📌","🎯","💡","🔥","⭐"];
 var DK=["일","월","화","수","목","금","토"];
 var MK=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 
-var DEF=[
+var DEFAULT_EVENTS=[
   {id:1,date:"2026-03-23",title:"클락슨 신조선가지수 발표",company:"업계공통",category:"산업",icon:"📈",memo:"월간 신조선가지수. 170+ 유지 여부 확인",important:false},
   {id:2,date:"2026-03-25",title:"HD한국조선해양 주총",company:"HD한국조선해양",category:"기업",icon:"🏢",memo:"2025 실적 승인 + 2026 경영계획 발표",important:false},
   {id:3,date:"2026-03-27",title:"HD한국조선해양 배당락일",company:"HD한국조선해양",category:"기업",icon:"💰",memo:"DPS 추정 3,000~4,000원",important:false},
@@ -176,30 +195,51 @@ var DEF=[
   {id:13,date:"2026-06-08",title:"Posidonia 2026 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"그리스 아테네. 하반기 발주 방향성 가늠",important:true},
   {id:14,date:"2026-06-15",title:"일본 조선업 부흥 1단계 시행",company:"업계공통",category:"정책",icon:"📜",memo:"이마바리+JMU 통합 마무리",important:false},
   {id:15,date:"2026-07-01",title:"EU CBAM 확대",company:"업계공통",category:"정책",icon:"📜",memo:"해운업 탄소비용 증가 → 친환경 선박 수요 가속",important:false},
-  {id:16,date:"2026-07-23",title:"HD현대중공업 2Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"고선가 건조 비중 최대",important:false},
+  {id:16,date:"2026-07-23",title:"HD현대중공업 2Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"고선가 건조 비중 최대 → OPM 서프라이즈",important:false},
   {id:17,date:"2026-07-24",title:"HD한국조선해양 2Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"상반기 P-MIX 개선 정점",important:true},
   {id:18,date:"2026-09-07",title:"SMM Hamburg 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"세계 최대 해사전시회",important:false},
   {id:19,date:"2026-09-15",title:"미국 Jones Act 선박 건조 입찰",company:"한화오션",category:"수주",icon:"🚢",memo:"필라델피아 조선소 경유 수주 가능성",important:false},
   {id:20,date:"2026-10-23",title:"HD한국조선해양 3Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"연간 가이던스 업데이트",important:false},
   {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 정책 방향성 결정",important:true},
-  {id:50,date:"2026-03-20",title:"붉은사막 출시",company:"펄어비스",category:"기업",icon:"🎮",memo:"PS5/XSX/Steam/Mac/Epic 동시 출시. AAA 오픈월드",important:true},
-  {id:51,date:"2026-07-01",title:"붉은사막 1차 DLC 예상",company:"펄어비스",category:"기업",icon:"🎮",memo:"출시 후 3~4개월 내 DLC 예상",important:false},
-  {id:52,date:"2026-03-03",title:"스톤에이지 키우기 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"방치형 RPG. 스톤에이지 IP",important:false},
-  {id:53,date:"2026-03-17",title:"일곱개의대죄:오리진 출시(콘솔/PC)",company:"넷마블",category:"기업",icon:"🎮",memo:"PS5+Steam. 3/24 모바일. 글로벌 흥행 관건",important:true},
-  {id:54,date:"2026-03-24",title:"일곱개의대죄:오리진 모바일 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"콘솔 1주 후 모바일 출시",important:false},
-  {id:55,date:"2026-07-01",title:"이블베인 출시 예상 (하반기)",company:"넷마블",category:"기업",icon:"🎮",memo:"4인 협동 추리액션",important:false},
-  {id:56,date:"2026-04-01",title:"인조이 콘솔 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"PS5/Xbox 콘솔 버전",important:true},
-  {id:57,date:"2026-04-01",title:"팰월드 모바일 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"포켓페어 글로벌 히트작 모바일",important:true},
-  {id:58,date:"2026-04-01",title:"아키에이지 크로니클 출시 예상",company:"카카오게임즈",category:"기업",icon:"🎮",memo:"MMORPG 신작. 1~2Q 출시 유력",important:true},
-  {id:59,date:"2026-07-01",title:"신더시티 출시 예상 (하반기)",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"콘솔 게임 시장 진출작",important:true},
-  {id:60,date:"2026-04-01",title:"리밋제로 브레이커스 CBT 예상",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"애니메이션풍 액션 RPG",important:false},
-  {id:61,date:"2026-04-01",title:"미르5 출시 예상 (상반기)",company:"위메이드",category:"기업",icon:"🎮",memo:"UE5 기반 미르 IP MMORPG",important:true},
-  {id:62,date:"2026-01-01",title:"컬러스위퍼/파우팝매치 소프트런칭",company:"컴투스",category:"기업",icon:"🎮",memo:"퍼즐 2종 1Q 소프트런칭",important:false},
-  {id:63,date:"2026-07-01",title:"스타세일러 출시 예상",company:"컴투스",category:"기업",icon:"🎮",memo:"수집형 RPG 연내 출시",important:false},
-  {id:64,date:"2026-06-12",title:"스텔라블레이드 x 니케 DLC",company:"시프트업",category:"기업",icon:"🎮",memo:"니케 컬래버 DLC. 유료 DLC 매출 확인",important:true},
-  {id:65,date:"2026-04-01",title:"아주르 프로밀리아 CBT/출시 예상",company:"넥슨",category:"기업",icon:"🎮",memo:"벽람항로 개발사 신작. 넥슨 퍼블리싱",important:true},
-  {id:66,date:"2026-04-01",title:"퍼스트디센던트 시즌3 예상",company:"넥슨",category:"기업",icon:"🎮",memo:"글로벌 흥행작 시즌 업데이트",important:false},
-  {id:67,date:"2026-05-01",title:"게임사 1Q26 실적 시즌",company:"업계공통",category:"실적",icon:"📊",memo:"넥슨/크래프톤/넷마블/엔씨/카겜/펄어비스/시프트업 실적",important:true},
+
+  // ── 게임사 신작 일정 ──
+  // 펄어비스
+  {id:50,date:"2026-03-20",title:"붉은사막 출시",company:"펄어비스",category:"기업",icon:"🎮",memo:"PS5/XSX/Steam/Mac/Epic 동시 출시. AAA 오픈월드 액션 어드벤처. 2026 상반기 최대 기대작",important:true},
+  {id:51,date:"2026-07-01",title:"붉은사막 1차 DLC 예상",company:"펄어비스",category:"기업",icon:"🎮",memo:"출시 후 3~4개월 내 DLC/시즌 업데이트 예상. 장기 매출 지속 여부 확인",important:false},
+
+  // 넷마블
+  {id:52,date:"2026-03-03",title:"스톤에이지 키우기 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"방치형 RPG. 스톤에이지 IP 활용 모바일 신작",important:false},
+  {id:53,date:"2026-03-17",title:"일곱개의대죄:오리진 출시(콘솔/PC)",company:"넷마블",category:"기업",icon:"🎮",memo:"PS5+Steam 출시. 3/24 모바일 출시. 글로벌 흥행 관건",important:true},
+  {id:54,date:"2026-03-24",title:"일곱개의대죄:오리진 모바일 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"콘솔 출시 1주 후 모바일. 크로스플랫폼 매출 시너지 확인",important:false},
+  {id:55,date:"2026-07-01",title:"이블베인 출시 예상 (하반기)",company:"넷마블",category:"기업",icon:"🎮",memo:"4인 협동 추리액션. 하반기 출시 예정. 구체적 일정 미정",important:false},
+
+  // 크래프톤
+  {id:56,date:"2026-04-01",title:"인조이(inZOI) 콘솔 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"PS5/Xbox 콘솔 버전. 2025 PC 출시 후 확장. 심즈 대항마",important:true},
+  {id:57,date:"2026-04-01",title:"팰월드 모바일 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"포켓페어 글로벌 히트작 모바일 버전. 지스타 2025 호평",important:true},
+
+  // 카카오게임즈
+  {id:58,date:"2026-04-01",title:"아키에이지 크로니클 출시 예상 (1~2Q)",company:"카카오게임즈",category:"기업",icon:"🎮",memo:"엑스엘게임즈 개발. MMORPG 신작. 1Q 또는 2Q 출시 유력",important:true},
+
+  // 엔씨소프트
+  {id:59,date:"2026-07-01",title:"신더시티 출시 예상 (하반기)",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"콘솔 게임 시장 진출작. 하반기 출시 예정",important:true},
+  {id:60,date:"2026-04-01",title:"리밋제로 브레이커스 CBT 예상",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"빅게임스튜디오 개발. 애니메이션풍 액션 RPG",important:false},
+
+  // 위메이드
+  {id:61,date:"2026-04-01",title:"미르5 출시 예상 (상반기)",company:"위메이드",category:"기업",icon:"🎮",memo:"UE5 기반 미르 IP 신작 MMORPG. 상반기 출시 목표",important:true},
+
+  // 컴투스
+  {id:62,date:"2026-01-01",title:"컬러스위퍼/파우팝매치 소프트런칭",company:"컴투스",category:"기업",icon:"🎮",memo:"퍼즐 장르 2종 1Q 소프트런칭. 컴투스홀딩스 연내 신작 8종 계획",important:false},
+  {id:63,date:"2026-07-01",title:"스타세일러 출시 예상 (연내)",company:"컴투스",category:"기업",icon:"🎮",memo:"수집형 RPG 신작. 연내 출시 예정",important:false},
+
+  // 시프트업
+  {id:64,date:"2026-06-12",title:"스텔라블레이드 x 니케 DLC 출시",company:"시프트업",category:"기업",icon:"🎮",memo:"니케 컬래버 DLC. 홍련 보스 등장. 유료 DLC 매출 확인",important:true},
+
+  // 넥슨
+  {id:65,date:"2026-04-01",title:"아주르 프로밀리아 CBT/출시 예상",company:"넥슨",category:"기업",icon:"🎮",memo:"벽람항로 개발사 신작. 넥슨 국내 퍼블리싱. CBT 테스터 모집 진행중",important:true},
+  {id:66,date:"2026-04-01",title:"퍼스트디센던트 시즌3 예상 (상반기)",company:"넥슨",category:"기업",icon:"🎮",memo:"글로벌 흥행작 대규모 로드맵 운영. 상반기 시즌 업데이트",important:false},
+
+  // 삼성중공업 → 게임주 실적 시즌
+  {id:67,date:"2026-05-01",title:"게임사 1Q26 실적 시즌",company:"업계공통",category:"실적",icon:"📊",memo:"넥슨/크래프톤/넷마블/엔씨/카겜/펄어비스/시프트업 등 1분기 실적 발표 집중",important:true},
   {id:70,date:"2026-03-16",title:"NVIDIA GTC 2026 키노트",company:"NVIDIA",category:"산업",icon:"⚡",memo:"젠슨황 키노트. Vera Rubin 차세대 GPU 공개. AI 인프라 로드맵",important:true},
   {id:71,date:"2026-04-08",title:"삼성전자 1Q26 잠정실적",company:"삼성전자",category:"실적",icon:"📊",memo:"반도체 부문 HBM4 양산 효과 반영 여부 확인",important:true},
   {id:72,date:"2026-04-23",title:"삼성전자 1Q26 실적발표",company:"삼성전자",category:"실적",icon:"📊",memo:"HBM4 매출 반영, 파운드리 가동률 회복 확인",important:true},
@@ -231,261 +271,376 @@ var DEF=[
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",important:true}
 ];
 
-// Version: bump this number whenever DEF is updated
+// Version: bump this number whenever DEFAULT_EVENTS is updated
 var DATA_VER=2;
 
-// State
-var events,companies,yr=2026,mo=2,selCo="전체",selCat="전체",view="calendar",nid=300;
+// ── State ──
+var state={
+  events:null,
+  companies:null,
+  year:new Date().getFullYear(),month:new Date().getMonth(),
+  selCompany:"전체",selCat:"전체",search:"",
+  view:"calendar",
+  modal:null,formOpen:false,editEv:null,
+  sbCollapsed:false,
+  nextId:300
+};
 
-function load(){
+function loadState(){
   var storedVer=0;
-  try{storedVer=parseInt(localStorage.getItem("ivcal2_v"))||0}catch(x){}
+  try{storedVer=parseInt(localStorage.getItem("ivcal_v"))||0}catch(x){}
   if(storedVer<DATA_VER){
     // DEF updated: merge - keep user-added events (id>=300), replace defaults
     var userEvs=[];
-    try{var old=JSON.parse(localStorage.getItem("ivcal2_e"));if(old)for(var i=0;i<old.length;i++)if(old[i].id>=300)userEvs.push(old[i])}catch(x){}
-    events=DEF.slice().concat(userEvs);
-    var s={};for(var i=0;i<events.length;i++)s[events[i].company]=1;companies=Object.keys(s);
+    try{var old=JSON.parse(localStorage.getItem("ivcal_ev"));if(old)old.forEach(function(e){if(e.id>=300)userEvs.push(e)})}catch(x){}
+    state.events=DEFAULT_EVENTS.slice().concat(userEvs);
+    var s={};state.events.forEach(function(e){s[e.company]=1});
+    state.companies=Object.keys(s);
     save();
     return;
   }
-  try{var e=localStorage.getItem("ivcal2_e");if(e)events=JSON.parse(e)}catch(x){}
-  try{var c=localStorage.getItem("ivcal2_c");if(c)companies=JSON.parse(c)}catch(x){}
-  if(!events)events=DEF.slice();
-  if(!companies){var s={};for(var i=0;i<events.length;i++)s[events[i].company]=1;companies=Object.keys(s)}
+  try{
+    var e=localStorage.getItem("ivcal_ev");
+    if(e)state.events=JSON.parse(e);
+    var c=localStorage.getItem("ivcal_co");
+    if(c)state.companies=JSON.parse(c);
+  }catch(x){}
+  if(!state.events)state.events=DEFAULT_EVENTS.slice();
+  if(!state.companies){
+    var s={};state.events.forEach(function(e){s[e.company]=1});
+    state.companies=Object.keys(s);
+  }
 }
 function save(){
-  try{localStorage.setItem("ivcal2_e",JSON.stringify(events));localStorage.setItem("ivcal2_c",JSON.stringify(companies));localStorage.setItem("ivcal2_v",String(DATA_VER))}catch(x){}
+  try{
+    localStorage.setItem("ivcal_ev",JSON.stringify(state.events));
+    localStorage.setItem("ivcal_co",JSON.stringify(state.companies));
+    localStorage.setItem("ivcal_v",String(DATA_VER));
+  }catch(x){}
 }
-function esc(s){if(!s)return"";return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
-function fmtD(d){var x=new Date(d+"T00:00:00");return(x.getMonth()+1)+"/"+x.getDate()+" ("+DK[x.getDay()]+")"}
-function dUntil(d){var t=new Date();t.setHours(0,0,0,0);var diff=Math.ceil((new Date(d+"T00:00:00")-t)/864e5);if(diff===0)return"오늘";if(diff===1)return"내일";if(diff<0)return Math.abs(diff)+"일 전";return"D-"+diff}
-function todayS(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function cc(c){return CATS[c]||CATS["\uAE30\uD0C0"]}
-function dim(y,m){return new Date(y,m+1,0).getDate()}
-function fdow(y,m){return new Date(y,m,1).getDay()}
 
-function filt(){
-  var r=[];
-  for(var i=0;i<events.length;i++){
-    var e=events[i];
-    if(selCo!=="전체"&&e.company!==selCo)continue;
-    if(selCat!=="전체"&&e.category!==selCat)continue;
-    r.push(e);
-  }
-  return r;
+// ── Helpers ──
+function fmtD(d){var x=new Date(d+"T00:00:00");return(x.getMonth()+1)+"/"+x.getDate()+" ("+DK[x.getDay()]+")"}
+function daysUntil(d){
+  var t=new Date();t.setHours(0,0,0,0);
+  var diff=Math.ceil((new Date(d+"T00:00:00")-t)/864e5);
+  if(diff===0)return"오늘";if(diff===1)return"내일";
+  if(diff<0)return Math.abs(diff)+"일 전";
+  return"D-"+diff;
+}
+function daysInMonth(y,m){return new Date(y,m+1,0).getDate()}
+function firstDay(y,m){return new Date(y,m,1).getDay()}
+function catC(cat){return CATS[cat]||CATS["기타"]}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+function filtered(){
+  return state.events.filter(function(e){
+    if(state.selCompany!=="전체"&&e.company!==state.selCompany)return false;
+    if(state.selCat!=="전체"&&e.category!==state.selCat)return false;
+    if(state.search&&e.title.indexOf(state.search)<0&&e.memo.indexOf(state.search)<0&&e.company.indexOf(state.search)<0)return false;
+    return true;
+  });
 }
 
 // ── Render ──
 function render(){
-  renderFilters();
-  renderNav();
-  renderBody();
-}
+  var f=filtered();
+  var mp=state.year+"-"+String(state.month+1).padStart(2,"0");
+  var mEvs=f.filter(function(e){return e.date.indexOf(mp)===0});
+  var byDay={};mEvs.forEach(function(e){var d=parseInt(e.date.split("-")[2]);if(!byDay[d])byDay[d]=[];byDay[d].push(e)});
+  var upcoming=f.filter(function(e){return e.date>="2026-03-19"}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,30);
+  var allCo=["전체"].concat(state.companies);
 
-function renderFilters(){
-  var h="";
-  var allCo=["전체"].concat(companies);
-  for(var i=0;i<allCo.length;i++){
-    h+='<span class="fchip'+(selCo===allCo[i]?" on":"")+'" data-co="'+esc(allCo[i])+'">'+esc(allCo[i])+'</span>';
-  }
-  h+='<span style="width:8px"></span>';
-  for(var i=0;i<CAT_LIST.length;i++){
-    var cl=CATS[CAT_LIST[i]];
-    h+='<span class="fchip'+(selCat===CAT_LIST[i]?" on":"")+'" data-cat="'+CAT_LIST[i]+'"><span class="fdot" style="background:'+cl.dt+'"></span>'+CAT_LIST[i]+'</span>';
-  }
-  document.getElementById("filterBar").innerHTML=h;
-}
+  // Stats
+  var stats={};CAT_LIST.forEach(function(c){stats[c]=f.filter(function(e){return e.category===c}).length});
 
-function renderNav(){
   var h="";
-  if(view==="calendar"){
-    h='<button class="nav-btn" id="prevM">‹</button>';
-    h+='<span class="nav-label">'+yr+'년 '+MK[mo]+'</span>';
-    h+='<button class="nav-btn" id="nextM">›</button>';
-    h+='<button class="nav-today" id="goToday">오늘</button>';
+
+  // Sidebar
+  h+='<div class="sidebar'+(state.sbCollapsed?" collapsed":"")+'">';
+  h+='<div class="sb-toggle" onclick="toggleSb()"><span>🚢 투자 캘린더</span><span class="arrow">'+(state.sbCollapsed?"▼":"▲")+'</span></div>';
+  h+='<div class="sb-header"><h2>🚢 투자 캘린더</h2>';
+  h+='<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." value="'+esc(state.search)+'">';
+  h+='</div><div class="sb-body">';
+
+  // Company filter
+  h+='<div class="filter-grp"><div class="filter-label">기업</div><div class="chips">';
+  allCo.forEach(function(c){
+    h+='<span class="chip'+(state.selCompany===c?" on":"")+'" onclick="setCompany(\''+esc(c)+'\')">'+esc(c)+'</span>';
+  });
+  h+='</div></div>';
+
+  // Category filter
+  h+='<div class="filter-grp"><div class="filter-label">카테고리</div><div class="chips">';
+  h+='<span class="chip'+(state.selCat==="전체"?" on":"")+'" onclick="setCat(\'전체\')">전체</span>';
+  CAT_LIST.forEach(function(c){
+    var col=CATS[c];
+    h+='<span class="chip'+(state.selCat===c?" on":"")+'" onclick="setCat(\''+c+'\')"><span class="dot" style="background:'+col.dt+'"></span>'+c+'</span>';
+  });
+  h+='</div></div>';
+
+  // Stats
+  h+='<div class="filter-grp">';
+  CAT_LIST.forEach(function(c){
+    if(stats[c]>0){
+      var col=CATS[c];
+      h+='<div class="stat-row"><span><span class="dot" style="background:'+col.dt+'"></span> '+c+'</span><span class="sn">'+stats[c]+'</span></div>';
+    }
+  });
+  h+='</div>';
+
+  // Event list
+  var listEvs=state.view==="calendar"?mEvs.slice().sort(function(a,b){return a.date<b.date?-1:1}):upcoming;
+  h+='<div class="ev-list">';
+  h+='<div style="padding:3px 8px;font-size:9px;color:#4b5563;font-weight:700;display:flex;justify-content:space-between">';
+  h+='<span>'+(state.view==="calendar"?MK[state.month]+" "+mEvs.length+"건":"전체 "+f.length+"건")+'</span>';
+  h+='<span style="color:#f87171;cursor:pointer" onclick="resetData()">초기화</span></div>';
+  listEvs.forEach(function(e){
+    var c=catC(e.category);
+    h+='<div class="ev-li'+(e.important?" important":"")+'" style="border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">';
+    h+='<div class="d">'+fmtD(e.date)+' · '+daysUntil(e.date)+'</div>';
+    h+='<div class="t">'+(e.important?"⚡ ":"")+e.icon+' '+esc(e.title)+'</div>';
+    h+='<div class="c">'+esc(e.company)+'<span class="badge" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span></div>';
+    h+='</div>';
+  });
+  h+='</div></div></div>';
+
+  // Main
+  h+='<div class="main"><div class="header">';
+  if(state.view==="calendar"){
+    h+='<div class="cal-nav">';
+    h+='<button onclick="prevMonth()">‹</button>';
+    h+='<span class="ml">'+state.year+'년 '+MK[state.month]+'</span>';
+    h+='<button onclick="nextMonth()">›</button>';
+    h+='<button class="btn-today" onclick="goToday()">오늘</button>';
+    h+='</div>';
   }else{
-    h='<span class="nav-label">'+(view==="timeline"?"📋 전체 타임라인":"⏰ 다가오는 이벤트")+'</span>';
+    h+='<div style="font-size:14px;font-weight:800;color:#fff">'+(state.view==="timeline"?"📋 전체 타임라인":"⏰ 다가오는 이벤트")+'</div>';
   }
-  document.getElementById("navBar").innerHTML=h;
-}
+  h+='<div class="vtabs">';
+  [["calendar","📅 달력"],["timeline","📋 타임라인"],["upcoming","⏰ 다가오는"]].forEach(function(v){
+    h+='<button class="vtab'+(state.view===v[0]?" on":"")+'" onclick="setView(\''+v[0]+'\')">'+v[1]+'</button>';
+  });
+  h+='</div></div>';
 
-function renderBody(){
-  var f=filt();
-  var h="";
+  h+='<div class="content">';
 
-  if(view==="calendar"){
-    var mp=yr+"-"+String(mo+1).padStart(2,"0");
-    var mEvs=[];for(var i=0;i<f.length;i++)if(f[i].date.indexOf(mp)===0)mEvs.push(f[i]);
-    var byDay={};for(var i=0;i<mEvs.length;i++){var d=parseInt(mEvs[i].date.split("-")[2]);if(!byDay[d])byDay[d]=[];byDay[d].push(mEvs[i])}
-    var dm=dim(yr,mo),fd=fdow(yr,mo),td=todayS();
-
-    h='<div class="cal">';
-    for(var i=0;i<7;i++)h+='<div class="cal-dh'+(i===0?" sun":"")+(i===6?" sat":"")+'">'+DK[i]+'</div>';
-    for(var i=0;i<fd;i++)h+='<div class="cell empty"></div>';
-    for(var d=1;d<=dm;d++){
+  // Calendar View
+  if(state.view==="calendar"){
+    var dim=daysInMonth(state.year,state.month);
+    var fd=firstDay(state.year,state.month);
+    h+='<div class="cal-grid">';
+    DK.forEach(function(d,i){h+='<div class="day-hd'+(i===0?" sun":"")+(i===6?" sat":"")+'">'+d+'</div>'});
+    for(var i=0;i<fd;i++)h+='<div class="day-cell empty"></div>';
+    for(var d=1;d<=dim;d++){
       var evs=byDay[d]||[];
-      var ds=yr+"-"+String(mo+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
-      var isT=ds===td;var dow=(fd+d-1)%7;
-      h+='<div class="cell'+(isT?" today":"")+'">';
-      h+='<div class="cell-num'+(dow===0?" sun":"")+(dow===6?" sat":"")+'">'+d+(isT?'<span class="tbd">TODAY</span>':"")+'</div>';
-      for(var j=0;j<Math.min(evs.length,3);j++){
-        var e=evs[j],c=cc(e.category);
-        h+='<div class="cell-ev" data-eid="'+e.id+'" style="background:'+c.bg+';color:'+c.tx+';border-left-color:'+c.bd+'">'+(e.important?"⚡":"")+e.icon+" "+(e.title.length>10?esc(e.title.slice(0,10))+"…":esc(e.title))+'</div>';
-      }
-      if(evs.length>3)h+='<div class="cell-more">+'+(evs.length-3)+'개</div>';
+      var td=new Date();var isToday=state.year===td.getFullYear()&&state.month===td.getMonth()&&d===td.getDate();
+      var dow=(fd+d-1)%7;
+      h+='<div class="day-cell'+(isToday?" today":"")+'">';
+      h+='<div class="dn'+(dow===0?" sun":"")+(dow===6?" sat":"")+'">'+d+(isToday?'<span class="tb">TODAY</span>':"")+'</div>';
+      evs.slice(0,3).forEach(function(e){
+        var c=catC(e.category);
+        h+='<div class="de'+(e.important?" imp":"")+'" style="background:'+c.bg+';color:'+c.tx+';border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">'+e.icon+' '+(e.title.length>12?esc(e.title.slice(0,12))+"…":esc(e.title))+'</div>';
+      });
+      if(evs.length>3)h+='<div class="dm">+'+(evs.length-3)+'개</div>';
       h+='</div>';
     }
     h+='</div>';
   }
 
-  if(view==="timeline"){
+  // Timeline View
+  if(state.view==="timeline"){
     var sorted=f.slice().sort(function(a,b){return a.date<b.date?-1:1});
-    var pm="";
-    for(var i=0;i<sorted.length;i++){
-      var e=sorted[i],m=e.date.slice(0,7);
-      if(m!==pm){var mi=parseInt(e.date.split("-")[1])-1;h+='<div class="tl-mo">'+e.date.split("-")[0]+'년 '+MK[mi]+'</div>';pm=m}
-      var c=cc(e.category);
-      h+='<div class="tl-row"><div class="tl-dt">'+parseInt(e.date.split("-")[2])+'일</div><div class="tl-dotw"><div class="tl-d" style="background:'+c.dt+'"></div><div class="tl-l"></div></div><div style="flex:1">'+cardHTML(e)+'</div></div>';
-    }
+    var prevM="";
+    sorted.forEach(function(e){
+      var m=e.date.slice(0,7);
+      if(m!==prevM){
+        var mi=parseInt(e.date.split("-")[1])-1;
+        h+='<div class="tl-month">'+e.date.split("-")[0]+'년 '+MK[mi]+'</div>';
+        prevM=m;
+      }
+      var c=catC(e.category);
+      h+='<div class="tl-row">';
+      h+='<div class="tl-date">'+parseInt(e.date.split("-")[2])+'일</div>';
+      h+='<div class="tl-dotc"><div class="tl-dot" style="background:'+c.dt+'"></div><div class="tl-line"></div></div>';
+      h+='<div style="flex:1">';
+      h+=renderCard(e);
+      h+='</div></div>';
+    });
   }
 
-  if(view==="upcoming"){
-    var up=f.filter(function(e){return e.date>=todayS()}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,30);
-    for(var i=0;i<up.length;i++){
-      var e=up[i],dd=dUntil(e.date);
-      var urg=dd.indexOf("D-")===0&&parseInt(dd.replace("D-",""))<=7;
-      h+='<div class="up-row"><div class="up-dd"><div class="up-num" style="color:'+(urg?"#f87171":"#818cf8")+'">'+dd+'</div><div class="up-sub">'+fmtD(e.date).split(" ")[0]+'</div></div><div style="flex:1">'+cardHTML(e)+'</div></div>';
-    }
+  // Upcoming View
+  if(state.view==="upcoming"){
+    upcoming.forEach(function(e){
+      var dd=daysUntil(e.date);
+      var urgent=dd.indexOf("D-")===0&&parseInt(dd.replace("D-",""))<=7;
+      h+='<div class="up-row">';
+      h+='<div class="up-dd"><div class="ddn" style="color:'+(urgent?"#f87171":"#818cf8")+'">'+dd+'</div><div class="ddd">'+fmtD(e.date).split(" ")[0]+'</div></div>';
+      h+='<div style="flex:1">'+renderCard(e)+'</div></div>';
+    });
   }
 
-  document.getElementById("mainBody").innerHTML=h;
+  h+='</div></div>';
+  document.getElementById("app").innerHTML=h;
+
+  // Bind search
+  var si=document.getElementById("searchInput");
+  if(si){si.oninput=function(){state.search=this.value;render()}}
 }
 
-function cardHTML(e){
-  var c=cc(e.category);
-  return'<div class="ecard" data-eid="'+e.id+'" style="background:'+c.bg+';border-left-color:'+c.bd+'"><div class="ecard-top"><span class="ecard-ic">'+e.icon+'</span><span class="ecard-ti" style="color:'+c.tx+'">'+esc(e.title)+'</span>'+(e.important?'<span class="ecard-imp">중요</span>':"")+'</div><div class="ecard-meta"><span>'+esc(e.company)+'</span><span>·</span><span>'+fmtD(e.date)+'</span><span class="ecard-dd" style="color:'+c.tx+'">'+dUntil(e.date)+'</span></div></div>';
+function renderCard(e){
+  var c=catC(e.category);
+  var h='<div class="evc" style="background:'+c.bg+';border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">';
+  h+='<div class="evc-top"><span class="evc-ic">'+e.icon+'</span>';
+  h+='<span class="evc-ti" style="color:'+c.tx+'">'+esc(e.title)+'</span>';
+  if(e.important)h+='<span class="evc-imp">중요</span>';
+  h+='</div><div class="evc-meta"><span>'+esc(e.company)+'</span><span>·</span><span>'+fmtD(e.date)+'</span>';
+  h+='<span class="evc-dd" style="color:'+c.tx+'">'+daysUntil(e.date)+'</span></div></div>';
+  return h;
 }
 
 // ── Modal ──
-function showDetail(id){
-  var e=null;for(var i=0;i<events.length;i++)if(events[i].id===id){e=events[i];break}
+function showModal(id){
+  var e=state.events.find(function(x){return x.id===id});
   if(!e)return;
-  var c=cc(e.category),dd=dUntil(e.date),fut=e.date>=todayS();
-  var h='<div class="mdl-top"><button class="mdl-x" id="mClose">✕</button>';
-  h+='<div class="mdl-ic">'+e.icon+'</div><div class="mdl-ti">'+esc(e.title)+'</div>';
-  h+='<div class="mdl-co">'+esc(e.company)+'</div></div>';
-  h+='<div class="mdl-tags">';
-  h+='<span class="mdl-tag" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span>';
-  h+='<span class="mdl-tag" style="background:rgba(255,255,255,.06);color:#d1d5db">'+fmtD(e.date)+'</span>';
-  h+='<span class="mdl-tag" style="background:'+(fut?"rgba(16,185,129,.15)":"rgba(239,68,68,.15)")+';color:'+(fut?"#6ee7b7":"#fca5a5")+'">'+dd+'</span>';
-  if(e.important)h+='<span class="mdl-tag" style="background:rgba(239,68,68,.15);color:#fca5a5">⚡ 중요</span>';
+  var c=catC(e.category);
+  var dd=daysUntil(e.date);
+  var fut=e.date>=new Date().toISOString().slice(0,10);
+  var h='<div class="overlay" onclick="closeModal()">';
+  h+='<div class="modal" style="border-top:4px solid '+c.bd+'" onclick="event.stopPropagation()">';
+  h+='<div class="modal-top"><button class="modal-x" onclick="closeModal()">✕</button>';
+  h+='<div class="modal-ic">'+e.icon+'</div>';
+  h+='<div class="modal-ti">'+esc(e.title)+'</div>';
+  h+='<div class="modal-co">'+esc(e.company)+'</div></div>';
+  h+='<div class="modal-tags">';
+  h+='<span class="modal-tag" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span>';
+  h+='<span class="modal-tag" style="background:rgba(255,255,255,.06);color:#d1d5db">'+fmtD(e.date)+'</span>';
+  h+='<span class="modal-tag" style="background:'+(fut?"rgba(16,185,129,.15)":"rgba(239,68,68,.15)")+';color:'+(fut?"#6ee7b7":"#fca5a5")+'">'+dd+'</span>';
+  if(e.important)h+='<span class="modal-tag" style="background:rgba(239,68,68,.15);color:#fca5a5">⚡ 중요</span>';
   h+='</div>';
-  if(e.memo)h+='<div class="mdl-memo"><b>투자 포인트</b><br>'+esc(e.memo)+'</div>';
-  h+='<div class="mdl-acts"><button class="mdl-ab edt" data-edit="'+e.id+'">✏️ 수정</button><button class="mdl-ab del" data-del="'+e.id+'">🗑️ 삭제</button></div>';
-  document.getElementById("modalContent").innerHTML=h;
-  document.getElementById("overlay").classList.remove("ov-hide");
+  if(e.memo)h+='<div class="modal-memo"><strong>메모 / 투자 포인트</strong><br>'+esc(e.memo)+'</div>';
+  h+='<div class="modal-acts">';
+  h+='<button class="modal-btn edit" onclick="editEvent('+e.id+')">✏️ 수정</button>';
+  h+='<button class="modal-btn del" onclick="deleteEvent('+e.id+')">🗑️ 삭제</button>';
+  h+='</div></div></div>';
+  document.body.insertAdjacentHTML("beforeend",h);
+}
+function closeModal(){
+  var o=document.querySelector(".overlay");
+  if(o)o.remove();
 }
 
-function showForm(ev){
-  var isE=!!ev;
-  var d=ev||{date:todayS(),title:"",company:companies[0]||"",category:"기타",icon:"📌",memo:"",important:false};
-  var h='<div class="frm"><h3>'+(isE?"이벤트 수정":"새 이벤트 추가")+'</h3>';
-  h+='<div class="frow"><label>날짜</label><input type="date" id="fD" value="'+d.date+'"></div>';
-  h+='<div class="frow"><label>제목</label><input id="fT" value="'+esc(d.title)+'" placeholder="이벤트 제목"></div>';
-  h+='<div class="frow"><label>기업</label><select id="fCo">';
-  for(var i=0;i<companies.length;i++)h+='<option'+(companies[i]===d.company?" selected":"")+'>'+esc(companies[i])+'</option>';
-  h+='</select><div style="margin-top:4px"><input id="fNc" placeholder="또는 새 기업명 직접 입력" style="padding:6px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:11px;width:100%;outline:none"></div></div>';
-  h+='<div class="frow"><label>카테고리</label><select id="fCa">';
-  for(var i=0;i<CAT_LIST.length;i++)h+='<option'+(CAT_LIST[i]===d.category?" selected":"")+'>'+CAT_LIST[i]+'</option>';
+// ── Form ──
+function openForm(ev){
+  closeModal();
+  var isEdit=!!ev;
+  var d=ev||{date:new Date().toISOString().slice(0,10),title:"",company:state.companies[0]||"",category:"기타",icon:"📌",memo:"",important:false};
+  var h='<div class="overlay" onclick="closeForm()">';
+  h+='<div class="form" onclick="event.stopPropagation()">';
+  h+='<h3>'+(isEdit?"이벤트 수정":"새 이벤트 추가")+'</h3>';
+  h+='<div class="fr"><label>날짜</label><input type="date" id="fDate" value="'+d.date+'"></div>';
+  h+='<div class="fr"><label>제목</label><input id="fTitle" value="'+esc(d.title)+'" placeholder="이벤트 제목"></div>';
+  h+='<div class="fr"><label>기업 <span style="font-size:9px;color:#818cf8;cursor:pointer;margin-left:6px" onclick="toggleNewCo()">+ 새 기업</span></label>';
+  h+='<select id="fCompany">';
+  state.companies.forEach(function(c){h+='<option value="'+esc(c)+'"'+(c===d.company?" selected":"")+'>'+esc(c)+'</option>'});
+  h+='</select>';
+  h+='<div id="newCoDiv" style="display:none;margin-top:6px;display:flex;gap:4px;display:none"><input id="fNewCo" placeholder="새 기업명" style="flex:1;padding:6px 8px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;font-size:11px;outline:none"><button class="fbtn save" style="padding:4px 10px;font-size:10px" onclick="addNewCo()">추가</button></div>';
+  h+='</div>';
+  h+='<div class="fr"><label>카테고리</label><select id="fCat">';
+  CAT_LIST.forEach(function(c){h+='<option value="'+c+'"'+(c===d.category?" selected":"")+'>'+c+'</option>'});
   h+='</select></div>';
-  h+='<div class="frow"><label>아이콘</label><div class="icpick" id="icPick">';
-  for(var i=0;i<ICONS.length;i++)h+='<span class="icopt'+(ICONS[i]===d.icon?" on":"")+'" data-ic="'+ICONS[i]+'">'+ICONS[i]+'</span>';
-  h+='</div><input type="hidden" id="fIc" value="'+d.icon+'"></div>';
-  h+='<div class="frow"><label>메모</label><textarea id="fMe" placeholder="투자 포인트">'+esc(d.memo)+'</textarea></div>';
-  h+='<div class="frow"><label class="fchk"><input type="checkbox" id="fIm"'+(d.important?" checked":"")+'>⚡ 중요 이벤트</label></div>';
-  h+='<div class="fbtns"><button class="fb fc" id="fCancel">취소</button><button class="fb fs" id="fSave" data-eid="'+(isE?d.id:"")+'">'+( isE?"저장":"추가")+'</button></div></div>';
-  document.getElementById("modalContent").innerHTML=h;
-  document.getElementById("overlay").classList.remove("ov-hide");
+  h+='<div class="fr"><label>아이콘</label><div class="ic-pick">';
+  ICONS.forEach(function(ic){h+='<span class="ic-opt'+(ic===d.icon?" on":"")+'" onclick="pickIcon(this,\''+ic+'\')">'+ic+'</span>'});
+  h+='</div><input type="hidden" id="fIcon" value="'+d.icon+'"></div>';
+  h+='<div class="fr"><label>메모</label><textarea id="fMemo" placeholder="투자 포인트 메모">'+esc(d.memo)+'</textarea></div>';
+  h+='<div class="fr"><label class="fr-check"><input type="checkbox" id="fImp"'+(d.important?" checked":"")+'>⚡ 중요 이벤트</label></div>';
+  h+='<div class="form-btns">';
+  h+='<button class="fbtn cancel" onclick="closeForm()">취소</button>';
+  h+='<button class="fbtn save" onclick="saveForm('+(isEdit?d.id:"null")+')">'+(isEdit?"저장":"추가")+'</button>';
+  h+='</div></div></div>';
+  document.body.insertAdjacentHTML("beforeend",h);
+}
+function closeForm(){
+  var els=document.querySelectorAll(".overlay");
+  els.forEach(function(e){e.remove()});
+}
+function toggleNewCo(){
+  var d=document.getElementById("newCoDiv");
+  d.style.display=d.style.display==="none"?"flex":"none";
+}
+function addNewCo(){
+  var v=document.getElementById("fNewCo").value.trim();
+  if(!v)return;
+  if(state.companies.indexOf(v)<0){state.companies.push(v);save()}
+  var sel=document.getElementById("fCompany");
+  var opt=document.createElement("option");opt.value=v;opt.text=v;opt.selected=true;
+  sel.add(opt);
+  document.getElementById("newCoDiv").style.display="none";
+}
+function pickIcon(el,ic){
+  document.querySelectorAll(".ic-opt").forEach(function(e){e.classList.remove("on")});
+  el.classList.add("on");
+  document.getElementById("fIcon").value=ic;
+}
+function saveForm(editId){
+  var obj={
+    date:document.getElementById("fDate").value,
+    title:document.getElementById("fTitle").value,
+    company:document.getElementById("fCompany").value,
+    category:document.getElementById("fCat").value,
+    icon:document.getElementById("fIcon").value,
+    memo:document.getElementById("fMemo").value,
+    important:document.getElementById("fImp").checked
+  };
+  if(!obj.title||!obj.date)return alert("제목과 날짜를 입력하세요");
+  if(editId!==null){
+    obj.id=editId;
+    state.events=state.events.map(function(e){return e.id===editId?obj:e});
+  }else{
+    obj.id=state.nextId++;
+    state.events.push(obj);
+  }
+  if(state.companies.indexOf(obj.company)<0)state.companies.push(obj.company);
+  save();closeForm();render();
 }
 
-function closeOv(){document.getElementById("overlay").classList.add("ov-hide")}
-
-// ── Event Delegation ──
-document.addEventListener("click",function(e){
-  var t=e.target;
-
-  // View tabs
-  if(t.id==="vCal"){view="calendar";updateTabs();render()}
-  if(t.id==="vTl"){view="timeline";updateTabs();render()}
-  if(t.id==="vUp"){view="upcoming";updateTabs();render()}
-
-  // Filter chips
-  if(t.dataset.co!==undefined){selCo=t.dataset.co;render()}
-  if(t.dataset.cat!==undefined){selCat=t.dataset.cat;render()}
-
-  // Nav
-  if(t.id==="prevM"||t.parentElement&&t.parentElement.id==="prevM"){mo--;if(mo<0){mo=11;yr--}render()}
-  if(t.id==="nextM"||t.parentElement&&t.parentElement.id==="nextM"){mo++;if(mo>11){mo=0;yr++}render()}
-  if(t.id==="goToday"){var td=new Date();yr=td.getFullYear();mo=td.getMonth();render()}
-
-  // Event cards/cells
-  var eid=t.dataset.eid||t.closest&&t.closest("[data-eid]")&&t.closest("[data-eid]").dataset.eid;
-  if(eid)showDetail(parseInt(eid));
-
-  // Modal actions
-  if(t.id==="mClose"||t.classList.contains("ov")&&!t.closest(".mdl,.frm"))closeOv();
-  var editId=t.dataset.edit||t.closest&&t.closest("[data-edit]")&&t.closest("[data-edit]").dataset.edit;
-  if(editId){closeOv();var ev=null;for(var i=0;i<events.length;i++)if(events[i].id===parseInt(editId)){ev=events[i];break}if(ev)setTimeout(function(){showForm(ev)},100)}
-  var delId=t.dataset.del||t.closest&&t.closest("[data-del]")&&t.closest("[data-del]").dataset.del;
-  if(delId){if(confirm("삭제할까요?")){events=events.filter(function(x){return x.id!==parseInt(delId)});save();closeOv();render()}}
-
-  // FAB
-  if(t.id==="addBtn"||t.closest&&t.closest("#addBtn"))showForm(null);
-
-  // Form cancel
-  if(t.id==="fCancel")closeOv();
-
-  // Form save
-  if(t.id==="fSave"){
-    var newCo=document.getElementById("fNc").value.trim();
-    var co=newCo||document.getElementById("fCo").value;
-    var obj={
-      date:document.getElementById("fD").value,
-      title:document.getElementById("fT").value,
-      company:co,
-      category:document.getElementById("fCa").value,
-      icon:document.getElementById("fIc").value,
-      memo:document.getElementById("fMe").value,
-      important:document.getElementById("fIm").checked
-    };
-    if(!obj.title||!obj.date){alert("제목과 날짜를 입력하세요");return}
-    var eid2=t.dataset.eid;
-    if(eid2){obj.id=parseInt(eid2);events=events.map(function(x){return x.id===obj.id?obj:x})}
-    else{obj.id=nid++;events.push(obj)}
-    if(companies.indexOf(obj.company)<0)companies.push(obj.company);
-    save();closeOv();render();
-  }
-
-  // Icon picker
-  if(t.dataset.ic){
-    var picks=document.querySelectorAll(".icopt");
-    for(var i=0;i<picks.length;i++)picks[i].classList.remove("on");
-    t.classList.add("on");
-    document.getElementById("fIc").value=t.dataset.ic;
-  }
-});
-
-function updateTabs(){
-  document.getElementById("vCal").className="hd-btn"+(view==="calendar"?" on":"");
-  document.getElementById("vTl").className="hd-btn"+(view==="timeline"?" on":"");
-  document.getElementById("vUp").className="hd-btn"+(view==="upcoming"?" on":"");
+// ── Actions ──
+function editEvent(id){
+  var e=state.events.find(function(x){return x.id===id});
+  if(e)openForm(e);
 }
+function deleteEvent(id){
+  if(!confirm("이 이벤트를 삭제하시겠습니까?"))return;
+  state.events=state.events.filter(function(e){return e.id!==id});
+  save();closeModal();render();
+}
+function resetData(){
+  if(!confirm("모든 데이터를 초기 상태로 되돌리시겠습니까?"))return;
+  state.events=DEFAULT_EVENTS.slice();
+  var s={};state.events.forEach(function(e){s[e.company]=1});
+  state.companies=Object.keys(s);
+  save();render();
+}
+function setCompany(c){state.selCompany=c;render()}
+function setCat(c){state.selCat=c;render()}
+function setView(v){state.view=v;render()}
+function prevMonth(){
+  state.month--;
+  if(state.month<0){state.month=11;state.year--}
+  render();
+}
+function nextMonth(){
+  state.month++;
+  if(state.month>11){state.month=0;state.year++}
+  render();
+}
+function goToday(){var d=new Date();state.year=d.getFullYear();state.month=d.getMonth();render()}
+function toggleSb(){state.sbCollapsed=!state.sbCollapsed;render()}
 
-// Init
-load();render();
-
-})();
+// ── Init ──
+loadState();
+render();
+document.getElementById("fabBtn").onclick=function(){openForm(null)};
 </script>
 </body>
 </html>
