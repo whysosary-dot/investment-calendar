@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>투자 캘린더</title>
@@ -15,8 +15,10 @@ button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:tra
 /* Layout */
 .app{display:flex;height:100vh;overflow:hidden}
 .sidebar{width:300px;background:#0f0f23;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .25s ease,max-height .25s ease}
-.sidebar.collapsed{width:300px}
+.sidebar.collapsed{width:48px}
 .sidebar.collapsed .sb-body,.sidebar.collapsed .sb-header,.sidebar.collapsed .ev-list{display:none}
+.sidebar.collapsed .sb-toggle span{display:none}
+.sidebar.collapsed .sb-toggle{justify-content:center}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .header{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .content{flex:1;overflow-y:auto;padding:14px 20px}
@@ -372,7 +374,7 @@ function render(){
 
   // Sidebar
   h+='<div class="sidebar'+(state.sbCollapsed?" collapsed":"")+'">';
-  h+='<div class="sb-toggle" onclick="toggleSb()"><span>📋 '+(state.sbCollapsed?"필터 열기":"필터 접기")+'</span><span class="arrow">'+(state.sbCollapsed?"▶":"◀")+'</span></div>';
+  h+='<div class="sb-toggle" onclick="toggleSb()"><span>📋 '+(state.sbCollapsed?"필터 열기":"필터 접기")+'</span><span class="arrow">'+(state.sbCollapsed?"☰":"✕")+'</span></div>';
   h+='<div class="sb-header"><h2>🚢 투자 캘린더</h2>';
   h+='<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." value="'+esc(state.search)+'">';
   h+='</div><div class="sb-body">';
