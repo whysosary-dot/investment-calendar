@@ -14,31 +14,44 @@ button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:tra
 
 /* Layout */
 .app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:300px;background:#0f0f23;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sidebar{width:300px;background:#0f0f23;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;transition:width .25s ease,max-height .25s ease}
+.sidebar.collapsed{width:300px}
+.sidebar.collapsed .sb-body,.sidebar.collapsed .sb-header,.sidebar.collapsed .ev-list{display:none}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .header{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .content{flex:1;overflow-y:auto;padding:14px 20px}
 
-/* Mobile & Tablet */
+/* Tablet (portrait iPad etc) */
 @media(max-width:1024px){
   .app{flex-direction:column}
-  .sidebar{width:100%;height:auto;max-height:45vh;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);overflow-y:auto;-webkit-overflow-scrolling:touch}
-  .sidebar.collapsed .sb-body{display:none}
-  .sidebar.collapsed{max-height:none}
-  .sidebar .sb-toggle{display:flex}
+  .sidebar{width:100%!important;height:auto;max-height:40vh;border-right:none;border-bottom:1px solid rgba(255,255,255,.06);overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .sidebar.collapsed{max-height:none;overflow:hidden}
   .content{padding:10px 12px}
   .header{padding:10px 12px}
-  .cal-grid .day-cell{min-height:70px}
-  .de{font-size:8px!important;padding:1px 3px!important}
   .fab{bottom:max(16px,env(safe-area-inset-bottom));right:16px;width:46px;height:46px;font-size:20px}
 }
 
+/* Phone portrait */
+@media(max-width:600px){
+  .cal-grid .day-cell{min-height:58px;padding:2px}
+  .dn{font-size:10px}
+  .de{font-size:7.5px!important;padding:1px 2px!important}
+  .vtabs{gap:2px}
+  .vtab{padding:3px 8px;font-size:9px}
+  .cal-nav .ml{font-size:14px;min-width:110px}
+  .chip{padding:2px 7px;font-size:9px}
+  .evc{padding:7px 10px}
+  .evc .evc-ti{font-size:11px}
+  .evc .evc-meta{font-size:9px}
+  .header{gap:6px}
+}
+
 /* Sidebar */
-.sb-header{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
-.sb-header h2{font-size:15px;font-weight:800;color:#fff}
-.sb-toggle{display:none;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;background:rgba(255,255,255,.02)}
+.sb-toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;background:rgba(255,255,255,.02);flex-shrink:0;-webkit-tap-highlight-color:transparent}
 .sb-toggle span{font-size:13px;font-weight:700;color:#fff}
 .sb-toggle .arrow{font-size:12px;color:#6b7280;transition:transform .2s}
+.sb-header{padding:14px 14px 10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-header h2{font-size:15px;font-weight:800;color:#fff}
 .sb-body{}
 .filter-grp{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
 .filter-label{font-size:9px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
@@ -272,7 +285,7 @@ var DEFAULT_EVENTS=[
 ];
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=2;
+var DATA_VER=3;
 
 // ── State ──
 var state={
@@ -348,7 +361,8 @@ function render(){
   var mp=state.year+"-"+String(state.month+1).padStart(2,"0");
   var mEvs=f.filter(function(e){return e.date.indexOf(mp)===0});
   var byDay={};mEvs.forEach(function(e){var d=parseInt(e.date.split("-")[2]);if(!byDay[d])byDay[d]=[];byDay[d].push(e)});
-  var upcoming=f.filter(function(e){return e.date>="2026-03-19"}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,30);
+  var todayStr=new Date().toISOString().slice(0,10);
+  var upcoming=f.filter(function(e){return e.date>=todayStr}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,30);
   var allCo=["전체"].concat(state.companies);
 
   // Stats
@@ -358,7 +372,7 @@ function render(){
 
   // Sidebar
   h+='<div class="sidebar'+(state.sbCollapsed?" collapsed":"")+'">';
-  h+='<div class="sb-toggle" onclick="toggleSb()"><span>🚢 투자 캘린더</span><span class="arrow">'+(state.sbCollapsed?"▼":"▲")+'</span></div>';
+  h+='<div class="sb-toggle" onclick="toggleSb()"><span>📋 '+(state.sbCollapsed?"필터 열기":"필터 접기")+'</span><span class="arrow">'+(state.sbCollapsed?"▶":"◀")+'</span></div>';
   h+='<div class="sb-header"><h2>🚢 투자 캘린더</h2>';
   h+='<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." value="'+esc(state.search)+'">';
   h+='</div><div class="sb-body">';
