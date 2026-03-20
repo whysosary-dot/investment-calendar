@@ -492,9 +492,17 @@ function render(){
   h+='</div></div>';
   document.getElementById("app").innerHTML=h;
 
-  // Bind search
+  // Bind search — preserve focus & cursor for mobile keyboards
   var si=document.getElementById("searchInput");
-  if(si){si.oninput=function(){state.search=this.value;render()}}
+  if(si){
+    si.oninput=function(){
+      var pos=this.selectionStart;
+      state.search=this.value;
+      state._sfocus=true;state._spos=pos;
+      render();
+    };
+    if(state._sfocus){si.focus();try{si.setSelectionRange(state._spos,state._spos)}catch(x){}state._sfocus=false}
+  }
 }
 
 function renderCard(e){
