@@ -185,6 +185,7 @@ button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:tra
 </head>
 <body>
 <div id="app" class="app"></div>
+<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." style="display:none">
 <button class="fab" id="fabBtn">+</button>
 
 <script>
@@ -369,7 +370,7 @@ function render(){
   h+='<div class="collapse-tab" onclick="toggleSb()"><span class="ct-arrow">▶</span>📋 필터 열기</div>';
   h+='<div class="sb-toggle" onclick="toggleSb()"><span>📋 필터 접기</span><span class="arrow">✕</span></div>';
   h+='<div class="sb-header"><h2>🚢 투자 캘린더</h2>';
-  h+='<input class="search" id="searchInput" placeholder="🔍 이벤트 검색..." value="'+esc(state.search)+'">';
+  h+='<div id="searchSlot"></div>';
   h+='</div><div class="sb-body">';
 
   // Company filter
@@ -492,17 +493,10 @@ function render(){
   h+='</div></div>';
   document.getElementById("app").innerHTML=h;
 
-  // Bind search — preserve focus & cursor for mobile keyboards
+  // Move persistent search input into slot (never destroyed = iOS keyboard stays up)
+  var slot=document.getElementById("searchSlot");
   var si=document.getElementById("searchInput");
-  if(si){
-    si.oninput=function(){
-      var pos=this.selectionStart;
-      state.search=this.value;
-      state._sfocus=true;state._spos=pos;
-      render();
-    };
-    if(state._sfocus){si.focus();try{si.setSelectionRange(state._spos,state._spos)}catch(x){}state._sfocus=false}
-  }
+  if(slot&&si){si.style.display="";slot.appendChild(si)}
 }
 
 function renderCard(e){
@@ -672,6 +666,7 @@ document.addEventListener("touchend",function(e){
 loadState();
 render();
 document.getElementById("fabBtn").onclick=function(){openForm(null)};
+document.getElementById("searchInput").oninput=function(){state.search=this.value;render()};
 </script>
 </body>
 </html>
