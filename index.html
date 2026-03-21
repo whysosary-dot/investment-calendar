@@ -205,111 +205,43 @@ var DK=["일","월","화","수","목","금","토"];
 var MK=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 
 var DEFAULT_EVENTS=[
-  {id:1,date:"2026-03-23",title:"클락슨 신조선가지수 발표",company:"업계공통",category:"산업",icon:"📈",memo:"월간 신조선가지수. 170+ 유지 여부 확인",important:false},
-  {id:2,date:"2026-03-25",title:"HD한국조선해양 주총",company:"HD한국조선해양",category:"기업",icon:"🏢",memo:"2025 실적 승인 + 2026 경영계획 발표",important:false},
-  {id:3,date:"2026-03-27",title:"HD한국조선해양 배당락일",company:"HD한국조선해양",category:"기업",icon:"💰",memo:"DPS 추정 3,000~4,000원",important:false},
-  {id:4,date:"2026-04-01",title:"IMO EEXI/CII 강화 시행",company:"업계공통",category:"정책",icon:"📜",memo:"에너지효율 규제 강화. 노후선 교체 발주 촉진",important:true},
-  {id:5,date:"2026-04-15",title:"모잠비크 LNG FLNG 입찰 마감",company:"삼성중공업",category:"수주",icon:"🚢",memo:"삼성중공업 FLNG 기술 경쟁력 확인",important:false},
-  {id:6,date:"2026-04-24",title:"HD현대중공업 1Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"2026E OP 2.89조 전망 대비 진행 속도 확인",important:false},
-  {id:7,date:"2026-04-25",title:"HD한국조선해양 1Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"고선가 물량 반영 본격화. OPM 15%+ 확인",important:true},
-  {id:8,date:"2026-04-27",title:"삼성중공업 1Q26 실적",company:"삼성중공업",category:"실적",icon:"📊",memo:"LNG·FLNG 수주잔고 소화율 체크",important:false},
-  {id:9,date:"2026-04-28",title:"한화오션 1Q26 실적",company:"한화오션",category:"실적",icon:"📊",memo:"필라 조선소 인수 후 첫 분기 실적",important:false},
-  {id:10,date:"2026-05-10",title:"미 해군 함정 MRO 계약 발표",company:"HD현대중공업",category:"수주",icon:"🚢",memo:"Bridge Strategy 첫 실질 계약",important:true},
-  {id:11,date:"2026-05-20",title:"SHIPS Act 상원 표결 예상",company:"업계공통",category:"정책",icon:"📜",memo:"동맹국 조선소 활용 법안. 통과 시 구조적 수혜",important:true},
-  {id:12,date:"2026-06-01",title:"그리스 선주 벌크선 대량 발주",company:"HD한국조선해양",category:"수주",icon:"🚢",memo:"친환경 규제 대응 교체 수요. 30척+ 규모",important:false},
-  {id:13,date:"2026-06-08",title:"Posidonia 2026 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"그리스 아테네. 하반기 발주 방향성 가늠",important:true},
-  {id:14,date:"2026-06-15",title:"일본 조선업 부흥 1단계 시행",company:"업계공통",category:"정책",icon:"📜",memo:"이마바리+JMU 통합 마무리",important:false},
-  {id:15,date:"2026-07-01",title:"EU CBAM 확대",company:"업계공통",category:"정책",icon:"📜",memo:"해운업 탄소비용 증가 → 친환경 선박 수요 가속",important:false},
-  {id:16,date:"2026-07-23",title:"HD현대중공업 2Q26 실적",company:"HD현대중공업",category:"실적",icon:"📊",memo:"고선가 건조 비중 최대 → OPM 서프라이즈",important:false},
-  {id:17,date:"2026-07-24",title:"HD한국조선해양 2Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"상반기 P-MIX 개선 정점",important:true},
-  {id:18,date:"2026-09-07",title:"SMM Hamburg 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"세계 최대 해사전시회",important:false},
-  {id:19,date:"2026-09-15",title:"미국 Jones Act 선박 건조 입찰",company:"한화오션",category:"수주",icon:"🚢",memo:"필라델피아 조선소 경유 수주 가능성",important:false},
-  {id:20,date:"2026-10-23",title:"HD한국조선해양 3Q26 실적",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"연간 가이던스 업데이트",important:false},
-  {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 정책 방향성 결정",important:true},
-
-  // ── 게임사 신작 일정 ──
-  {id:50,date:"2026-03-20",title:"붉은사막 출시",company:"펄어비스",category:"기업",icon:"🎮",memo:"PS5/XSX/Steam/Mac/Epic 동시 출시. AAA 오픈월드 액션 어드벤처. 2026 상반기 최대 기대작",important:true},
-  {id:51,date:"2026-07-01",title:"붉은사막 1차 DLC 예상",company:"펄어비스",category:"기업",icon:"🎮",memo:"출시 후 3~4개월 내 DLC/시즌 업데이트 예상. 장기 매출 지속 여부 확인",important:false},
-  {id:52,date:"2026-03-03",title:"스톤에이지 키우기 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"방치형 RPG. 스톤에이지 IP 활용 모바일 신작",important:false},
-  {id:53,date:"2026-03-17",title:"일곱개의대죄:오리진 출시(콘솔/PC)",company:"넷마블",category:"기업",icon:"🎮",memo:"PS5+Steam 출시. 3/24 모바일 출시. 글로벌 흥행 관건",important:true},
-  {id:54,date:"2026-03-24",title:"일곱개의대죄:오리진 모바일 출시",company:"넷마블",category:"기업",icon:"🎮",memo:"콘솔 출시 1주 후 모바일. 크로스플랫폼 매출 시너지 확인",important:false},
-  {id:55,date:"2026-07-01",title:"이블베인 출시 예상 (하반기)",company:"넷마블",category:"기업",icon:"🎮",memo:"4인 협동 추리액션. 하반기 출시 예정. 구체적 일정 미정",important:false},
-  {id:56,date:"2026-04-01",title:"인조이(inZOI) 콘솔 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"PS5/Xbox 콘솔 버전. 2025 PC 출시 후 확장. 심즈 대항마",important:true},
-  {id:57,date:"2026-04-01",title:"팰월드 모바일 출시 예상 (상반기)",company:"크래프톤",category:"기업",icon:"🎮",memo:"포켓페어 글로벌 히트작 모바일 버전. 지스타 2025 호평",important:true},
-  {id:58,date:"2026-04-01",title:"아키에이지 크로니클 출시 예상 (1~2Q)",company:"카카오게임즈",category:"기업",icon:"🎮",memo:"엑스엘게임즈 개발. MMORPG 신작. 1Q 또는 2Q 출시 유력",important:true},
-  {id:59,date:"2026-07-01",title:"신더시티 출시 예상 (하반기)",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"콘솔 게임 시장 진출작. 하반기 출시 예정",important:true},
-  {id:60,date:"2026-04-01",title:"리밋제로 브레이커스 CBT 예상",company:"엔씨소프트",category:"기업",icon:"🎮",memo:"빅게임스튜디오 개발. 애니메이션풍 액션 RPG",important:false},
-  {id:61,date:"2026-04-01",title:"미르5 출시 예상 (상반기)",company:"위메이드",category:"기업",icon:"🎮",memo:"UE5 기반 미르 IP 신작 MMORPG. 상반기 출시 목표",important:true},
-  {id:62,date:"2026-01-01",title:"컬러스위퍼/파우팝매치 소프트런칭",company:"컴투스",category:"기업",icon:"🎮",memo:"퍼즐 장르 2종 1Q 소프트런칭. 컴투스홀딩스 연내 신작 8종 계획",important:false},
-  {id:63,date:"2026-07-01",title:"스타세일러 출시 예상 (연내)",company:"컴투스",category:"기업",icon:"🎮",memo:"수집형 RPG 신작. 연내 출시 예정",important:false},
-  {id:64,date:"2026-06-12",title:"스텔라블레이드 x 니케 DLC 출시",company:"시프트업",category:"기업",icon:"🎮",memo:"니케 컬래버 DLC. 홍련 보스 등장. 유료 DLC 매출 확인",important:true},
-  {id:65,date:"2026-04-01",title:"아주르 프로밀리아 CBT/출시 예상",company:"넥슨",category:"기업",icon:"🎮",memo:"벽람항로 개발사 신작. 넥슨 국내 퍼블리싱. CBT 테스터 모집 진행중",important:true},
-  {id:66,date:"2026-04-01",title:"퍼스트디센던트 시즌3 예상 (상반기)",company:"넥슨",category:"기업",icon:"🎮",memo:"글로벌 흥행작 대규모 로드맵 운영. 상반기 시즌 업데이트",important:false},
-  {id:67,date:"2026-05-01",title:"게임사 1Q26 실적 시즌",company:"업계공통",category:"실적",icon:"📊",memo:"넥슨/크래프톤/넷마블/엔씨/카겜/펄어비스/시프트업 등 1분기 실적 발표 집중",important:true},
-
-  // ── 반도체/빅테크 ──
-  {id:70,date:"2026-03-16",title:"NVIDIA GTC 2026 키노트",company:"NVIDIA",category:"산업",icon:"⚡",memo:"젠슨황 키노트. Vera Rubin 차세대 GPU 공개. AI 인프라 로드맵",important:true},
-  {id:71,date:"2026-04-08",title:"삼성전자 1Q26 잠정실적",company:"삼성전자",category:"실적",icon:"📊",memo:"반도체 부문 HBM4 양산 효과 반영 여부 확인",important:true},
-  {id:72,date:"2026-04-23",title:"삼성전자 1Q26 실적발표",company:"삼성전자",category:"실적",icon:"📊",memo:"HBM4 매출 반영, 파운드리 가동률 회복 확인",important:true},
-  {id:73,date:"2026-04-29",title:"SK하이닉스 1Q26 실적발표",company:"SK하이닉스",category:"실적",icon:"📊",memo:"HBM4 양산 본격화. AI 메모리 매출 비중 확대",important:true},
-  {id:74,date:"2026-05-19",title:"Google I/O 2026",company:"Google",category:"산업",icon:"🌐",memo:"AI/Android 신규 발표. Gemini 업데이트 주목",important:true},
-  {id:75,date:"2026-06-08",title:"Apple WWDC 2026",company:"Apple",category:"산업",icon:"🌐",memo:"iOS 27, Apple Intelligence 2.0. AI 반도체 수요 방향성",important:true},
-  {id:76,date:"2026-07-08",title:"삼성전자 2Q26 잠정실적",company:"삼성전자",category:"실적",icon:"📊",memo:"HBM4 풀가동 반영. 반도체 OP 사상최대 기대",important:true},
-  {id:77,date:"2026-07-23",title:"삼성전자 2Q26 실적발표",company:"삼성전자",category:"실적",icon:"📊",memo:"메모리 슈퍼사이클 정점 확인",important:false},
-  {id:78,date:"2026-07-29",title:"SK하이닉스 2Q26 실적발표",company:"SK하이닉스",category:"실적",icon:"📊",memo:"HBM 매출 비중 50%+ 돌파 여부",important:false},
-  {id:79,date:"2026-03-25",title:"SEMICON China 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"상하이 3/25~27. 중국 반도체 장비/소재 동향",important:false},
-  {id:80,date:"2026-05-05",title:"SEMICON Southeast Asia 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"말레이시아 KL 5/5~7. 후공정/패키징 트렌드",important:false},
-  {id:81,date:"2026-09-02",title:"SEMICON Taiwan 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"타이베이 9/2~4. TSMC/ASE 등 파운드리 동향",important:true},
-  {id:82,date:"2026-10-13",title:"SEMICON West 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"샌프란시스코 10/13~15. 북미 반도체 장비 최대 전시회",important:true},
-  {id:83,date:"2026-04-15",title:"TSMC 1Q26 실적발표",company:"TSMC",category:"실적",icon:"📊",memo:"3nm 가동률, AI 가속기 수주 현황. 글로벌 반도체 선행지표",important:true},
-  {id:84,date:"2026-07-15",title:"TSMC 2Q26 실적발표",company:"TSMC",category:"실적",icon:"📊",memo:"CoWoS 캐파 확장 현황, 하반기 가이던스",important:false},
-  {id:85,date:"2026-10-15",title:"TSMC 3Q26 실적발표",company:"TSMC",category:"실적",icon:"📊",memo:"2nm 양산 준비 현황",important:false},
-  {id:86,date:"2026-05-28",title:"NVIDIA 1Q FY27 실적발표",company:"NVIDIA",category:"실적",icon:"📊",memo:"데이터센터 매출 성장률, Blackwell Ultra 출하량",important:true},
-  {id:87,date:"2026-08-27",title:"NVIDIA 2Q FY27 실적발표",company:"NVIDIA",category:"실적",icon:"📊",memo:"Vera Rubin 수주 현황, AI 인프라 투자 지속 여부",important:true},
-  {id:88,date:"2026-07-01",title:"삼성전자 HBM4 12단 양산 예상",company:"삼성전자",category:"기업",icon:"⚡",memo:"HBM4 12Hi 양산. 엔비디아 루빈 탑재용",important:true},
-  {id:89,date:"2026-07-01",title:"SK하이닉스 HBM4 12단 본격 출하",company:"SK하이닉스",category:"기업",icon:"⚡",memo:"이천 M16 풀가동. P&T6 패키징 라인 증설",important:true},
-  {id:90,date:"2026-10-08",title:"삼성전자 3Q26 잠정실적",company:"삼성전자",category:"실적",icon:"📊",memo:"연간 영업이익 가이던스 상향 여부",important:false},
-  {id:91,date:"2026-10-29",title:"SK하이닉스 3Q26 실적발표",company:"SK하이닉스",category:"실적",icon:"📊",memo:"연간 영업이익 100조 클럽 달성 가능성",important:true},
-  {id:92,date:"2026-09-09",title:"Apple 아이폰18 발표 예상",company:"Apple",category:"기업",icon:"📱",memo:"A20 칩셋, AI 기능 강화. AP/메모리 수요 확인",important:true},
-  {id:93,date:"2026-04-01",title:"미국 CHIPS Act 보조금 2차 집행",company:"업계공통",category:"정책",icon:"📜",memo:"삼성 테일러/TSMC 애리조나 보조금 집행 현황",important:false},
-  {id:94,date:"2026-06-01",title:"한미반도체 TC본더 수주 업데이트",company:"한미반도체",category:"수주",icon:"🔥",memo:"HBM4용 TC본더 수주 확대. SK하이닉스/삼성 동시 납품",important:true},
-  {id:95,date:"2026-11-18",title:"SEMICON Europa 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"뮌헨 11/18~21. ASML/인피니온 등 유럽 반도체 동향",important:false},
-  {id:96,date:"2026-05-15",title:"ASML 1Q26 실적발표",company:"ASML",category:"실적",icon:"📊",memo:"EUV High-NA 출하 현황. 2nm 전환 수혜",important:true},
-  {id:97,date:"2026-10-20",title:"ASML 3Q26 실적발표",company:"ASML",category:"실적",icon:"📊",memo:"중국향 수출규제 영향, 수주잔고 확인",important:false},
+  // ── 조선 (공식 확인 어려운 세부 날짜는 제거, 확인된 전시회/정책만 유지) ──
+  {id:1,date:"2026-01-01",title:"IMO EEXI/CII 제도 재검토 시한",company:"업계공통",category:"정책",icon:"📜",memo:"IMO, 2026.1.1까지 CII/EEXI 실효성 검토 후 추가 개정 의무. 노후선 교체 발주 촉진",important:true},
+  {id:13,date:"2026-06-01",title:"Posidonia 2026 해사전시회",company:"업계공통",category:"산업",icon:"🌐",memo:"아테네 6/1~5. 세계 최대 해사전시회. 하반기 발주 방향성",important:true},
+  {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 조선·국방 정책 방향성 결정",important:true},
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",important:true},
 
-  // ── 바이오/제약 ──
-  // 메지온
-  {id:100,date:"2026-03-31",title:"메지온 FUEL-2 탑라인 데이터 발표 예상",company:"메지온",category:"기업",icon:"💊",memo:"유데나필 폰탄 3상 FUEL-2 톱라인. SD 2.49로 성공 구간 진입. FDA 기준 p<0.1",important:true},
-  {id:101,date:"2026-07-01",title:"메지온 유데나필 NDA 제출 예상",company:"메지온",category:"기업",icon:"💊",memo:"FUEL-2 성공 시 하반기 FDA NDA 제출 목표. 연간 치료비 $18만 예상",important:true},
+  // ── 게임 (공식 발표/확정된 것만) ──
+  {id:50,date:"2026-03-19",title:"붉은사막 출시 (확정)",company:"펄어비스",category:"기업",icon:"🎮",memo:"PS5/XSX/Steam 동시 출시 확정. AAA 오픈월드 액션 어드벤처",important:true},
+  {id:53,date:"2026-03-17",title:"일곱개의대죄:오리진 PC/콘솔 출시 (확정)",company:"넷마블",category:"기업",icon:"🎮",memo:"PS5+Steam 선공개. 오픈월드 RPG",important:true},
+  {id:54,date:"2026-03-24",title:"일곱개의대죄:오리진 모바일 출시 (확정)",company:"넷마블",category:"기업",icon:"🎮",memo:"전 플랫폼 정식 출시. 크로스플랫폼 매출 시너지",important:false},
+  {id:56,date:"2026-06-30",title:"인조이(inZOI) PS5 출시 예상 (상반기 발표)",company:"크래프톤",category:"기업",icon:"🎮",memo:"크래프톤 공식 발표: 2026 상반기 PS5 발매. 구체적 날짜 미정",important:true},
+  {id:57,date:"2026-12-31",title:"팰월드 모바일 출시 예상 (연내 발표)",company:"크래프톤",category:"기업",icon:"🎮",memo:"크래프톤 컨콜: 2026년 출시 예정. 지스타 2025 최초 공개",important:true},
+  {id:67,date:"2026-05-01",title:"게임사 1Q26 실적 시즌",company:"업계공통",category:"실적",icon:"📊",memo:"넥슨/크래프톤/넷마블/엔씨/카겜/펄어비스/시프트업 등 1분기 실적",important:true},
 
-  // 에이비엘바이오
-  {id:102,date:"2026-06-01",title:"에이비엘바이오 ABL001 풀데이터 발표 예상",company:"에이비엘바이오",category:"기업",icon:"💊",memo:"담도암 2/3상 풀데이터. 글로벌 허가 방향성 결정",important:true},
-  {id:103,date:"2026-10-01",title:"에이비엘바이오 지바스토믹 위암 3상 개시 목표",company:"에이비엘바이오",category:"기업",icon:"💊",memo:"노바브릿지와 위암 치료제 FDA 가속승인용 3상. 4Q26 개시 목표",important:false},
+  // ── 반도체/빅테크 (공식 확인된 날짜) ──
+  {id:70,date:"2026-03-16",title:"NVIDIA GTC 2026 (확정)",company:"NVIDIA",category:"산업",icon:"⚡",memo:"산호세 3/16~19. 젠슨황 키노트. Vera Rubin 공개",important:true},
+  {id:79,date:"2026-03-25",title:"SEMICON China 2026",company:"업계공통",category:"산업",icon:"🌐",memo:"상하이 3/25~27. 중국 반도체 장비/소재 동향",important:false},
+  {id:96,date:"2026-04-15",title:"ASML 1Q26 실적발표 (확정)",company:"ASML",category:"실적",icon:"📊",memo:"EUV High-NA 출하 현황. 2nm 전환 수혜",important:true},
+  {id:83,date:"2026-04-16",title:"TSMC 1Q26 실적발표 (확정)",company:"TSMC",category:"실적",icon:"📊",memo:"3nm 가동률, AI 가속기 수주. Q1 매출 $35.8B 가이던스",important:true},
+  {id:72,date:"2026-04-23",title:"삼성전자 1Q26 실적발표 (확정)",company:"삼성전자",category:"실적",icon:"📊",memo:"삼성 IR 캘린더 확인. HBM4 매출 반영",important:true},
+  {id:73,date:"2026-04-29",title:"SK하이닉스 1Q26 실적발표 (확정)",company:"SK하이닉스",category:"실적",icon:"📊",memo:"Investing.com 확인. HBM4 양산 본격화",important:true},
+  {id:74,date:"2026-05-19",title:"Google I/O 2026 (확정)",company:"Google",category:"산업",icon:"🌐",memo:"마운틴뷰 5/19~20. 구글 공식 발표 확정",important:true},
+  {id:86,date:"2026-05-28",title:"NVIDIA 4Q FY26 실적발표 (확정)",company:"NVIDIA",category:"실적",icon:"📊",memo:"NVIDIA IR 확인. 데이터센터 매출, Blackwell Ultra 출하량",important:true},
+  {id:110,date:"2026-05-29",title:"ASCO 2026 개막 (확정)",company:"업계공통",category:"산업",icon:"🌐",memo:"시카고 5/29~6/2. 글로벌 최대 종양학회",important:true},
+  {id:75,date:"2026-06-08",title:"Apple WWDC 2026 (예상)",company:"Apple",category:"산업",icon:"🌐",memo:"9to5Mac 등 보도 기반 예상. 미공식. iOS 27 발표",important:true},
+  {id:111,date:"2026-06-05",title:"ADA 2026 개막 (확정)",company:"업계공통",category:"산업",icon:"🌐",memo:"뉴올리언스 6/5~8. 미국당뇨병학회. 비만/MASH 데이터",important:false},
 
-  // 한미약품
-  {id:104,date:"2026-06-01",title:"한미약품 MSD 듀얼아고니스트 MASH 2b상 결과 예상",company:"한미약품",category:"기업",icon:"💊",memo:"에피노페그듀타이드 MASH 2b상. 글로벌 3상 전환 여부가 핵심",important:true},
-
-  // 알테오젠
-  {id:105,date:"2026-06-01",title:"알테오젠 할로자임 특허무효심판(PGR) 결론 예상",company:"알테오젠",category:"기업",icon:"💊",memo:"피하주사 플랫폼 특허 분쟁 결과. 추가 기술이전 모멘텀과 겹침",important:true},
-
-  // 셀트리온
-  {id:106,date:"2026-06-01",title:"셀트리온 CT-P41 프롤리아 바이오시밀러 허가 신청 예상",company:"셀트리온",category:"기업",icon:"💊",memo:"골다공증 치료제 프롤리아 바이오시밀러. 임상 완료 후 허가 준비",important:false},
-
-  // 리가켐바이오
-  {id:107,date:"2026-06-01",title:"리가켐바이오 LCB14 1상 추가 데이터 발표 예상",company:"리가켐바이오",category:"기업",icon:"💊",memo:"HER2 ADC 후보. 식도암 ORR 50% 기록. 추가 적응증 확대 여부",important:false},
-
-  // 메디포스트
-  {id:108,date:"2026-06-01",title:"메디포스트 줄기세포 치료제 최종 결과 발표",company:"메디포스트",category:"기업",icon:"💊",memo:"상반기 최종 결과 → 하반기 일본 PMDA 품목허가 신청. 미국 FDA 1상 첫 환자 투약",important:true},
-
-  // 주요 바이오 학회
-  {id:109,date:"2026-04-17",title:"AACR 2026 개막",company:"업계공통",category:"산업",icon:"🌐",memo:"샌디에이고 4/17~22. K-바이오 대거 참여. 항암 ADC/이중항체 데이터 주목",important:true},
-  {id:110,date:"2026-05-29",title:"ASCO 2026 개막",company:"업계공통",category:"산업",icon:"🌐",memo:"시카고 5/29~6/2. 글로벌 최대 종양학회. K-바이오 임상 데이터 발표",important:true},
-  {id:111,date:"2026-06-05",title:"ADA 2026 개막",company:"업계공통",category:"산업",icon:"🌐",memo:"뉴올리언스 6/5~8. 미국당뇨병학회. 비만/MASH 치료제 데이터 주목",important:false}
+  // ── 바이오/제약 (뉴스/공시 기반) ──
+  {id:109,date:"2026-04-17",title:"AACR 2026 개막 (확정)",company:"업계공통",category:"산업",icon:"🌐",memo:"샌디에이고 4/17~22. AACR 공식 확정. K-바이오 ADC/이중항체 데이터",important:true},
+  {id:100,date:"2026-03-31",title:"메지온 FUEL-2 탑라인 데이터 (1Q말 예상)",company:"메지온",category:"기업",icon:"💊",memo:"회사 IR: 1Q말 톱라인 발표 목표. SD 2.49로 성공 구간 진입. FDA 기준 p<0.1",important:true},
+  {id:102,date:"2026-06-30",title:"에이비엘바이오 ABL001 풀데이터 (연내 예상)",company:"에이비엘바이오",category:"기업",icon:"💊",memo:"뉴스 보도: 연내 풀데이터 예정. 담도암 2/3상. 글로벌 허가 방향성",important:true},
+  {id:103,date:"2026-10-01",title:"에이비엘바이오 지바스토믹 위암 3상 개시 (4Q 목표)",company:"에이비엘바이오",category:"기업",icon:"💊",memo:"MD투데이 보도: 노바브릿지와 4Q26 3상 개시 목표. FDA 가속승인용",important:false},
+  {id:104,date:"2026-06-30",title:"한미약품 MSD MASH 2b상 결과 (상반기 예상)",company:"한미약품",category:"기업",icon:"💊",memo:"아시아에이 보도: 상반기 2b상 종료 예상. 3상 전환 여부가 핵심",important:true}
 ];
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=7;
+var DATA_VER=8;
 
 // ── State ──
 var state={
