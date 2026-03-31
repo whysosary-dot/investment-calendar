@@ -393,11 +393,18 @@ var DEFAULT_EVENTS=[
   {id:219,date:"2026-07-24",title:"기아 2Q26 실적발표 (잠정)",company:"기아",category:"실적",icon:"📊",memo:"EV 라인업 확대 효과. PBV 사업 매출 첫 반영",link:"https://worldwide.kia.com/kr/company/ir/archive/business-results",important:false},
   {id:220,date:"2026-07-28",title:"LG에너지솔루션 2Q26 실적발표 (잠정)",company:"LG에너지솔루션",category:"실적",icon:"📊",memo:"ESS 비중 확대 효과. 북미 IRA 보조금 반영 실적",link:"https://www.lgensol.com/kr/earnings-announcement",important:false},
   {id:221,date:"2026-08-06",title:"네이버 2Q26 실적발표 (잠정)",company:"네이버",category:"실적",icon:"📊",memo:"상반기 AI 서비스 매출 기여도 평가",link:"https://www.navercorp.com/investment/earningsRelease",important:false},
-  {id:222,date:"2026-08-07",title:"카카오 2Q26 실적발표 (잠정)",company:"카카오",category:"실적",icon:"📊",memo:"카카오톡 광고·카카오페이 성장 추이",link:"https://www.kakaocorp.com/ir/referenceRoom/earningsAnnouncement",important:false}
+  {id:222,date:"2026-08-07",title:"카카오 2Q26 실적발표 (잠정)",company:"카카오",category:"실적",icon:"📊",memo:"카카오톡 광고·카카오페이 성장 추이",link:"https://www.kakaocorp.com/ir/referenceRoom/earningsAnnouncement",important:false},
+  // ── 매크로 (USTR Section 301 조사) ──
+  {id:233,date:"2026-04-15",title:"USTR 무역법 301조 서면의견 제출 마감",company:"업계공통",category:"정책",icon:"⚖️",memo:"2026.3.11 개시. 한국·중국·일본 등 16개국 대상. 조선·반도체·자동차·배터리·철강 전방위 포함. 7월 말 최종 결론 예정. 추가 관세 부과 시 한국 제조업 직격탄. 출처: USTR.gov",link:"https://ustr.gov/about/policy-offices/press-office/press-releases/2026/march/ustr-initiates-section-301-investigations-relating-structural-excess-capacity-and-production",important:true},
+  {id:234,date:"2026-05-05",title:"USTR 무역법 301조 공청회",company:"업계공통",category:"정책",icon:"⚖️",memo:"서면의견(4/15) 제출 후 공청회 개최. 조선·반도체·자동차 업계 의견 진술. 7월 결론 예정. 출처: USTR.gov",link:"https://ustr.gov/about/policy-offices/press-office/press-releases/2026/march/ustr-initiates-section-301-investigations-relating-structural-excess-capacity-and-production",important:false},
+  {id:235,date:"2026-07-31",title:"USTR 무역법 301조 최종 결론 예상",company:"업계공통",category:"정책",icon:"⚖️",memo:"조사 결론 및 추가 관세 부과 여부 결정. 한국 조선·반도체·자동차 관세 리스크. 출처: econmingle.com",link:"https://econmingle.com/economy/trump-section-301-investigation-16-countrie/",important:true},
+
+  // ── 국내 IPO (채비) ──
+  {id:236,date:"2026-04-09",title:"채비 코스닥 상장 (예상)",company:"채비",category:"기업",icon:"📈",memo:"EV 급속충전 인프라 업계 1호 코스닥 상장. 5,900면 직접 운영. 청약 4/1~4/2. 공모가 확정 후 상장 예정. 출처: asiaa.co.kr",link:"https://www.asiaa.co.kr/news/articleView.html?idxno=244963",important:false}
 ];
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=24;
+var DATA_VER=25;
 
 // ── Weekly Insight (auto-updated every Monday) ──
 var WEEKLY_INSIGHT={
@@ -408,7 +415,7 @@ var WEEKLY_INSIGHT={
     {badge:"hot",title:"🏦 한국은행 금통위 (4/10) — 기준금리 2.50% 인하 시그널 여부 관건",text:"BOK 6회 연속 동결 중(2.50%). 내수 저성장 압력 가중 속 인하 전환 시점 논의 본격화 전망. 미 연준 금리 3.50~3.75%(3월 동결), 시장은 9~10월 첫 인하 전망. 한미 금리차 축소 가능성 점검."},
     {badge:"watch",title:"🚢 Sea Japan (4/22~24) + 조선 1Q26 실적 릴레이",text:"도쿄빅사이트 600개사 30개국 참가. HD한국조선해양(4/23), 삼성중공업(4/24) 1Q 실적 동시 발표. 수주목표 YTD 달성률, 후판 원가, SHIPS Act 입법 상황이 핵심 체크포인트."},
     {badge:"watch",title:"🎮 붉은사막 500만장 임박 + 칠대죄 장기흥행 주시",text:"붉은사막 스팀 평가 '매우 긍정적' 상승, 500만장 조기 달성 목표(CEO). 증권가 연내 450~700만장 전망. 넷마블 칠대죄 전 플랫폼 1위 달성 후 엔드 콘텐츠 업데이트 장기 리텐션이 1Q 실적 핵심."},
-    {badge:"info",title:"🏭 JMTBA 3월 수주 속보 (4/9) — 반도체·자동차 설비투자 선행지표",text:"일본 공작기계 3월 수주실적 발표. DN오토모티브(DN솔루션즈 85%+헬러 인수) 밸류에이션 직결. ASML(4/15)→TSMC(4/16) 반도체 실적으로 이어지는 글로벌 설비투자 흐름 점검 구간."}
+    {badge:"hot",title:"⚖️ USTR 무역법 301조 서면의견 마감 (4/15) — 조선·반도체·자동차 관세 리스크",text:"2026.3.11 한국 등 16개국 대상 Section 301 조사 개시. 4/15 서면의견 마감→5/5 공청회→7월 결론 예정. 조선·반도체·자동차 등 한국 제조업 84% 직격. 추가 관세 가능성 점검 필수."}
   ]
 };
 
