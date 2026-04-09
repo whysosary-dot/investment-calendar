@@ -155,6 +155,9 @@ button,input,select,textarea{font-family:inherit;-webkit-tap-highlight-color:tra
 .modal-btn{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none}
 .modal-btn.edit{background:rgba(88,86,214,.1);color:#5856d6}
 .modal-btn.del{background:rgba(255,59,48,.1);color:#ff3b30}
+.modal-upd{margin:0 26px 8px;font-size:11px;color:#86868b;display:flex;align-items:center;gap:4px}
+.modal-upd .dot{width:6px;height:6px;border-radius:50%;background:#34c759;display:inline-block}
+.upd-badge{display:inline-block;width:6px;height:6px;border-radius:50%;background:#34c759;margin-left:3px;vertical-align:middle;flex-shrink:0}
 
 /* Form Modal */
 .form{background:#ffffff;border-radius:16px;padding:22px 26px;max-width:500px;width:92%;box-shadow:0 20px 60px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto}
@@ -238,7 +241,7 @@ var DEFAULT_EVENTS=[
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",link:"",important:true},
 
   // ── 조선 (한국 상장사) ──
-  {id:120,date:"2026-04-23",title:"HD한국조선해양 1Q26 실적발표 (확정)",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"2026 수주목표 $23.3B(YoY+28%). YTD $5.3B 수주(43척)",link:"https://hd.com/en/investors/ir-data/list",important:true},
+  {id:120,date:"2026-04-23",title:"HD한국조선해양 1Q26 실적발표 (확정)",company:"HD한국조선해양",category:"실적",icon:"📊",memo:"조선 빅3 1Q26 합산 영업이익 1.92조(YoY+55%) 전망. 2026 수주목표 $23.3B(YoY+28%). YTD $5.3B 수주(43척). LNG선·유조선 견인. 이란 휴전으로 탱커 수요 변동 가능성 모니터링",link:"https://hd.com/en/investors/ir-data/list",important:true,lastUpdated:"2026-04-10"},
   {id:121,date:"2026-04-24",title:"삼성중공업 1Q26 실적발표 (확정)",company:"삼성중공업",category:"실적",icon:"📊",memo:"2026 매출 전망 2.83~2.92조원",link:"https://www.samsungshi.com/eng/Invest/fin_highlight.aspx",important:true},
   {id:122,date:"2026-05-18",title:"한화오션 1Q26 실적발표 (확정)",company:"한화오션",category:"실적",icon:"📊",memo:"영업이익 YoY+50% 전망(1.668조). 신규 수주 $13.5B 예상(YoY+34%)",link:"https://www.hanwhaoceanco.com/en/ir",important:true},
 
@@ -254,7 +257,7 @@ var DEFAULT_EVENTS=[
   {id:138,date:"2026-10-01",title:"IMO 넷제로 연료기준 협상 재개 (예상)",company:"업계공통",category:"정책",icon:"📜",memo:"MEPC 2025.10 표결 연기(찬57:반49). 2026 하반기 협상 재개 예정. 발효 시점 2028년 이후로 후퇴. 글로벌 연료기준+탄소가격제",link:"https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-net-zero-shipping-talks-to-resume-in-2026.aspx",important:true},
 
   // ── 일본 공작기계수주 (JMTBA 월간 속보, 매월 익월 초 발표) ──
-  {id:170,date:"2026-04-09",title:"JMTBA 3월 공작기계수주 속보",company:"JMTBA",category:"산업",icon:"🏭",memo:"일본공작기계공업회 3월 수주실적 속보. 반도체/자동차 설비투자 선행지표",link:"https://www.jmtba.or.jp/english/category/machine-tool-statistics/",important:true},
+  {id:170,date:"2026-04-09",title:"JMTBA 3월 공작기계수주 속보 (4/9 발표)",company:"JMTBA",category:"산업",icon:"🏭",memo:"4/9 발표 완료. 일본공작기계공업회 3월 수주실적 속보. 반도체/자동차 설비투자 선행지표. 12월 수주 1,586.4억엔(MoM+15.8%, YoY+10.9%) 기록 후 추세 확인",link:"https://www.jmtba.or.jp/english/category/machine-tool-statistics/",important:true,lastUpdated:"2026-04-10"},
   {id:171,date:"2026-05-11",title:"JMTBA 4월 공작기계수주 속보",company:"JMTBA",category:"산업",icon:"🏭",memo:"일본공작기계공업회 4월 수주실적 속보",link:"https://www.jmtba.or.jp/english/category/machine-tool-statistics/",important:false},
   {id:172,date:"2026-06-10",title:"JMTBA 5월 공작기계수주 속보",company:"JMTBA",category:"산업",icon:"🏭",memo:"일본공작기계공업회 5월 수주실적 속보",link:"https://www.jmtba.or.jp/english/category/machine-tool-statistics/",important:false},
   {id:173,date:"2026-07-10",title:"JMTBA 6월 공작기계수주 속보 (상반기 합산)",company:"JMTBA",category:"산업",icon:"🏭",memo:"상반기 누계 수주실적 확인. 하반기 설비투자 방향성 가늠",link:"https://www.jmtba.or.jp/english/category/machine-tool-statistics/",important:true},
@@ -302,8 +305,8 @@ var DEFAULT_EVENTS=[
   {id:79,date:"2026-03-25",title:"SEMICON China 2026 (완료)",company:"업계공통",category:"산업",icon:"🌐",memo:"상하이 3/25~27 완료. 중국 반도체 장비/소재 동향. 미국 수출규제 강화 속 중국 내수 장비 투자 현황 점검",link:"https://www.semiconchina.org/",important:false},
   {id:96,date:"2026-04-15",title:"ASML 1Q26 실적발표 (확정)",company:"ASML",category:"실적",icon:"📊",memo:"EUV High-NA 출하 현황. 2nm 전환 수혜",link:"https://www.asml.com/en/investors/financial-calendar",important:true},
   {id:83,date:"2026-04-16",title:"TSMC 1Q26 실적발표 (확정)",company:"TSMC",category:"실적",icon:"📊",memo:"3nm 가동률, AI 가속기 수주",link:"https://investor.tsmc.com/english/financial-calendar",important:true},
-  {id:72,date:"2026-04-28",title:"삼성전자 1Q26 실적발표 (확정)",company:"삼성전자",category:"실적",icon:"📊",memo:"4/28 오후3시 확정. HBM4 매출 반영. 1Q26 컨센서스 매출 115.5조·영업이익 36.5~43조(키움 서프라이즈 전망). 2026 연간 영업이익 170~220조 시나리오",link:"https://www.samsung.com/sec/ir/ir-events-presentations/events/",important:true},
-  {id:73,date:"2026-04-29",title:"SK하이닉스 1Q26 실적발표 (확정)",company:"SK하이닉스",category:"실적",icon:"📊",memo:"4/29 확정. 1Q26 매출 44.85조·영업이익 23.2조 전망. HBM4 양산 본격화. DRAM ASP 55~60% 추가 상승(TrendForce)",link:"https://www.skhynix.com/ir/UI-FR-IR01/",important:true},
+  {id:72,date:"2026-04-28",title:"삼성전자 1Q26 확정실적 발표 (4/28, 컨콜 4/30)",company:"삼성전자",category:"실적",icon:"📊",memo:"4/28 확정실적·4/30 10AM 컨콜. 잠정실적(4/7): 매출 133조(사상 첫 분기 100조 돌파)·영업익 57.2조(사상 최대, YoY+755%). 컨센 40.2조 대비 +17조 어닝서프라이즈. 반도체 영업이익 90%+. 목표가 40만원 상향(다수 증권사). 2026 연간 영업이익 200조 전망. HBM4 양산·DRAM ASP 급등·메모리 슈퍼사이클",link:"https://www.samsung.com/sec/ir/ir-events-presentations/events/",important:true,lastUpdated:"2026-04-10"},
+  {id:73,date:"2026-04-29",title:"SK하이닉스 1Q26 확정실적 발표 (4/29)",company:"SK하이닉스",category:"실적",icon:"📊",memo:"4/29 확정실적 발표(잠정 미공시). 삼성전자 어닝서프라이즈 후 컨센 급상향: 한투證 매출 55.3조·영업익 38.5조, 일부 40조 근접. 목표가 200만원 상향. 2026 연간 영업이익 170조 전망. HBM4 양산+DRAM ASP 급등+EUV capacity 제약 속 고부가 수요 집중. FOMC(4/29)과 동일일",link:"https://www.skhynix.com/ir/UI-FR-IR01/",important:true,lastUpdated:"2026-04-10"},
   {id:150,date:"2026-04-29",title:"Meta LlamaCon 2026 (미확정)",company:"Meta",category:"산업",icon:"🌐",memo:"AI 오픈소스 Llama 컨퍼런스. 2025년 4/29 첫 개최. 2026년 일정은 아직 공식 미발표. 날짜는 작년 기준 추정",link:"https://www.llama.com/events/llamacon/2025/",important:false},
   {id:151,date:"2026-05-05",title:"AMD 1Q26 실적발표 (확정)",company:"AMD",category:"실적",icon:"📊",memo:"MI350 AI칩 출하, 데이터센터 GPU 경쟁",link:"https://ir.amd.com/news-events/ir-calendar",important:true},
   {id:74,date:"2026-05-19",title:"Google I/O 2026 (확정)",company:"Google",category:"산업",icon:"🌐",memo:"마운틴뷰 5/19~20. 구글 공식 발표 확정",link:"https://io.google/2026/",important:true},
@@ -368,7 +371,7 @@ var DEFAULT_EVENTS=[
   {id:208,date:"2026-04-07",title:"LG전자 1Q26 잠정실적 발표 (완료, 역대 최대 매출)",company:"LG전자",category:"실적",icon:"📊",memo:"4/7 발표 완료. 매출 23조7,330억(YoY+4.4%, 1분기 역대 최대), 영업이익 1조6,736억(YoY+32.9%). 컨센 매출 23.3조·영업익 1.38조 상회. 미 관세·중동전쟁에도 생활가전 리더십+전장 등 B2B 성장이 견인",link:"https://www.news1.kr/industry/general-industry/6126559",important:true},
 
   // 한국은행 금통위
-  {id:209,date:"2026-04-10",title:"한국은행 금통위 (4월, 이창용 총재 마지막 금통위)",company:"한국은행",category:"매크로",icon:"🏦",memo:"기준금리 2.50%. 이창용 총재 임기 내 마지막 금통위. 7회 연속 동결 유력(전문가 만장일치). 이란전쟁 장기화 속 유가·환율 고공행진, 물가·성장 불확실성 동시 확대. 일부 전문가는 3Q 금리 인상 전망, 70%는 변경 시점을 2027년 이후로 예상. 시장 관심은 금리 결정보다 총재 고별 커뮤니케이션",link:"https://www.ajunews.com/view/20260406134108858",important:true},
+  {id:209,date:"2026-04-10",title:"한국은행 금통위 D-Day (이창용 총재 마지막 금통위)",company:"한국은행",category:"매크로",icon:"🏦",memo:"오늘(4/10) 기준금리 결정. 현행 2.50% 동결 만장일치 전망. 이창용 총재 임기 내 마지막 금통위. 미이란 휴전 합의(4/8) 후 유가 14%+ 급락으로 인플레 압력 일부 완화 기대. 그러나 70% 전문가 금리 변경 시점 2027년 이후 전망, 20%는 3Q 인상 예상. 시장 관심: 총재 고별 커뮤니케이션·차기 총재 인선 시그널·이란 휴전 후 통화정책 방향성 재평가",link:"https://www.ajunews.com/view/20260406134108858",important:true,lastUpdated:"2026-04-10"},
   {id:210,date:"2026-05-28",title:"한국은행 금통위 (5월)",company:"한국은행",category:"매크로",icon:"🏦",memo:"1Q26 GDP 확인 후 판단. 금리 인하 사이클 진입 여부 핵심",link:"https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643",important:true},
   {id:211,date:"2026-07-16",title:"한국은행 금통위 (7월)",company:"한국은행",category:"매크로",icon:"🏦",memo:"상반기 경기 평가 후 하반기 통화정책 방향성 결정",link:"https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643",important:false},
   {id:212,date:"2026-08-27",title:"한국은행 금통위 (8월)",company:"한국은행",category:"매크로",icon:"🏦",memo:"2Q26 성장률 확인 후 금리 인하 본격화 가능성",link:"https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643",important:false},
@@ -445,27 +448,33 @@ var DEFAULT_EVENTS=[
 
   // ── 추가 이벤트 (2026-04-04 자동 업데이트) ──
   {id:271,date:"2026-05-14",title:"미중 정상회담 (확정, 5/14~15)",company:"업계공통",category:"정책",icon:"🌐",memo:"트럼프 방중·시진핑 회담 5/14~15 확정. 당초 3/31~4/2 예정→이란전쟁으로 5월 중순 연기, 일정 3일→2일 단축. 무역·관세·반도체 수출규제 등 핵심 의제. 미중 관계 방향성에 따라 반도체·배터리·자동차 업종 직접 영향",link:"https://www.asiatoday.co.kr/kn/view.php?key=20260326010008197",important:true},
-  {id:272,date:"2026-04-08",title:"미국-이란 전쟁 6주째 (지정학 리스크 지속)",company:"업계공통",category:"매크로",icon:"⚠️",memo:"개전 6주째. 트럼프 4/7 협상 시한 경과 후 대면협상 가능성 부상. 걸프 해역 3,200척 선박 발묶임, 호르무즈 조건부 통과 유지. 유가·환율 고공행진 지속(WTI $110대). 금통위 4/10 동결 배경. 방산/조선 수혜 vs 소비재·항공 리스크 심화",link:"https://www.ytn.co.kr/_ln/0104_202604051056213990",important:true},
+  {id:272,date:"2026-04-08",title:"미국-이란 2주 휴전 합의 (4/8, 호르무즈 개방 조건부)",company:"업계공통",category:"매크로",icon:"🕊️",memo:"개전 39일만에 극적 휴전 합의(4/8). 트럼프 최후통첩 1.5시간 전 타결. 이란 호르무즈 해협 '완전·즉각·안전한 개방' 조건부 2주간 공격 중단. 이란 10개항 종전안 제시→이슬라마바드(파키스탄) 4/10 대면협상 예정. 유가 급락: WTI·브렌트유 14%+ 하락. 이란 '승리' 주장 vs 미국 '군사목표 초과달성' 주장. 45일 내 포괄적 종전 합의 도출 목표. 쟁점: 해협 통제권, 미군 철수, 대이란 제재, 전쟁 배상. 레바논·헤즈볼라 포함 여부 이견",link:"https://www.ytn.co.kr/_cs/_ln_0104_202604081026588010_005.html",important:true,lastUpdated:"2026-04-10"},
 
   // ── 추가 이벤트 (2026-04-06 자동 업데이트) ──
-  {id:273,date:"2026-04-10",title:"채비 기관 수요예측 시작 (4/10~16)",company:"채비",category:"기업",icon:"📈",memo:"채비 코스닥 상장 수요예측 재개. 희망공모가 12,300~15,300원. 총 1,000만주 공모. 전기차 충전 인프라 기업. KB증권/삼성증권/대신증권/하나증권 공동주관",link:"https://news.bizwatch.co.kr/article/market/2026/04/03/0018",important:false},
+  {id:273,date:"2026-04-10",title:"채비 기관 수요예측 시작 D-Day (4/10~16)",company:"채비",category:"기업",icon:"📈",memo:"오늘(4/10) 수요예측 시작. 희망공모가 12,300~15,300원. 100% 신주모집 1,000만주(1,230~1,530억). 공모 후 시총 5,867~7,297억. EV 급속충전 인프라 1호 상장. 매출 1,017억(2025) 성장세이나 영업적자 지속. 청약 4/20~21, 상장 4/30 예정. KB/삼성/대신/하나 공동주관",link:"https://news.bizwatch.co.kr/article/market/2026/04/03/0018",important:false,lastUpdated:"2026-04-10"},
   {id:274,date:"2026-04-20",title:"채비 공모주 청약 (4/20~21)",company:"채비",category:"기업",icon:"📈",memo:"채비 일반투자자 청약 이틀간 진행. 납입일 4/23. 상장일 4월 말 예상",link:"https://news.bizwatch.co.kr/article/market/2026/04/03/0018",important:false},
-  {id:275,date:"2026-04-15",title:"붉은사막 500만장 돌파 초읽기 (4월 중순)",company:"펄어비스",category:"기업",icon:"🎮",memo:"4/7 현재 500만장 돌파 초읽기(4/1 400만장 기준, 일 평균 33만장+). 콘솔(PS5 아시아 1위)+Steam 동반 흥행. 메리츠 1Q 450만장·2Q 850만장 전망. 손익분기점 초과, 정가 전략·초고속 피드백 주효. 시총 5조 재돌파 시도",link:"https://www.newspim.com/news/view/20260407000829",important:true}
+  {id:275,date:"2026-04-15",title:"붉은사막 500만장 돌파 임박 (4월 중순)",company:"펄어비스",category:"기업",icon:"🎮",memo:"허진영 CEO '500만장 소식 곧 알리겠다' 발언(4/1 주총). 4/1 400만장 기준 일 평균 33만장+ 추세. 콘솔(PS5 아시아 1위)+Steam 동반 흥행. 메리츠 1Q 450만장·2Q 850만장, DS투자 800만장 상향. 손익분기점 초과, 정가 전략·초고속 피드백 주효. 시총 5조 재돌파 시도. 창립 16년 만에 연매출 신기록 전망",link:"https://www.newspim.com/news/view/20260407000829",important:true,lastUpdated:"2026-04-10"},
+
+  // ── 추가 이벤트 (2026-04-10 자동 업데이트) ──
+  {id:276,date:"2026-04-10",title:"이슬라마바드 미국-이란 종전 대면협상 개시",company:"업계공통",category:"매크로",icon:"🕊️",memo:"파키스탄 이슬라마바드에서 미국-이란 종전 협상 시작(4/10). 4/8 2주 휴전 합의 이후 첫 대면. 이란 10개항 종전안(해협 통제권·미군 철수·제재 완화·전쟁 배상 등) 논의. 45일 내 포괄적 종전 합의 도출 목표. 합의 성사 시 유가 추가 하락 가능(WTI $90대 진입), 실패 시 전쟁 재개 리스크. 조선·방산 수혜 감소 vs 소비재·항공 회복 기대",link:"https://imnews.imbc.com/news/2026/world/article/6813525_36925.html",important:true,lastUpdated:"2026-04-10"},
+  {id:277,date:"2026-04-30",title:"채비 코스닥 상장일 (예정)",company:"채비",category:"기업",icon:"📈",memo:"EV 급속충전 인프라 1호 코스닥 상장. 수요예측 4/10~16 진행중, 청약 4/20~21, 납입 4/23, 상장 4/30 예정. 희망공모가 12,300~15,300원. 시가총액 5,867~7,297억원. 매출 1,017억(2025), 영업적자 지속. KB/삼성/대신/하나 공동주관",link:"https://news.bizwatch.co.kr/article/market/2026/04/03/0018",important:false,lastUpdated:"2026-04-10"},
+  {id:278,date:"2026-04-22",title:"미국-이란 2주 휴전 만료 (종전 합의 여부 분수령)",company:"업계공통",category:"매크로",icon:"⚠️",memo:"4/8 합의 기준 2주 후 휴전 만료. 이 시점까지 종전 합의 미도출 시 전쟁 재개 가능. 유가·환율·방산·조선 섹터 변동성 극대화 예상. 미중 정상회담(5/14~15)과도 연계",link:"https://www.seoul.co.kr/news/international/2026/04/07/20260407001007",important:true,lastUpdated:"2026-04-10"},
+  {id:279,date:"2026-04-08",title:"미이란 휴전 후 유가 급락 (WTI·브렌트유 14%+ 하락)",company:"업계공통",category:"매크로",icon:"📉",memo:"4/8 휴전 합의 직후 국제유가 급락. WTI 14%+, 브렌트유 14%+ 하락. 개전 6주간 $110대 고착→$90대 진입 가능성. 인플레 압력 완화 기대→금리인하 가능성 재부상. 소비재·항공·운송 수혜 vs 방산·에너지 약세 전환. 조선(탱커 신조 모멘텀) 변동 가능. 한은 금통위(4/10) 동결 결정에도 하반기 인하 기대감 강화",link:"https://www.ytn.co.kr/_cs/_ln_0104_202604081026588010_005.html",important:true,lastUpdated:"2026-04-10"}
 ];
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=35;
+var DATA_VER=36;
 
 // ── Weekly Insight (auto-updated every Monday) ──
 var WEEKLY_INSIGHT={
-  date:"2026-04-09",
+  date:"2026-04-10",
   items:[
-    {badge:"hot",title:"🏦 금통위 D-1 (4/10) — 이창용 총재 고별 회의, 7연속 동결 유력",text:"이창용 한은총재 임기 내 마지막 금통위. 전문가 만장일치 동결 전망(기준금리 2.50% 유지). 이란전쟁 장기화 속 고유가·고환율 고착, 물가·성장 불확실성 동시 확대로 인하 명분 부재. 70% 전문가 금리 변경 시점을 2027년 이후로 예상. 시장 관심은 결정 자체보다 총재 고별 커뮤니케이션과 차기 총재 인선 시그널."},
-    {badge:"hot",title:"📊 SK하이닉스 컨센 급상향 — ASML(4/15)·TSMC(4/16) 글로벌 실적 릴레이 개막",text:"삼성전자 4/7 사상 최대 어닝서프라이즈(영업익 57.2조) 이후 SK하이닉스 1Q26 컨센 재상향: 한투證 매출 55.3조·영업익 38.5조, 일부 증권사 영업익 40조 근접 전망. SK하이닉스 확정실적은 4/29(잠정 미공시). 다음주 ASML(4/15)·TSMC(4/16)가 글로벌 반도체 슈퍼사이클·EUV capacity·AI 가속기 수요의 선행지표."},
-    {badge:"hot",title:"💊 AACR 2026 D-8 (4/17~22) — K-바이오 ADC 대거 발표",text:"샌디에이고 4/17~22 개막. 리가켐바이오 BCMA ADC 2종(ConjuAll 기술·안구독성 개선) 포스터 발표 예정. HLB그룹·알지노믹스·오름테라퓨틱·동아에스티 등 대거 참가. 유한양행 아미반타맙SC+렉라자 확장 데이터 주목. 셀트리온 앱토즈마 일본 출시(4/28)까지 K-바이오 모멘텀 이어짐."},
-    {badge:"hot",title:"⚠️ 이란전쟁 6주째 — 유가 $110대 고착, 방산·조선 수혜 구도 지속",text:"개전 6주차. 트럼프 4/7 협상 시한 경과 후 대면협상 가능성 부상했으나 WTI $110대 고유가 고착. 걸프 3,200척 발묶임·호르무즈 조건부 통과 유지. 인플레 압력·소비재·항공 리스크 심화 vs 방산·조선(탱커 신조)·에너지 수혜. 미중 정상회담(5/14~15)까지 정치변수 지속."},
-    {badge:"watch",title:"🎮 붉은사막 500만장 초읽기 + 넷마블·크래프톤 신작 릴레이",text:"붉은사막 500만장 4월 중순 돌파 확실시(4/1 400만장, 일 평균 33만장+). PS5 아시아 1위+Steam 동반 흥행, 시총 5조 재돌파 시도. 메리츠 목표가 10만원(1Q 450만·2Q 850만 전망). 넷마블 몬길:스타다이브(4/15)·SOL인챈트(4/24), 크래프톤 어센드투제로(7/13) 투트랙. 게임사 1Q 실적(5월) 기대감 선반영."},
-    {badge:"watch",title:"⚖️ USTR 301조 D-6 (4/15) + 채비 수요예측 오늘부터 재개",text:"301조 서면의견 4/15 마감→5/5 공청회→7월 결론. 한국·중국·일본 등 16개국 대상, 조선·반도체·자동차·배터리·철강 직접 영향. 미중 정상회담 5/14~15. 채비 기관 수요예측 4/10~16 재개(공모가 12,300~15,300원, 전기차 충전 인프라), 코스모로보틱스 4/16~22 이어짐."}
+    {badge:"hot",title:"🕊️ 미이란 극적 휴전 (4/8) — 유가 14%+ 급락, 섹터 대전환 시작",text:"개전 39일만에 2주 휴전+호르무즈 개방 합의(4/8). 오늘(4/10) 이슬라마바드 대면협상 개시. 유가 WTI·브렌트유 14%+ 급락→$90대 진입 가능성. 인플레 압력 완화→금리인하 기대 재부상. 소비재·항공·운송 회복 vs 방산·에너지 약세 전환. 4/22 휴전 만료 시점이 핵심 변수—종전 합의 실패 시 전쟁 재개 리스크."},
+    {badge:"hot",title:"🏦 금통위 D-Day (4/10) — 이창용 마지막 회의, 휴전 후 통화정책 재평가",text:"오늘 이창용 총재 마지막 금통위. 기준금리 2.50% 동결 전망 만장일치. 그러나 미이란 휴전(4/8) 후 유가 14%+ 급락으로 인플레 기대 급변—하반기 금리인하 가능성 재부상. 70% 전문가 금리 변경 2027년 이후 전망이었으나, 유가 안정 시 시나리오 수정 불가피. 총재 고별 커뮤니케이션·차기 총재 인선 시그널 주목."},
+    {badge:"hot",title:"📊 ASML(4/15)·TSMC(4/16) — 반도체 슈퍼사이클 확인 릴레이",text:"삼성전자 1Q26 어닝서프라이즈(영업익 57.2조, 사상 최대) 이후 SK하이닉스 컨센 40조 근접. 다음주 ASML(4/15)·TSMC(4/16)이 글로벌 EUV capacity·AI 가속기 수요 확인. 삼성 목표가 40만원, SK하이닉스 200만원 상향. 양사 합산 2026년 영업이익 370조 시대 전망. 4/28~29 확정실적+FOMC 동시 이벤트."},
+    {badge:"hot",title:"💊 AACR 2026 D-7 (4/17~22) — K-바이오 ADC 총출동",text:"샌디에이고 4/17~22 개막. 리가켐바이오 BCMA ADC 2종(ConjuAll·안구독성 개선) 포스터 발표, IND 준비 가속. HLB·알지노믹스·오름테라퓨틱·동아에스티·파로스아이바이오·와이바이오로직스 대거 참가. 유한양행 아미반타맙SC+렉라자 확장 데이터. 셀트리온 앱토즈마 일본 출시(4/28). 한미약품 4년 연속 국내 최다 발표."},
+    {badge:"watch",title:"🎮 붉은사막 500만장 임박 + 넷마블 몬길 스타다이브(4/15)",text:"CEO '곧 500만장 소식 알리겠다' 발언. 4/1 400만장 기준 일 평균 33만장+, 4월 중순 돌파 확실시. 메리츠 1Q 450만·2Q 850만 전망, 목표가 10만원. 넷마블 몬길:스타다이브 4/15 글로벌 출시(PC·모바일), SOL인챈트 4/24. 게임사 1Q 실적(5월) 기대감."},
+    {badge:"watch",title:"⚖️ USTR 301조 D-5 (4/15) + IPO 채비·코스모로보틱스",text:"301조 서면의견 4/15 마감→5/5 공청회→7월 결론. 한국·중국·일본 등 16개국, 조선·반도체·자동차·배터리·철강 영향. 채비 수요예측 4/10~16 진행중(공모가 12,300~15,300원, EV충전 인프라 1호 상장), 코스모로보틱스 4/16~22(웨어러블 로봇). 미중 정상회담 5/14~15."}
   ]
 };
 
@@ -606,7 +615,7 @@ function render(){
     var c=catC(e.category);
     h+='<div class="ev-li'+(e.important?" important":"")+'" style="border-left-color:'+c.bd+'" onclick="showModal('+e.id+')">';
     h+='<div class="d">'+fmtD(e.date)+' · '+daysUntil(e.date)+'</div>';
-    h+='<div class="t">'+(e.important?"⚡ ":"")+e.icon+' '+esc(e.title)+'</div>';
+    h+='<div class="t">'+(e.important?"⚡ ":"")+e.icon+' '+esc(e.title)+(e.lastUpdated?'<span class="upd-badge" title="업데이트: '+e.lastUpdated+'"></span>':"")+'</div>';
     h+='<div class="c">'+esc(e.company)+'<span class="badge" style="background:'+c.bg+';color:'+c.tx+'">'+e.category+'</span></div>';
     h+='</div>';
   });
@@ -727,7 +736,7 @@ function renderCard(e){
   h+='<span class="evc-ti" style="color:'+c.tx+'">'+esc(e.title)+'</span>';
   if(e.important)h+='<span class="evc-imp">중요</span>';
   h+='</div><div class="evc-meta"><span>'+esc(e.company)+'</span><span>·</span><span>'+fmtD(e.date)+'</span>';
-  h+='<span class="evc-dd" style="color:'+c.tx+'">'+daysUntil(e.date)+'</span></div></div>';
+  h+='<span class="evc-dd" style="color:'+c.tx+'">'+daysUntil(e.date)+'</span>'+(e.lastUpdated?'<span class="upd-badge" title="업데이트: '+e.lastUpdated+'"></span>':"")+'</div></div>';
   return h;
 }
 
@@ -756,6 +765,7 @@ function showModal(id){
     if(e.link)h+='<br><a href="'+esc(e.link)+'" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;color:#5856d6;font-weight:700;font-size:13px">🔗 출처 확인하기</a>';
     h+='</div>';
   }
+  if(e.lastUpdated){h+='<div class="modal-upd"><span class="dot"></span>최종 업데이트: '+e.lastUpdated+'</div>';}
   h+='<div class="modal-acts">';
   h+='<button class="modal-btn edit" onclick="editEvent('+e.id+')">✏️ 수정</button>';
   h+='<button class="modal-btn del" onclick="deleteEvent('+e.id+')">🗑️ 삭제</button>';
