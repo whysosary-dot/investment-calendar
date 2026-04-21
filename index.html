@@ -326,6 +326,12 @@ var DEFAULT_EVENTS=[
   {id:156,date:"2026-10-13",title:"SEMICON West 2026 (확정)",company:"업계공통",category:"산업",icon:"🌐",memo:"샌프란시스코 10/13~15. 북미 최대 반도체 전시회",link:"https://www.semiconwest.org/",important:true},
   {id:157,date:"2026-12-09",title:"SEMICON Japan 2026 (확정)",company:"업계공통",category:"산업",icon:"🌐",memo:"도쿄 12/9~11. 일본 반도체 장비/소재 동향",link:"https://www.semiconjapan.org/en",important:false},
 
+  // ── Bloom Energy / 코세스 (2026-04-21 추가) ──
+  {id:76,date:"2026-04-28",title:"Bloom Energy 1Q26 실적발표 (4/28 장마감 후, Oracle 2.8GW+AEP 1GW 백로그 확인)",company:"Bloom Energy",category:"실적",icon:"⚡",memo:"4/28 장마감 후(PT 14:00/ET 17:00) 컨콜. 2025 매출 $2.02B(YoY+37%), 2026 가이던스 매출 YoY +58% 제시. 백로그 ~$20B(YoY+65%). 1Q에 Oracle OCI 2.8GW MOU(4/14)·AEP 1GW $2.65B(1월) 반영 규모 확인. SK ecoplant 500MW 협력 진행. SOFC AI 데이터센터 수요·주가 연초 대비 +80% 구간",link:"https://investor.bloomenergy.com/events-and-presentations/default.aspx",important:true,lastUpdated:"2026-04-21"},
+  {id:77,date:"2026-04-14",title:"Bloom Energy-Oracle 2.8GW SOFC 파트너십 발표 (완료, 주가 +23%)",company:"Bloom Energy",category:"기업",icon:"⚡",memo:"4/14 Oracle OCI 데이터센터용 최대 2.8GW 고체산화물연료전지(SOFC) 공급 MOU 체결. 발표 당일 주가 +23% 급등. AEP 1GW(1월)에 이어 하이퍼스케일러 대형 수주 연속. 2026 SOFC AI 데이터센터 레퍼런스 확장 모멘텀",link:"https://investor.bloomenergy.com/press-releases/default.aspx",important:true,lastUpdated:"2026-04-21"},
+  {id:78,date:"2026-01-08",title:"Bloom Energy-AEP 1GW $2.65B SOFC 공급계약 (완료)",company:"Bloom Energy",category:"기업",icon:"⚡",memo:"1월 American Electric Power와 최대 1GW·$2.65B 고체산화물연료전지 공급 계약. 세계 최대 상업용 연료전지 조달. 초도 100MW 주문+2026 확장 예정. AI 데이터센터 전력난 해법으로 SOFC 채택 확산",link:"https://fuelcellsworks.com/2026/01/08/electrolyzer/american-electric-power-locks-in-2-65bn-deal-to-deploy-up-to-1gw-of-bloom-energy-fuel-cells",important:true,lastUpdated:"2026-04-21"},
+  {id:80,date:"2026-05-15",title:"코세스(089890) 1Q26 실적발표 (5월 중순 예상, HBM 후공정 수혜)",company:"코세스",category:"실적",icon:"📊",memo:"KOSDAQ 소형주 통상 1Q 실적 5월 중순 공시(정확일자 DART 업데이트 필요). 2025년 3Q 누적 매출 +18.7%·영업이익 흑자전환. 반도체 후공정 솔더볼 어태치 장비 주력(SK하이닉스·삼성전자 고객). HBM4 16단 양산(11.7Gbps)·HBM4E(2027)·HBM5(2029~30) 코퍼필러·솔더볼 어태치 수혜 지속. HBM4E 하이브리드본딩 도입 후에도 스택 전·후공정 장비 신수요 병행",link:"https://kind.krx.co.kr/main.do",important:false,lastUpdated:"2026-04-21"},
+
   // ── 바이오/제약 ──
   {id:100,date:"2026-10-01",title:"메지온 FUEL-2 임상 종료 및 최종 결과 (10월 예정)",company:"메지온",category:"기업",icon:"💊",memo:"6차 중간분석 SD 2.49 확인→환자수 추가 불필요. P<0.001 예상(FDA 기준 P<0.1 대비 여유). 임상 2026.10 종료 예정. 최종 톱라인 데이터 연내 발표 전망",link:"https://www.edaily.co.kr/News/Read?newsId=02440326645318048",important:true},
   {id:160,date:"2026-03-17",title:"셀트리온 AVTOZMA SC 미국 출시 (완료)",company:"셀트리온",category:"기업",icon:"💊",memo:"아토졸리주맙(AVTOZMA) 피하주사 미국 판매 개시 완료. 일본 출시 4/28 예정",link:"https://www.prnewswire.com/news-releases/celltrion-announces-us-availability-of-avtozma-tocilizumab-anoh-subcutaneous-sc-formulation-302712962.html",important:true},
@@ -538,7 +544,7 @@ var DEFAULT_EVENTS=[
 ];
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=52;
+var DATA_VER=53;
 var LAST_UPDATED="2026-04-21";
 
 // ── Weekly Insight (auto-updated every Monday) ──
@@ -550,7 +556,8 @@ var WEEKLY_INSIGHT={
     {badge:"hot",title:"💾 반도체 슈퍼사이클 3중 검증 진입: 수출 +134%→삼성 확정(4/28)→SK하이닉스 40조 근접(4/29)→샌디스크→키옥시아",text:"ASML(€8.8B, 2026 가이던스 €36~40B)·TSMC(순익 +58%) 선행지표 통과. 오늘 관세청 4월 1~20일 반도체 수출 $151억(+134.1%)·전체 비중 34.7%로 역대 최대 확인. SK하이닉스 영업익 컨센 에프엔 34.9조→증권사 5곳 평균 40조 근접(미래에셋 40.6조). DRAM ASP QoQ+101%·이익률 70~82%. 삼성전자 HBM4 '불량 제로'로 엔비디아 공급망 진입 확정(13Gb로 요구사항 크게 상회). 목표가: SK증권 200만원·IBK/한투 180만원."},
     {badge:"watch",title:"🚢 조선 빅3 4/23~5/18 실적 러시 — 합산 영업익 2조 육박 속 이란 변수가 VLCC 수요 좌우",text:"HD한국조선(4/23) 매출 7.79조(+15%)·영업익 1.19조(+39%) 분기 최대 경신 기대. YTD 수주 43척 $53.4억(연목표 22.9%). 삼성중공업(4/24) 매출 2.83~2.92조. 한화오션(5/18) VLCC 10척·LNG 4척·WTIV 1척 누적(총 15척 $28.4억)—4/9 VLCC 2척 3,933억 추가. 이란 휴전 결렬 시 호르무즈 우회 수요·탱커 운임 반등→VLCC 발주 가속, 종전 시 수요 둔화. 이스라엘-레바논 10일 휴전(4/17 발효)은 이미 수주 모멘텀."},
     {badge:"watch",title:"🚗 현대차·기아 4/24 실적 — 매출 역대급·이익 뒷걸음: 1Q 저점 확인 후 하반기 관세완화 모멘텀",text:"현대차(4/24): 매출 46.2조(+4%, 역대 최대) vs 영업익 2.8~2.9조(컨센 ±) 감소. 기아: 매출 30조·영업익 2.2~2.4조. 미국 25% 관세+기말환율 급등→판보충당금 현대 4천억·기아 3천억. 한미 자동차 관세 15% 합의(4/2)·122조(전세계 10% 150일 한시) 전환으로 2분기부터 관세 부담 완화. 미국 HEV·EV3/4/5·PBV 성장 견인. POSCO(4/30, 영업익 6,337억 +11.6%)·삼성SDI(4/23) 동반 확인 포인트."},
-    {badge:"info",title:"💊 AACR 2026 종료(4/22): HLB SynKIR-110 9명 중 4명 반응 확인·리가켐 BCMA ADC·한미 mRNA·유한 MARIPOSA",text:"4/20 HLB Verismo SynKIR-110(KIR-CAR Phase1 STAR-101) 구두발표 완료: 9명 중 4명 종양반응·최대 47% 축소. 기존 치료 불응 고형암에서 양호한 안전성+초기 항종양 활성 확인—빅파마 L/O 기대감↑. 리가켐바이오 BCMA ADC 2종(LCB14-2524/2516) 블렌랩 대비 우월 독성·효능 입증으로 2700억 기술료 유입 흑자전환 기대. 한미약품 비임상 9건 4년 연속 최다(STING/p53 mRNA·BH4601 이중특이적 ADC). 유한 MARIPOSA mOS 48개월+."}
+    {badge:"info",title:"💊 AACR 2026 종료(4/22): HLB SynKIR-110 9명 중 4명 반응 확인·리가켐 BCMA ADC·한미 mRNA·유한 MARIPOSA",text:"4/20 HLB Verismo SynKIR-110(KIR-CAR Phase1 STAR-101) 구두발표 완료: 9명 중 4명 종양반응·최대 47% 축소. 기존 치료 불응 고형암에서 양호한 안전성+초기 항종양 활성 확인—빅파마 L/O 기대감↑. 리가켐바이오 BCMA ADC 2종(LCB14-2524/2516) 블렌랩 대비 우월 독성·효능 입증으로 2700억 기술료 유입 흑자전환 기대. 한미약품 비임상 9건 4년 연속 최다(STING/p53 mRNA·BH4601 이중특이적 ADC). 유한 MARIPOSA mOS 48개월+."},
+    {badge:"info",title:"⚡ 블룸에너지(4/28)·코세스(5월 중순) 일정 추가 — SOFC 데이터센터 & HBM 후공정 확인 포인트",text:"Bloom Energy 1Q26 실적 4/28 장마감 후 컨콜(2025 매출 $2.02B +37%, 2026 가이던스 YoY +58%, 백로그 ~$20B). 1Q에 Oracle OCI 2.8GW MOU(4/14, 주가 +23%)·AEP 1GW $2.65B(1월) 반영 규모 확인. SK ecoplant 500MW 협력. 코세스(089890) 1Q26 실적은 KOSDAQ 관례상 5월 중순 예상—2025 3Q 누적 매출 +18.7% 흑자전환, HBM4 16단(11.7Gbps) 양산·HBM4E(2027)·HBM5(2029~30) 코퍼필러·솔더볼 어태치 수혜 지속."}
   ]
 };
 
