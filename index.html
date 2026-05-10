@@ -665,7 +665,7 @@ var DEFAULT_EVENTS=[
 
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=77;
+var DATA_VER=78;
 var LAST_UPDATED="2026-05-10";
 
 // ── Weekly Insight (auto-updated every Monday) ──
@@ -1110,19 +1110,9 @@ function nextMonth(){
 function goToday(){var d=new Date();state.year=d.getFullYear();state.month=d.getMonth();render()}
 function toggleSb(){state.sbCollapsed=!state.sbCollapsed;render()}
 
-// ── Swipe ──
-var touchStartX=0,touchStartY=0;
-document.addEventListener("touchstart",function(e){
-  touchStartX=e.touches[0].clientX;
-  touchStartY=e.touches[0].clientY;
-},{passive:true});
-document.addEventListener("touchend",function(e){
-  var dx=e.changedTouches[0].clientX-touchStartX;
-  var dy=e.changedTouches[0].clientY-touchStartY;
-  if(Math.abs(dx)<50||Math.abs(dy)>Math.abs(dx))return;
-  if(state.view!=="calendar")return;
-  if(dx<0)nextMonth();else prevMonth();
-},{passive:true});
+// ── Swipe (비활성화: 사용자 요청 — 좌우 스와이프로 월 이동 불가, 화살표 버튼만 사용) ──
+// 이전: touchstart/touchend 50px 임계값 → 화면 작을 때 의도치 않게 월이 넘어가는 문제
+// 월 이동은 상단 화살표(prevMonth/nextMonth) 버튼으로만 가능
 
 // ── Init ──
 loadState();
