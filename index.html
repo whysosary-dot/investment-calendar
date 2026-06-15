@@ -726,7 +726,7 @@ var DEFAULT_EVENTS=[
 
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=124;
+var DATA_VER=125;
 var LAST_UPDATED="2026-06-16";
 
 // ── Weekly Insight (auto-updated every Monday) ──
@@ -751,17 +751,18 @@ var state={
   view:"calendar",
   modal:null,formOpen:false,editEv:null,
   sbCollapsed:true,
-  nextId:400
+  nextId:1000
 };
 
 function loadState(){
   var storedVer=0;
   try{storedVer=parseInt(localStorage.getItem("ivcal_v"))||0}catch(x){}
   if(storedVer<DATA_VER){
-    // DEF updated: merge - keep user-added events (id>=300) that are NOT already in DEFAULT_EVENTS
+    // DEF updated: merge - keep user-added events (id>=1000) that are NOT already in DEFAULT_EVENTS
+    // (id 1-999 = 자동 추가 영역, id 1000+ = UI 사용자 직접 추가 영역)
     var defIds={};DEFAULT_EVENTS.forEach(function(e){defIds[e.id]=1});
     var userEvs=[];
-    try{var old=JSON.parse(localStorage.getItem("ivcal_ev"));if(old)old.forEach(function(e){if(e.id>=300&&!defIds[e.id])userEvs.push(e)})}catch(x){}
+    try{var old=JSON.parse(localStorage.getItem("ivcal_ev"));if(old)old.forEach(function(e){if(e.id>=1000&&!defIds[e.id])userEvs.push(e)})}catch(x){}
     state.events=DEFAULT_EVENTS.slice().concat(userEvs);
     var s={};state.events.forEach(function(e){s[e.company]=1});
     state.companies=Object.keys(s);
