@@ -243,7 +243,7 @@ var MK=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","
 var DEFAULT_EVENTS=[
   // ── 조선 ──
   {id:1,date:"2026-01-01",title:"IMO EEXI/CII 제도 재검토 시한",company:"업계공통",category:"정책",icon:"📜",memo:"2026.1.1까지 CII/EEXI 실효성 검토 후 추가 개정 의무. 노후선 교체 발주 촉진",link:"https://www.imo.org/en/mediacentre/hottopics/pages/eexi-cii-faq.aspx",important:true},
-  {id:13,date:"2026-07-07",title:"캐나다 CPSP 60조 잠수함 우협 발표 임박 — 6/30 데드라인 지연·7/1 건국기념일~7/7 NATO 정상회의 직전 발표 유력",company:"한화오션",category:"수주",icon:"🚢",memo:"📅 일시: 카니 캐나다 총리 7/7 앙카라 NATO 정상회의 출국 전후 우협 확정 유력 (6/30 데드라인 지연)\n📊 사업규모: 건조 20조 + MRO 30년 40조 = 총 60조원 (3,000톤급 디젤 최대 12척)\n🔥 핵심: 한화오션-HD현대 「팀 코리아」 KSS-III Batch-II vs 독일 TKMS 212CD 단판 양자결정\n💡 포인트:\n- 강훈식 대통령 비서실장 「스코어 50대 50」 발언·승부처는 MRO/군수지원(평가비중 50%)\n- 경쟁사 TKMS 해킹 사고 발생 → 한화오션 수주 기대감 고조\n- 한화 SPA 63억$ + 앨고마 스틸 MOU + 940억C$ GDP·2.25만 일자리\n- 도산안창호함 태평양 1.4만km 횡단 에스퀴몰트 실전 검증\n🔗 연동: USTR 301조 7/24 결론 + 7/7 NATO 정상회의 외교 분수령\n📈 한국 영향: 한화오션·HD현대중공업 결정 시 즉시 갭반응·K-방산 동반",link:"https://www.newsis.com/view/NISX20260703_0003694744",important:true,lastUpdated:"2026-07-04"},
+  {id:13,date:"2026-07-06",title:"캐나다 CPSP 60조 잠수함 우협 발표 D-Day — 7/6 월요일 발표 유력·한화오션 vs 독일 TKMS 단판",company:"한화오션",category:"수주",icon:"🚢",memo:"📅 일시: 캐나다 연방정부 7/6(월) 우선협상대상자 전격 발표 유력 (6/30 데드라인 → 7월 초 순연)\n📊 사업규모: 건조 20조 + MRO 30년 40조 = 총 60조원 (3,000톤급 디젤 최대 12척)\n🔥 핵심: 한화오션-HD현대 「팀 코리아」 KSS-III Batch-II vs 독일 TKMS 212CD 단판 양자결정\n💡 포인트:\n- 평가비중 유지보수(MRO) 50%·플랫폼 20%·금융 15%·전략경제 15% — 승부처는 MRO\n- 경쟁사 TKMS 해킹 사고 → 한화오션 수주 기대감 고조·업계 「50대 50」 관측\n- 2035년까지 4척 우선 인도 후 매년 1척 추가·2043년 총 12척 공급 제시\n🔗 연동: USTR 301조 7/24 결론 + K-방산 밸류체인\n📈 한국 영향: 한화오션·HD현대중공업 결정 시 즉시 갭반응·K-방산 동반",link:"https://www.g-enews.com/article/Global-Biz/2026/07/202607040517143867e8b8a793f7_1",important:true,lastUpdated:"2026-07-06"},
   {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 조선·국방 정책 방향성 결정",link:"https://www.usa.gov/midterm-elections",important:true},
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",link:"",important:true},
 
@@ -771,18 +771,19 @@ var DEFAULT_EVENTS=[
 
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=150;
+var DATA_VER=151;
 var LAST_UPDATED="2026-07-01";
 
 // ── Weekly Insight (auto-updated every Monday) ──
 var WEEKLY_INSIGHT={
-  date:"2026-07-05",
+  date:"2026-07-06",
   items:[
-    {badge:"hot",title:"7/7 '슈퍼먼데이' — 삼성 잠정실적 + 한화오션 캐나다 잠수함 우협",text:"7일 삼성전자 2Q 잠정실적(영업익 80조원대 컨센)과 60조 캐나다 CPSP 잠수함 우선협상대상자 발표가 겹친다. 카니 총리 NATO(앙카라) 출국 전후 발표 유력, 경쟁사 TKMS 해킹 사고로 한화오션 기대감 고조."},
-    {badge:"hot",title:"7/10 SK하이닉스 나스닥 ADR 상장 — 최대 45조 조달",text:"SK하이닉스가 7/10 미국 ADR(주당 25.55만원·최대 1,779만주·45.4조원) 상장. 용인 클러스터·청주 어드밴스드 패키징 투자재원. 한국 대형주 첫 대규모 美 직상장 이벤트로 수급·밸류 시그널 주목."},
-    {badge:"watch",title:"7/16 '트리플 이벤트' — 한은 금통위 · TSMC 2Q · ASML 2Q",text:"16일 한국은행 금통위(현 2.5% 동결 우세), TSMC 2Q 실적·3Q 가이던스, ASML 2Q가 하루에 몰린다. AI/HBM 수요 강세 확인 여부가 반도체 밸류체인 방향타."},
-    {badge:"watch",title:"바이오 분수령 — 7/15 코오롱티슈진 TG-C 톱라인 · 7/23 HLB PDUFA",text:"15일 코오롱티슈진 TG-C 미국 3상(15302) 톱라인 공개(구조 개선 입증 여부가 BLA 성패), 23일 HLB 리보세라닙+캄렐리주맙 FDA 세 번째 허가심사 결정. 바이오 변동성 확대 구간."},
-    {badge:"info",title:"게임·IPO — 7/13 크래프톤 신작 + 코스닥 청약 릴레이",text:"13일 크래프톤 '어센드투제로' 글로벌 출시(게임패스 데이원). IPO는 에이치엘지노믹스(7/13)에 이어 인제니아테라퓨틱스(7/23)·케이앤에스아이앤씨(7/27) 청약 이어짐."}
+    {badge:"hot",title:"캐나다 60조 잠수함 우협, 오늘(7/6) 발표 유력",text:"CPSP 최종 우협 발표가 오늘로 좁혀졌다. 한화오션-HD현대 팀코리아 vs 독일 TKMS 단판. 승부처는 평가비중 50%의 MRO이며 TKMS 해킹 사고로 기대감 고조. 수주 시 K-방산 밸류체인 즉시 갭반응."},
+    {badge:"hot",title:"반도체 실적·상장 슈퍼위크 (7/7~7/10)",text:"7/7 삼성전자 2Q26 잠정실적으로 국내 어닝시즌 개막, HBM4E 사이클 확인 분수령. 이어 7/10 SK하이닉스 나스닥 ADR 상장(신주 1,779만주·최대 45조 조달)으로 글로벌 메모리 투심 시험대."},
+    {badge:"watch",title:"7/16 더블 이벤트 — TSMC 실적 + 한국은행 금통위",text:"같은 날 TSMC 2Q26 실적·3Q 가이던스(AI 수요 가늠자)와 한국은행 7월 금통위가 겹친다. 반도체 방향성과 원화·수급 변수를 동시에 확인하는 하루."},
+    {badge:"watch",title:"코오롱티슈진 TG-C 미국 3상 톱라인 (7월 중)",text:"골관절염 세포유전자치료제 TG-C의 첫 미국 임상 3상 톱라인 발표 임박. FDA 품목허가 기초자료가 될 유효성·안전성 지표로 바이오 섹터 이목 집중."},
+    {badge:"info",title:"게임 신작 러시 — 크래프톤 어센드투제로 (7/13)",text:"플라이웨이게임즈 액션 로그라이크 '어센드투제로'가 7/13 Xbox·Steam 글로벌 출시, 게임패스 데이원 포함. 하반기 엔씨 아이온2 등 신작 파이프라인 관전 포인트."},
+    {badge:"info",title:"IPO 슈퍼위크 지속 (7/13~7/14)",text:"매드업·레몬헬스케어에 이어 7/13~14 에이치엘지노믹스 청약, 7/14 레메디·에이치엘지노믹스 동반 상장. 공모주 수급 온기 지속 여부 체크."}
   ]
 };
 
