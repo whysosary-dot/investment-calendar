@@ -243,7 +243,7 @@ var MK=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","
 var DEFAULT_EVENTS=[
   // ── 조선 ──
   {id:1,date:"2026-01-01",title:"IMO EEXI/CII 제도 재검토 시한",company:"업계공통",category:"정책",icon:"📜",memo:"2026.1.1까지 CII/EEXI 실효성 검토 후 추가 개정 의무. 노후선 교체 발주 촉진",link:"https://www.imo.org/en/mediacentre/hottopics/pages/eexi-cii-faq.aspx",important:true},
-  {id:13,date:"2026-07-06",title:"캐나다 CPSP 60조 잠수함 우협 발표 D-Day — 7/6 월요일 발표 유력·한화오션 vs 독일 TKMS 단판",company:"한화오션",category:"수주",icon:"🚢",memo:"📅 일시: 캐나다 연방정부 7/6(월) 우선협상대상자 전격 발표 유력 (6/30 데드라인 → 7월 초 순연)\n📊 사업규모: 건조 20조 + MRO 30년 40조 = 총 60조원 (3,000톤급 디젤 최대 12척)\n🔥 핵심: 한화오션-HD현대 「팀 코리아」 KSS-III Batch-II vs 독일 TKMS 212CD 단판 양자결정\n💡 포인트:\n- 평가비중 유지보수(MRO) 50%·플랫폼 20%·금융 15%·전략경제 15% — 승부처는 MRO\n- 경쟁사 TKMS 해킹 사고 → 한화오션 수주 기대감 고조·업계 「50대 50」 관측\n- 2035년까지 4척 우선 인도 후 매년 1척 추가·2043년 총 12척 공급 제시\n🔗 연동: USTR 301조 7/24 결론 + K-방산 밸류체인\n📈 한국 영향: 한화오션·HD현대중공업 결정 시 즉시 갭반응·K-방산 동반",link:"https://www.g-enews.com/article/Global-Biz/2026/07/202607040517143867e8b8a793f7_1",important:true,lastUpdated:"2026-07-06"},
+  {id:13,date:"2026-07-06",title:"캐나다 CPSP 60조 잠수함 수주 무산 — 독일 TKMS 선정 (한화오션·HD현대 고배)",company:"한화오션",category:"수주",icon:"🚢",memo:"📅 일시: 캐나다 카니 총리 7/6(현지) 17:10 핼리팩스 발표 (KST 7/7 오전 5:10)\n📊 사업규모: 건조 20조 + MRO 30년 40조 = 총 60조원 (3,000톤급 디젤 최대 12척)\n🔥 핵심: 캐나다 정부, 우선협상대상자로 독일 TKMS(212CD) 선정 — 한화오션·HD현대 「팀 코리아」 KSS-III Batch-II 고배\n💡 포인트:\n- 업계 「50대 50」 초박빙 관측 뒤집혀 — 유럽 안보협력·NATO 연계가 최종 변수로 작용 관측\n- 폴란드 오르카(스웨덴 사브)에 이은 연속 유럽 잠수함 수주 불발\n- 다만 7/1 KDDX 상세설계·선도함 우협 선정으로 국내 방산 모멘텀은 유지\n🔗 연동: USTR 301조 7/24 결론 + K-방산 밸류체인\n📈 한국 영향: 발표 직후 한화오션·HD현대중공업 주가 변동성 확대·기대감 소멸 반영",link:"https://www.newspim.com/news/view/20260706001203",important:true,lastUpdated:"2026-07-07"},
   {id:21,date:"2026-11-03",title:"미국 중간선거",company:"업계공통",category:"정책",icon:"🗳️",memo:"SHIPS Act 등 조선·국방 정책 방향성 결정",link:"https://www.usa.gov/midterm-elections",important:true},
   {id:98,date:"2026-03-19",title:"투자 캘린더 시작",company:"개인",category:"기타",icon:"⭐",memo:"투자 캘린더 운영 시작일",link:"",important:true},
 
@@ -771,19 +771,18 @@ var DEFAULT_EVENTS=[
 
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=151;
+var DATA_VER=152;
 var LAST_UPDATED="2026-07-01";
 
 // ── Weekly Insight (auto-updated every Monday) ──
 var WEEKLY_INSIGHT={
-  date:"2026-07-06",
+  date:"2026-07-07",
   items:[
-    {badge:"hot",title:"캐나다 60조 잠수함 우협, 오늘(7/6) 발표 유력",text:"CPSP 최종 우협 발표가 오늘로 좁혀졌다. 한화오션-HD현대 팀코리아 vs 독일 TKMS 단판. 승부처는 평가비중 50%의 MRO이며 TKMS 해킹 사고로 기대감 고조. 수주 시 K-방산 밸류체인 즉시 갭반응."},
-    {badge:"hot",title:"반도체 실적·상장 슈퍼위크 (7/7~7/10)",text:"7/7 삼성전자 2Q26 잠정실적으로 국내 어닝시즌 개막, HBM4E 사이클 확인 분수령. 이어 7/10 SK하이닉스 나스닥 ADR 상장(신주 1,779만주·최대 45조 조달)으로 글로벌 메모리 투심 시험대."},
-    {badge:"watch",title:"7/16 더블 이벤트 — TSMC 실적 + 한국은행 금통위",text:"같은 날 TSMC 2Q26 실적·3Q 가이던스(AI 수요 가늠자)와 한국은행 7월 금통위가 겹친다. 반도체 방향성과 원화·수급 변수를 동시에 확인하는 하루."},
-    {badge:"watch",title:"코오롱티슈진 TG-C 미국 3상 톱라인 (7월 중)",text:"골관절염 세포유전자치료제 TG-C의 첫 미국 임상 3상 톱라인 발표 임박. FDA 품목허가 기초자료가 될 유효성·안전성 지표로 바이오 섹터 이목 집중."},
-    {badge:"info",title:"게임 신작 러시 — 크래프톤 어센드투제로 (7/13)",text:"플라이웨이게임즈 액션 로그라이크 '어센드투제로'가 7/13 Xbox·Steam 글로벌 출시, 게임패스 데이원 포함. 하반기 엔씨 아이온2 등 신작 파이프라인 관전 포인트."},
-    {badge:"info",title:"IPO 슈퍼위크 지속 (7/13~7/14)",text:"매드업·레몬헬스케어에 이어 7/13~14 에이치엘지노믹스 청약, 7/14 레메디·에이치엘지노믹스 동반 상장. 공모주 수급 온기 지속 여부 체크."}
+    {badge:"hot",title:"한화오션 캐나다 60조 잠수함 수주 무산 (TKMS 선정)",text:"7/6(현지) 캐나다가 차세대 잠수함 사업자로 독일 TKMS를 선정, 한화오션·HD현대 '팀 코리아'가 고배를 마셨다. 폴란드 오르카(사브)에 이은 연속 유럽 수주 불발로 K-방산 해외 확장 서사에 단기 조정 가능. 다만 7/1 KDDX 우협 선정 등 국내 파이프라인은 유효."},
+    {badge:"hot",title:"삼성전자 2Q26 잠정실적 (7/7) — 영업익 80조원대 컨센",text:"메모리 가격 급등(2Q D램 ASP +45%·낸드 +65%)·HBM 슈퍼사이클로 증권가 영업이익 컨센 85~92조원. 반도체 비중 90%+ 추정, 성과급 충당금 규모가 눈높이 변수. 6/25 마이크론 서프라이즈에 이어 메모리 3사 실적시즌 개막."},
+    {badge:"watch",title:"SK하이닉스 나스닥 ADR 상장 (7/10)",text:"최대 45.4조원 규모 ADR 발행으로 외국기업 사상 최대 상장 전망(알리바바·아람코 초과). 7/10 거래개시·7/14 청약/납입·7/29 신주발행. 7/23 2Q 실적발표와 맞물려 메모리 대표주 재평가 이벤트."},
+    {badge:"watch",title:"미국 반도체·빅테크 2Q 실적시즌 개막",text:"7/15 ASML·7/16 TSMC를 시작으로 7/23 Intel·SK하이닉스, 7/30 MS·Meta, 7/31 Apple·Amazon까지 집중. AI 캐펙스·HBM 수요 지속 여부가 하반기 방향성 결정."},
+    {badge:"info",title:"게임 신작 러시 — 크래프톤 어센드투제로 (7/13)",text:"플라이웨이게임즈 '어센드투제로'가 7/13 Xbox·스팀 동시 글로벌 출시(게임패스 데이원). 엔씨 아이온2 글로벌, 넷마블 하반기 5종 라인업 등 국내 게임사 신작 모멘텀 본격화."}
   ]
 };
 
