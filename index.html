@@ -279,7 +279,7 @@ var DEFAULT_EVENTS=[
   {id:180,date:"2026-03-05",title:"케이뱅크 코스피 상장 (완료)",company:"케이뱅크",category:"기업",icon:"📈",memo:"공모가 8,300원. 시가총액 약 3.37조원. NH투자/삼성증권 대표주관",link:"https://kind.krx.co.kr/listinvstg/pubofrschdl.do",important:true},
   {id:181,date:"2026-12-31",title:"무신사 코스피 IPO (연내 추진중)",company:"무신사",category:"기업",icon:"📈",memo:"기업가치 10조 안팎. 예비심사 7월 청구 가닥. 한투(국내대표)/KB(공동), 씨티(해외대표)/JP모건(공동) 확정. 피어그룹 '플랫폼 vs 패션업체' 설정이 밸류에이션 핵심 변수. 나스닥 상장도 병행 검토. NDR 진행중",link:"https://www.investchosun.com/site/data/html_dir/2026/02/20/2026022080170.html",important:true,lastUpdated:"2026-04-12"},
   {id:182,date:"2027-06-30",title:"구다이글로벌 코스피 IPO (2027년경 예상)",company:"구다이글로벌",category:"기업",icon:"📈",memo:"K-뷰티(JOAH/TIRTIR). 기업가치 8조+. 해외매출 90%. 미래에셋/NH/씨티/모건스탠리 주관사 확정(2026.2). 예비심사 미청구. FI 상장시한 2027년경. 지배구조 정비 후 IPO 추진",link:"https://www.ebn.co.kr/news/articleView.html?idxno=1699049",important:true},
-  {id:183,date:"2026-07-21",title:"SK에코플랜트 코스피 IPO (7/21 기한, 사실상 불발)",company:"SK에코플랜트",category:"기업",icon:"📈",memo:"프리IPO 계약상 7/21 기한. 예비심사 미청구(1/21 기한 초과)로 사실상 연내 상장 불가. 중복상장 금지·회계이슈(매출 과대계상 과징금 54억) 걸림돌. 불발 시 1조원+ 재무리스크(프리IPO 원금+이자+패널티)",link:"https://www.goodkyung.com/news/articleView.html?idxno=285083",important:true},
+  {id:183,date:"2026-07-21",title:"SK에코플랜트 코스피 IPO 무산 확정 (FI 지분 1조 재매입)",company:"SK에코플랜트",category:"기업",icon:"📈",memo:"📅 일시: 프리IPO 계약상 상장기한 7/21 도래 — 상장 없이 만료\n🔥 핵심: SK㈜·SK에코플랜트 이사회가 2022년 프리IPO 참여 FI 7개사 지분을 총 1조원 규모로 재매입 결의, 연내 상장 사실상 포기\n💡 포인트:\n- 무산 배경: ①대기업 계열사 중복상장 원칙 금지(SK㈜ 지분 63.17%) ②미국 연료전지 자회사 매출 과대계상 '중과실' 회계 이슈 ③예비심사 지연\n- 1조원 현금 유출 + 이자부담으로 SK에코플랜트 재무구조·SK㈜ 연결 부담 확대\n🔗 연동: SK㈜·SK이터닉스 등 SK 리밸런싱 라인, 국내 대형 IPO 파이프라인 축소",link:"https://www.kmnanews.com/news/articleView.html?idxno=10321",important:true,lastUpdated:"2026-07-21"},
   {id:184,date:"2026-12-31",title:"CJ올리브영 코스피 IPO (재추진 어려움)",company:"CJ올리브영",category:"기업",icon:"📈",memo:"IPO 재추진 가능성 낮음. FI 지분(22.6%) CJ그룹+SPC 매입 완료. 상법 개정으로 중복상장 사실상 불가. 지주사 CJ 합병설 대두",link:"https://www.newstopkorea.com/news/articleView.html?idxno=29301",important:false},
 
   // ── 추가 이벤트 (2026-04-01 자동 업데이트) ──
@@ -786,11 +786,14 @@ var DEFAULT_EVENTS=[
   {id:380,date:"2026-07-29",title:"한화오션 2Q26 실적발표 (예상)",company:"한화오션",category:"실적",icon:"🚢",memo:"📅 일시: 7월 말 예상 — 확정일 미공시 (2Q25는 7/29 발표)\n🔥 핵심: 캐나다 잠수함 수주 무산(7/6) 직후 첫 실적 이벤트. 주가 20%+ 급락분 회복 여부의 분수령\n💡 포인트:\n- 특수선(MRO·잠수함) 수주 파이프라인 재정비 계획 — 필리조선소 미 해군 MRO 진척도\n- 상선 부문 고선가 물량 반영 속도와 하반기 가이던스\n🔗 연동: HD현대중공업·삼성중공업, USTR 301조(7/24)\n📈 한국 영향: K-조선 특수선 프리미엄 재산정 국면",link:"https://www.hanwhaocean.com/investors/ea/",important:true,lastUpdated:"2026-07-20"},
   {id:381,date:"2026-08-06",title:"펄어비스 2Q26 실적발표 (예상)",company:"펄어비스",category:"실적",icon:"🎮",memo:"📅 일시: 8월 초 예상 — 확정일 미공시\n🔥 핵심: '붉은사막' 출시 효과의 2개 분기차 지속성 점검. 지배주주순이익 흑자전환 전망(메리츠증권)\n💡 포인트:\n- 1Q26 영업이익 2,121억 창사 최대 이후 판매 둔화 조짐 — 콘솔 판매곡선 완만화 여부\n- 하반기 '붉은사막' DLC·'도깨비' 일정 가이던스가 실적보다 중요\n🔗 연동: 크래프톤(7/29)·엔씨소프트(8월 중순)",link:"https://www.etoday.co.kr/news/view/2601818",important:true,lastUpdated:"2026-07-20"},
   {id:382,date:"2026-08-12",title:"엔씨소프트 2Q26 실적발표 (예상)",company:"엔씨소프트",category:"실적",icon:"🎮",memo:"📅 일시: 8월 중순 예상 — 확정일 미공시 (2Q25는 8/12 발표)\n🔥 핵심: 하반기 '아이온2' 글로벌(PC 전용) 출시를 앞둔 마지막 사전 실적. 리니지 클래식·아이온2 국내 성과의 온기 반영\n💡 포인트:\n- 2026 매출 목표 2.5조 달성 경로상 2Q 진척도\n- 구조조정 효과에 따른 고정비 절감폭 지속 여부\n🔗 연동: 아이온2 글로벌 출시(하반기)·크래프톤(7/29)·펄어비스(8월 초)",important:true,lastUpdated:"2026-07-20"},
+  {id:383,date:"2026-07-01",title:"한화오션 KDDX 우선협상대상자 선정 (7.8조)",company:"한화오션",category:"수주",icon:"🚢",memo:"📅 일시: 7/1 방위사업청 통보, 7/2 공시\n🔥 핵심: 한국형 차기구축함(KDDX) 상세설계·선도함 건조 우선협상대상자로 한화오션 최종 선정, 총 사업비 7조8,000억원(6,000톤급 6척)\n💡 포인트:\n- HD현대중공업과 0.5867점 차 신승 — HD현대에 적용된 보안 감점 1.2점이 승부처\n- 계약금액·기간 등 세부조건은 향후 협의로 확정, 후속함 물량까지 확장 여지\n🔗 연동: 캐나다 CPSP 탈락(7/6) 충격을 일부 상쇄하는 방산 모멘텀\n📈 한국 영향: 한화오션 특수선 수주잔고 확대, HD현대중공업은 국내 함정 파이프라인 공백",link:"https://www.fnnews.com/news/202607020818196117",important:true,lastUpdated:"2026-07-21"},
+  {id:384,date:"2026-08-13",title:"넥슨 2Q26 실적발표",company:"넥슨",category:"실적",icon:"🎮",memo:"📅 일시: 8/13 (도쿄증시 3659) 실적 공시\n📊 가이던스: 매출 1,070~1,197억엔(-10%~+1% YoY), 영업익 161~253억엔(-57%~-33% YoY)\n🔥 핵심: 영업이익 가이던스가 큰 폭 감익 구간 — 신작 마케팅비와 던파모바일 중국 역기저가 관건\n💡 포인트:\n- 컨센서스 매출 약 1,168억엔으로 가이던스 중상단\n- 라이브 타이틀(메이플·FC온라인) 방어력과 신작 파이프라인 코멘트에 주목\n🔗 연동: 국내 게임주(넷마블·크래프톤·엔씨) 2Q 실적시즌 밸류에이션 잣대",link:"https://www.marketscreener.com/news/nexon-to-release-second-quarter-2026-financial-results-on-august-13-2026-ce7f5eddde8af525",important:true,lastUpdated:"2026-07-21"},
+  {id:385,date:"2026-08-14",title:"케이앤에스아이앤씨 코스닥 상장 D-Day",company:"케이앤에스아이앤씨",category:"기업",icon:"📈",memo:"📅 일시: 8/14 코스닥 신규상장 (일반청약 8/4~8/5)\n🔥 핵심: 공모희망가 9,000원 단일가, IBK투자증권 주관\n💡 포인트:\n- 8월 초 청약 러시(딜리셔스·빅웨이브로보틱스 등) 중 첫 상장 케이스로 투심 가늠자\n🔗 연동: 8월 코스닥 IPO 시장 온도",link:"https://www.38.co.kr/html/fund/?o=nw",lastUpdated:"2026-07-21"},
 ];
 
 
 // Version: bump this number whenever DEFAULT_EVENTS is updated
-var DATA_VER=166;
+var DATA_VER=167;
 var LAST_UPDATED="2026-07-01";
 
 // ── Weekly Insight (auto-updated every Monday) ──
