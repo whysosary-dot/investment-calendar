@@ -147,6 +147,10 @@ if (cmd === 'apply') {
   // DATA_VER +1
   content = content.replace(/var DATA_VER=(\d+);/, (m, v) => 'var DATA_VER=' + (parseInt(v) + 1) + ';');
 
+  // LAST_UPDATED → 실행 당일(KST) 자동 갱신
+  const _kstToday = new Date(Date.now() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+  content = content.replace(/var LAST_UPDATED="[0-9-]+";/, 'var LAST_UPDATED="' + _kstToday + '";');
+
   if (!verify(content)) { console.error('원본 유지, exit 1'); process.exit(1); }
   fs.writeFileSync(IDX, content);
   console.log('✅ 저장 완료 (DATA_VER +1, JS 검증 통과)');
