@@ -1,0 +1,61 @@
+{
+  "add": [
+    {
+      "date": "2026-09-10",
+      "title": "Oracle 1Q FY27 실적발표 (AI 클라우드)",
+      "company": "Oracle",
+      "category": "실적",
+      "icon": "☁️",
+      "memo": "📅 일시: 2026-09-10(목) 미 장 마감 후, 컨콜 오후 4시 CT\n📊 가이던스: 총매출 +27~29%, 클라우드 매출 +57~63%(CC), 조정 EPS $1.71~1.75\n🔥 핵심: 직전 4Q FY26 RPO 638조원 규모(+363% YoY)로 AI 인프라 수요 폭증 확인 — 이번 분기 OCI 성장률·RPO 추가 증가폭이 최대 관전 포인트\n💡 포인트:\n- Multicloud AI Database 등 AI 학습·추론 인프라 수요가 실적 견인\n- FY27 연간 매출 $90B·조정 EPS $8.05 가이던스 재확인 여부\n- 클라우드 capex 확대 지속 시 데이터센터·전력 밸류체인 파급\n🔗 연동: NVIDIA·반도체 AI 서버 밸류체인, 데이터센터 전력·HBM 수요\n📈 한국 영향: SK하이닉스·삼성전자 HBM, HD현대일렉·LS일렉 전력기기 수급 심리",
+      "link": "https://investor.oracle.com/investor-news/",
+      "important": true,
+      "lastUpdated": "2026-09-07"
+    },
+    {
+      "date": "2026-09-10",
+      "title": "Adobe 3Q FY26 실적발표",
+      "company": "Adobe",
+      "category": "실적",
+      "icon": "🎨",
+      "memo": "📅 일시: 2026-09-10(목) 미 장 마감 후, 컨콜 오후 2시 PT\n🔥 핵심: 생성형 AI(Firefly) 매출 기여·크리에이티브 구독 성장세가 관전 포인트 — AI SaaS 수익화 진행도 점검\n💡 포인트:\n- Firefly·AI 신기능의 ARR 기여 및 구독 전환 추이\n- 디지털 미디어/익스피리언스 부문 성장률 가이던스\n🔗 연동: 글로벌 AI SaaS 밸류에이션 심리(MS·세일즈포스 등)",
+      "link": "https://www.adobe.com/investor-relations.html",
+      "important": false,
+      "lastUpdated": "2026-09-07"
+    }
+  ],
+  "weekly_insight": {
+    "date": "2026-09-07",
+    "items": [
+      {
+        "badge": "hot",
+        "title": "애플 9/9 '아이폰18 Pro·폴더블(Ultra)' 공개",
+        "text": "쿠퍼티노 이벤트 확정. 첫 폴더블 진입 시 힌지·폴더블 OLED 등 신규 부품 수요 — LG이노텍·삼성디스플레이·비에이치 등 국내 애플 밸류체인 모멘텀."
+      },
+      {
+        "badge": "hot",
+        "title": "9/16 FOMC — 인상 vs 동결 팽팽",
+        "text": "잭슨홀 이후 매파 전환으로 25bp 인상 우세(FedWatch 약 66%). 점도표·워시 의장 톤이 원화·외국인 수급 방향타. 결과에 따라 국내 증시 변동성 확대 가능."
+      },
+      {
+        "badge": "watch",
+        "title": "9/10 오라클·어도비 동시 실적 — AI 클라우드 바로미터",
+        "text": "오라클 RPO(직전 638조원)·OCI 성장률이 AI 인프라 수요 강도를 가늠. SK하이닉스 HBM·데이터센터 전력 밸류체인 심리에 직결. 어도비는 Firefly AI 수익화 점검."
+      },
+      {
+        "badge": "watch",
+        "title": "9/25 HLB 리라푸그라티닙 FDA 허가 결정",
+        "text": "FGFR2 담관암 2차 치료제 PDUFA. 레이트사이클 미팅 이견 없이 완료돼 승인 기대. 승인 시 HLB 첫 FDA 신약 상업화 — 그룹 밸류체인 모멘텀."
+      },
+      {
+        "badge": "info",
+        "title": "게임 대형 이벤트 러시 — TGS·아이온2",
+        "text": "9/12 블리즈컨(6년만 부활), 9/17~21 도쿄게임쇼(30주년), 엔씨 아이온2 9/17~18 론칭 테스트 후 10/5 글로벌 출시. 하반기 신작 모멘텀 집중."
+      },
+      {
+        "badge": "info",
+        "title": "9/30 마이크론 실적 — 메모리 사이클 점검",
+        "text": "4Q FY26 발표. D램·HBM 가이던스가 삼성전자·SK하이닉스 메모리 업황 방향성 선행 지표. 9/18 BOJ·9/10 ECB 등 매크로 이벤트도 병행."
+      }
+    ]
+  }
+}
